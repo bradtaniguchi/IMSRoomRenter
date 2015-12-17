@@ -26,6 +26,22 @@ LOGIN PROCEDURE:
   OPTIONAL FEATURES:
     AutoCompletion for Student names, allowing quicker logins, relogins
     Admin login, allowing for editing, viewing of current logged in students
-===============NOTES===============
+###===============NOTES===============
 http://stackoverflow.com/questions/8514471/proper-installation-script-for-a-small-python-program-not-module-under-linux
+
+####------UPDATE 12/16/15
+Starting on project Friday
+going to use sqlite3
+EX: conn = sqlite3.connect('example.db')
+sqlite3 needs to be installed to test. Or at least have a test database file
+to play around with.
+
+https://www.sqlite.org/download.html
+
+- x64 bit version .dll 
+#####AND
+- sqlite3 console.
+
+documentation to follow once database is setup(.dll, .def file) and set to path:
+https://www.sqlite.org/cli.html
 

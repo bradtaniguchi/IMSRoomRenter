@@ -6,7 +6,7 @@ __version__ = '0.1.5'
 
 import tkinter as tk
 from tkinter import ttk
-import xlrd 
+import sqlite3
 
 
 class PrimaryFrame(tk.Frame):
