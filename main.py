@@ -2,7 +2,7 @@
 # Bradley Taniguchi
 # 11/30/15
 __author__ = 'Bradley Taniguchi'
-__version__ = '0.1.5'
+__version__ = '0.1.7'
 
 import tkinter as tk
 from tkinter import ttk
@@ -11,7 +11,7 @@ import sqlite3
 
 class PrimaryFrame(tk.Frame):
     """
-    Creates the primary GUI frame to use Within the WindowHandler
+    Shows Clock-in and Clock out buttons, and room available,
     """
     def __init__(self, parent):
         tk.Frame.__init__(self, parent)
@@ -23,18 +23,37 @@ class PrimaryFrame(tk.Frame):
         self.parent = parent
         self.TextBox = tk.Entry(self, width=30, textvariable=self.textboxtext)
         self.TextBox.grid(column=0, columnspan=6, row=0, sticky=tk.N, padx=self.bpadx, pady=self.bpady)
-
         self.pack()
+
+
+class ClockIn(tk.Frame):
+    """
+    This displays the Clock-In screen for a student trying to rent a room.
+    Directly Interacts with the database and calls back the PrimaryFrame once completed
+    -ALSO creates comfirm and deny dialog popups upon submitted inputs
+    """
+    def __init__(self, parent, controller):
+        self.controller = controller
+
+
+class ClockOut(tk.Frame):
+    """
+    This displays the Clock-Out screen for a student trying to rent
+    """
+    def __init__(self, parent, controller):
+        self.controller = controller
 
 
 class WindowHandler(tk.Frame):
     """
-    Creates the topbar menu, and holds the PrimaryFrame
+    Creates the topbar menu, and holds the PrimaryFrame and changes the internal frame
+    according to variable displayframe, normall initiated to PrimaryFrame
     """
-    def __init__(self, parent):
+    def __init__(self, parent, displayframe):
         tk.Frame.__init__(self, parent)
         self._create_menubar(parent)  # does the heavy lifting
         PrimaryFrame(parent).pack(side="top", fill="both", expand=True)
+        self.frames = {}
 
     def _create_menubar(self, parent):
         """
@@ -77,6 +96,9 @@ def startmain():
     print(">DEBUG: Into main")
     root = tk.Tk()
     root.title("TEST PROG")  # change title
+    root.minsize(width=800, height=600)  # Determined constant window size?
+    root.maxsize(width=800, height=600)
+    root.resizable(width=False, height=False)
     WindowHandler(root)
     root.mainloop()
 
