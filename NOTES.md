@@ -45,3 +45,7 @@ https://www.sqlite.org/download.html
 documentation to follow once database is setup(.dll, .def file) and set to path:
 https://www.sqlite.org/cli.html
 
+####-------UPDATE 12/18/15
+Started re-organized code into GUI.py, going to remove main.py soon.
+added basic GUI functionality, no actual functionality
+still need to work ClockIn and ClockOut

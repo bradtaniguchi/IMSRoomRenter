@@ -56,18 +56,26 @@ class Application(tk.Tk):
         filemenu = tk.Menu(self.menubar, tearoff=False)
         self.menubar.add_cascade(label="File", menu=filemenu)
         filemenu.add_command(label="foo", command=self.dumb)  #DUMB referenced!
-        filemenu.add_command(label="Quit", command=self.dumb)  #DUMB referenced!
+        filemenu.add_command(label="Quit", command=self.quitprogram)  #DUMB referenced!
 
     def _create_edit_menu(self):
         """creates editmenu, and cascade. """
         editmenu = tk.Menu(self.menubar, tearoff=False)
         self.menubar.add_cascade(label="Edit", menu=editmenu)
+        editmenu.add_command(label="Change2Prim", command=lambda: self.show_frame("PrimaryPage"))  # ADDED FOR DEBUGGING!
+        editmenu.add_command(label="Change2ClockIn", command=lambda: self.show_frame("ClockIn"))
+        editmenu.add_command(label="Change2ClockOut", command=lambda: self.show_frame("ClockOut"))
+
 
     def _create_help_menu(self):
         """creates helpmenu, and cascade. """
         helpmenu = tk.Menu(self.menubar, tearoff=False)
         self.menubar.add_cascade(label="Help", menu=helpmenu)
         helpmenu.add_command(label="About", command=self.dumb)  #DUMB referenced!
+
+    def quitprogram(self):
+        print(">DEBUG: Quiting program via filemenu")
+        self.quit()
 
     @staticmethod
     def dumb():
@@ -88,9 +96,11 @@ class PrimaryPage(tk.Frame):
         self.bpadx=2
         self.bpady=2
         self.parent = parent
-        self.clockinbutton = tk.Button(self, height=1, width=10, text="Clock-In", command=self.dumb)
+        self.clockinbutton = tk.Button(self, height=1, width=10, text="Clock-In",
+                                       command=lambda:self.changeframe("ClockIn"))
         self.clockinbutton.grid(column=0, row=0, padx=self.bpadx, pady=self.bpady)  # EDIT TO CENTER!
-        self.clockoutbutton = tk.Button(self, height=1, width=10, text="Clock-Out", command=self.dumb)
+        self.clockoutbutton = tk.Button(self, height=1, width=10, text="Clock-Out",
+                                        command=lambda:self.changeframe("ClockOut"))
         self.clockoutbutton.grid(column=0, row=1, padx=self.bpadx, pady=self.bpady)
         self.ralabel = tk.Label(self, text="Rooms Available:")
         self.ralabel.grid(column=0, row=2, padx=self.bpadx, pady=self.bpady)
@@ -114,10 +124,15 @@ class PrimaryPage(tk.Frame):
         self.roomsavailablestring.set(newcapacity)
         print(">DEBUG: PrintFunction")
 
+    def changeframe(self, framestring):
+        """
+        Showes different frame, prints change to log.
+        """
+        print(">DEBUG: Changed frame to " + framestring)
+        self.controller.show_frame(framestring)
     @staticmethod
     def dumb():
         print(">DEBUG: DumbFunction for PrimaryPage used")
-
 
 class ClockIn(tk.Frame):
     """
@@ -128,7 +143,8 @@ class ClockIn(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
-
+        self.testwork = tk.Label(self, text="ClockInPage")
+        self.testwork.grid(column=0, row=0)
 
 class ClockOut(tk.Frame):
     """
@@ -137,6 +153,8 @@ class ClockOut(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
+        self.testwork = tk.Label(self, text="ClockOutPage")
+        self.testwork.grid(column=0, row=0)
 
 
 def startmain():
