@@ -21,17 +21,18 @@ class Application(tk.Tk):
         container.grid_rowconfigure(0, weight=1)
         container.grid_columnconfigure(0, weight=1)
         self.title("TEST PROG")
-        self.minsize(width=800, height=600)  # Determined constant window size?
-        self.maxsize(width=800, height=600)
+        self.minsize(width=200, height=150)  # Determined constant window size?
+        self.maxsize(width=200, height=150)
         self.resizable(width=False, height=False)
         self.create_menubar()  # creates static menubar
         self.frames = {}  # array of frames
 
-        for frame in (PrimaryPage, ClockIn, ClockOut):  # initialize all frame/Classes
-            page_name = frame.__name__
-            f = frame(container, self)
+        for F in (PrimaryPage, ClockIn, ClockOut):  # initialize all frame/Classes
+            page_name = F.__name__
+            frame = F(container, self)
             self.frames[page_name] = frame
-            f.grid(row=0, column=0, sticky="NSEW")
+            frame.grid(row=0, column=0, sticky="NSEW")
+        self.show_frame("PrimaryPage")
 
     def show_frame(self, page_name):
         """Show a Frame fro a given page name"""
@@ -54,6 +55,7 @@ class Application(tk.Tk):
         """creates filemenu, and cascade. """
         filemenu = tk.Menu(self.menubar, tearoff=False)
         self.menubar.add_cascade(label="File", menu=filemenu)
+        filemenu.add_command(label="foo", command=self.dumb)  #DUMB referenced!
         filemenu.add_command(label="Quit", command=self.dumb)  #DUMB referenced!
 
     def _create_edit_menu(self):
@@ -78,6 +80,7 @@ class PrimaryPage(tk.Frame):
     """
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
+        self.roomsavailablestring = tk.StringVar()  # IMPORTANT!
         self.controller = controller
         self.textboxtext = tk.StringVar()  # Create string variable
         self.bheight=2
@@ -85,9 +88,35 @@ class PrimaryPage(tk.Frame):
         self.bpadx=2
         self.bpady=2
         self.parent = parent
-        self.TextBox = tk.Entry(self, width=30, textvariable=self.textboxtext)
-        self.TextBox.grid(column=0, columnspan=6, row=0, sticky=tk.N, padx=self.bpadx, pady=self.bpady)
+        self.clockinbutton = tk.Button(self, height=1, width=10, text="Clock-In", command=self.dumb)
+        self.clockinbutton.grid(column=0, row=0, padx=self.bpadx, pady=self.bpady)  # EDIT TO CENTER!
+        self.clockoutbutton = tk.Button(self, height=1, width=10, text="Clock-Out", command=self.dumb)
+        self.clockoutbutton.grid(column=0, row=1, padx=self.bpadx, pady=self.bpady)
+        self.ralabel = tk.Label(self, text="Rooms Available:")
+        self.ralabel.grid(column=0, row=2, padx=self.bpadx, pady=self.bpady)
+        self.ratextbox = tk.Entry(self, width=2, textvariable=self.roomsavailablestring)
+        self.ratextbox.grid(column=1, row=2, padx=self.bpadx, pady=self.bpady)
+        self.ratextbox.configure(state='readonly')
         self.pack()
+        self.startup_room_check()  # run startup check
+
+    def startup_room_check(self):
+        """
+        When the program starts, it checks how many rooms are available from reading the
+        object created from read file. TO BE CREATED LATER
+        """
+        self.change_room_capacity(5)  # default start value temp!
+
+    def change_room_capacity(self, newcapacity):
+        """
+        Changes room capacity.
+        """
+        self.roomsavailablestring.set(newcapacity)
+        print(">DEBUG: PrintFunction")
+
+    @staticmethod
+    def dumb():
+        print(">DEBUG: DumbFunction for PrimaryPage used")
 
 
 class ClockIn(tk.Frame):
