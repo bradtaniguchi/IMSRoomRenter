@@ -130,9 +130,11 @@ class PrimaryPage(tk.Frame):
         """
         print(">DEBUG: Changed frame to " + framestring)
         self.controller.show_frame(framestring)
+        
     @staticmethod
     def dumb():
         print(">DEBUG: DumbFunction for PrimaryPage used")
+
 
 class ClockIn(tk.Frame):
     """
@@ -145,6 +147,7 @@ class ClockIn(tk.Frame):
         self.controller = controller
         self.testwork = tk.Label(self, text="ClockInPage")
         self.testwork.grid(column=0, row=0)
+
 
 class ClockOut(tk.Frame):
     """
