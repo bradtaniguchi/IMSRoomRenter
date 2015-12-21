@@ -174,7 +174,7 @@ class ClockIn(tk.Frame):
 
 class RoomAvailability(tk.Frame):
     """
-    Displays the 5 rooms based on availability v was herefdfgsa
+    Displays the 5 rooms based on availability v was herefdfgsadfsadfafdasgargbrvb
     """
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
