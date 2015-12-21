@@ -27,7 +27,7 @@ class Application(tk.Tk):
         self.create_menubar()  # creates static menubar
         self.frames = {}  # array of frames
 
-        for F in (PrimaryPage, ClockIn, ClockOut):  # initialize all frame/Classes
+        for F in (PrimaryPage, ClockIn, RoomAvailability,ClockOut):  # initialize all frame/Classes
             page_name = F.__name__
             frame = F(container, self)
             self.frames[page_name] = frame
@@ -130,7 +130,7 @@ class PrimaryPage(tk.Frame):
         """
         print(">DEBUG: Changed frame to " + framestring)
         self.controller.show_frame(framestring)
-        
+
     @staticmethod
     def dumb():
         print(">DEBUG: DumbFunction for PrimaryPage used")
@@ -141,12 +141,45 @@ class ClockIn(tk.Frame):
     This displays the Clock-In screen for a student trying to rent a room.
     Directly Interacts with the database and calls back the PrimaryFrame once completed
     ALSO creates comfirm and deny dialog popups upon submitted inputs
+    NOTE: No padx, or pady??
+    6 or 12 spots for the buttons AND label?
     """
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
         self.testwork = tk.Label(self, text="ClockInPage")
         self.testwork.grid(column=0, row=0)
+        self.namevariable = tk.StringVar()  # Create string variable
+        self.idvariable = tk.StringVar()  # numeric string variable
+        self.clockinlabel = tk.Label(self, text="Clock-In")
+        self.clockinlabel.grid(column=0, columnspan=2, row=0, sticky=tk.NSEW)
+        self.namelabel = tk.Label(self, text="Name:")
+        self.namelabel.grid(column=0, row=1)
+        self.nametextbox = tk.Entry(self, width=15, textvariable=self.namevariable)
+        self.nametextbox.grid(column=1, row=1)
+        self.studentidlabel = tk.Label(self, text="Student ID:")
+        self.studentidlabel.grid(column=0, row=2)
+        self.studentidtextbox = tk.Entry(self, width=15, textvariable=self.idvariable)
+        self.studentidtextbox.grid(column=1, row=2)
+        self.roomsavlabel = tk.Label(self, text="Room 1-5")
+
+
+    def checkroom(self, roomnumber ):
+        if roomnumber > 5 or roomnumber <= 0 :
+            return False  # keep things simple, bad class number then NOT available Duh!
+        else:
+            print(">DEBUG: TRYING TO CHECK IF ROOM AVAILABLE!")
+            return True  # test value, this program has NO IDEA if rooms are actually available
+
+class RoomAvailability(tk.Frame):
+    """
+    Displays the 5 rooms based on availability
+    """
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+        self.roomslabel = tk.Label(self, text="Rooms Available")
+        self.roomslabel.grid(column=0, row=0)
 
 
 class ClockOut(tk.Frame):
