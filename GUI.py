@@ -65,6 +65,7 @@ class Application(tk.Tk):
         editmenu.add_command(label="Change2Prim", command=lambda: self.show_frame("PrimaryPage"))  # ADDED FOR DEBUGGING!
         editmenu.add_command(label="Change2ClockIn", command=lambda: self.show_frame("ClockIn"))
         editmenu.add_command(label="Change2ClockOut", command=lambda: self.show_frame("ClockOut"))
+        editmenu.add_command(label="Change2RA", command=lambda: self.show_frame("ClockIn"))
 
 
     def _create_help_menu(self):
