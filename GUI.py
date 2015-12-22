@@ -6,7 +6,7 @@ import tkinter as tk
 #import sqlite3
 
 __author__ = 'Bradley Taniguchi'
-__version__ = '0.2.0'
+__version__ = '0.2.5'
 
 
 class Application(tk.Tk):
@@ -191,7 +191,37 @@ class RoomAvailability(tk.Frame):
         self.controller = controller
         self.roomslabel = tk.Label(self, text="Rooms Available")
         self.roomslabel.grid(column=0, row=0)
+        self.roomlabel = tk.Label(self, text="Rooms:")
+        self._createroombuttons()
 
+    def _createroombuttons(self):
+        """
+        Creates the 5 buttons depending on if available
+        FUNCTIONALITY NOT ADDED YET
+        :return: null
+        """
+        self.room1button = tk.Button(self, height=1, width=1, text="1",
+                                     command=lambda: self.selectroom(1))
+        self.room1button.grid(column=1, row=0)
+
+        self.room2button = tk.Button(self, height=1, width=1, text="2",
+                                     command=lambda: self.selectroom(2))
+        self.room2button.grid(column=2, row=0)
+
+        self.room3button = tk.Button(self, height=1, width=1, text="3",
+                                     command=lambda: self.selectroom(3))
+        self.room3button.grid(column=3, row=0)
+
+        self.room4button = tk.Button(self, height=1, width=1, text="4",
+                                     command=lambda: self.selectroom(4))
+        self.room4button.grid(column=4, row=0)
+
+        self.room5button = tk.Button(self, height=1, width=1, text="5",
+                                     command=lambda: self.selectroom(5))
+        self.room5button.grid(column=5, row=0)
+
+    def selectroom(self, room):
+        print(">DEBUG: Choosen room:" + str(room))
 
 class ClockOut(tk.Frame):
     """

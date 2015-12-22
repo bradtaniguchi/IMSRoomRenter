@@ -49,3 +49,8 @@ https://www.sqlite.org/cli.html
 Started re-organized code into GUI.py, going to remove main.py soon.
 added basic GUI functionality, no actual functionality
 still need to work ClockIn and ClockOut
+
+####-------UPDATE 12/21/15
+Created most of the menus
+added buttons and visual aspects of finished pages
+need to create backend
