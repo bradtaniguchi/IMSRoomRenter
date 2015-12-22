@@ -65,8 +65,7 @@ class Application(tk.Tk):
         editmenu.add_command(label="Change2Prim", command=lambda: self.show_frame("PrimaryPage"))  # ADDED FOR DEBUGGING!
         editmenu.add_command(label="Change2ClockIn", command=lambda: self.show_frame("ClockIn"))
         editmenu.add_command(label="Change2ClockOut", command=lambda: self.show_frame("ClockOut"))
-        editmenu.add_command(label="Change2RA", command=lambda: self.show_frame("ClockIn"))
-
+        editmenu.add_command(label="Change2RA", command=lambda: self.show_frame("RoomAvailability"))
 
     def _create_help_menu(self):
         """creates helpmenu, and cascade. """
@@ -163,8 +162,19 @@ class ClockIn(tk.Frame):
         self.studentidtextbox = tk.Entry(self, width=15, textvariable=self.idvariable)
         self.studentidtextbox.grid(column=1, row=2)
         self.roomsavlabel = tk.Label(self, text="Room 1-5")
+        self.clockinbutton = tk.Button(self, height=1, width=5, text="submit",
+                                       command=lambda: self.changeframe("RoomAvailability"))
+        self.clockinbutton.grid(column=0, columnspan=2, row=3)
 
-    def checkroom(self, roomnumber ):
+    def changeframe(self, framestring):
+        """
+        Showes different frame, prints change to log.
+        """
+        print(">DEBUG: Changed frame to " + framestring)
+        self.controller.show_frame(framestring)
+
+    @staticmethod
+    def checkroom(self, roomnumber):
         if roomnumber > 5 or roomnumber <= 0 :
             return False  # keep things simple, bad class number then NOT available Duh!
         else:
