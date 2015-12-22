@@ -163,13 +163,13 @@ class ClockIn(tk.Frame):
         self.studentidtextbox.grid(column=1, row=2)
         self.roomsavlabel = tk.Label(self, text="Room 1-5")
 
-
     def checkroom(self, roomnumber ):
         if roomnumber > 5 or roomnumber <= 0 :
             return False  # keep things simple, bad class number then NOT available Duh!
         else:
             print(">DEBUG: TRYING TO CHECK IF ROOM AVAILABLE!")
             return True  # test value, this program has NO IDEA if rooms are actually available
+
 
 class RoomAvailability(tk.Frame):
     """
