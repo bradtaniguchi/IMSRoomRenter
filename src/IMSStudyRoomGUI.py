@@ -2,7 +2,8 @@
 # Bradley Taniguchi
 # 11/30/15
 
-import GUI
+from src import GUI
+
 __author__='Bradley Taniguchi'
 __version__='.5'
 
