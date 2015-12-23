@@ -127,6 +127,7 @@ class PrimaryPage(tk.Frame):
     def changeframe(self, framestring):
         """
         Showes different frame, prints change to log.
+        :param stramestring: Frame to Change to
         """
         print(">DEBUG: Changed frame to " + framestring)
         self.controller.show_frame(framestring)
@@ -155,26 +156,34 @@ class ClockIn(tk.Frame):
         self.clockinlabel.grid(column=0, columnspan=2, row=0, sticky=tk.NSEW)
         self.namelabel = tk.Label(self, text="Name:")
         self.namelabel.grid(column=0, row=1)
-        self.nametextbox = tk.Entry(self, width=15, textvariable=self.namevariable)
+        self.nametextbox = tk.Entry(self, width=20, textvariable=self.namevariable)
         self.nametextbox.grid(column=1, row=1)
         self.studentidlabel = tk.Label(self, text="Student ID:")
         self.studentidlabel.grid(column=0, row=2)
         self.studentidtextbox = tk.Entry(self, width=15, textvariable=self.idvariable)
         self.studentidtextbox.grid(column=1, row=2)
-        self.roomsavlabel = tk.Label(self, text="Room 1-5")
+        #self.roomsavlabel = tk.Label(self, text="Room 1-5")
         self.clockinbutton = tk.Button(self, height=1, width=5, text="submit",
                                        command=lambda: self.changeframe("RoomAvailability"))
         self.clockinbutton.grid(column=0, columnspan=2, row=3)
 
+    def validinput(self, name, id):
+        """  # So this is how it default works? Very cool
+        :param name: Name of the Student (string limit 64)
+        :param id:  Id of the Student (id limit 9 digits)
+        :return: True if valid inputs, False if not
+        """
+
     def changeframe(self, framestring):
         """
         Showes different frame, prints change to log.
+        :param stramestring: Frame to Change to
         """
         print(">DEBUG: Changed frame to " + framestring)
         self.controller.show_frame(framestring)
 
     @staticmethod
-    def checkroom(self, roomnumber):
+    def checkroom(roomnumber):
         if roomnumber > 5 or roomnumber <= 0 :
             return False  # keep things simple, bad class number then NOT available Duh!
         else:
@@ -184,7 +193,7 @@ class ClockIn(tk.Frame):
 
 class RoomAvailability(tk.Frame):
     """
-    Displays the 5 rooms based on availability v was herefdfgsadfsadfafdasgargbrvb
+    Displays the 5 rooms based on availability
     """
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
@@ -220,8 +229,10 @@ class RoomAvailability(tk.Frame):
                                      command=lambda: self.selectroom(5))
         self.room5button.grid(column=5, row=0)
 
-    def selectroom(self, room):
+    @staticmethod
+    def selectroom(room):
         print(">DEBUG: Choosen room:" + str(room))
+
 
 class ClockOut(tk.Frame):
     """
@@ -230,8 +241,48 @@ class ClockOut(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
-        self.testwork = tk.Label(self, text="ClockOutPage")
-        self.testwork.grid(column=0, row=0)
+        #self.testwork = tk.Label(self, text="ClockOutPage")  # REMOVE LATER
+        #self.testwork.grid(column=0, row=0)
+        self.namevariable = tk.StringVar()  # create string variable
+        self.roomvariable = tk.StringVar()  # create integer variable
+        self.namelabel = tk.Label(self, text="Name:")
+        self.namelabel.grid(column=0, row=0)
+        self.nametextbox = tk.Entry(self, width=20, textvariable=self.namevariable)
+        self.nametextbox.grid(column=1, row=0)
+        self.roomlabel = tk.Label(self, text="Room:(1-5)")
+        self.roomlabel.grid(column=0, row=1)
+        self.roomtextbox = tk.Entry(self, width=20, textvariable=self.roomvariable)
+        self.roomtextbox.grid(column=1, row=1)
+        self.clockoutbutton = tk.Button(self, height=1, width=5, text="submit",
+                                        command=lambda: self.validinput)
+        self.clockoutbutton.grid(column=0, columnspan=2, row=2)
+
+    def validinput(self, name, room):
+        """  # So this is how it default works? Very cool
+        :param name: Name of the Student (string limit 64)
+        :param room: Room student is checkingout, (1-5)
+        :return: True if valid inputs, False if not
+        """
+        if not str(name.length):  # checks if string is null
+            print(">DEBUG: Input Invalid! do nothing")
+        elif str(name.length) > 32:
+            print(">DEBUG: Input Invalid! input to long!, try again")
+
+        # ADD DATABASE CHECK HERE
+
+    @staticmethod
+    def checkroomvalid(room):  # remove with database check!
+        """
+        Checks to see if input of room is valid, IE 1-5
+        """
+        if room > 5 or room < 1:
+            return False
+        else:
+            return True
+
+    def changeframe(self, framestring):
+        print(">DEBUG: Changed frame to " + framestring)
+        self.controller.show_frame(framestring)
 
 
 def startmain():

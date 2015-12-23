@@ -4,6 +4,7 @@
 
 import datetime  # to get time and date
 
+
 class Student:
     """
     Handles student object creation. Holds data attributes for students logging in and out
@@ -18,7 +19,6 @@ class Student:
         self.studentid = studentid
         self.date
         # create tuple to hold date, time(hour, minute)
-
 
     def createentry(self, room=0, ):
         """

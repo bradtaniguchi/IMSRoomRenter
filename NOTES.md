@@ -54,3 +54,17 @@ still need to work ClockIn and ClockOut
 Created most of the menus
 added buttons and visual aspects of finished pages
 need to create backend
+
+####-------UPDATE 12/23/15
+####NOTE Finally choosen database type!
+    Finally choosen SQLITE as database to use with program. As it seems the easiest to move with the project.
+    Requires me to learn the database commands and thus this project should be extended a little longer. But
+    should be more capable in terms of expansion.
+Finished up basic work with the GUI frames
+Started work on the menus GUI. 
+Layed groundwork for Backend to interact with sqlite
+
+NOTICE: Can combine a few functions between the two Clock-in and Clock-out classes:
+1.validinput
+2.validroom
+Worth making a parent class for currently 2 functions??
