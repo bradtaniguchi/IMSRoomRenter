@@ -59,6 +59,7 @@ added buttons and visual aspects of finished pages
 need to create backend
 
 ####-------UPDATE 12/23/15
+####ADDED master branch again, using that instead of getting confused with B1.
 ####NOTE Finally choosen database type!
     Finally choosen SQLITE as database to use with program. As it seems the easiest to move with the project.
     Requires me to learn the database commands and thus this project should be extended a little longer. But
