@@ -3,7 +3,7 @@
 # 12/18/15
 import tkinter as tk
 #from tkinter import ttk
-#import sqlite3
+import sqlite3
 
 __author__ = 'Bradley Taniguchi'
 __version__ = '0.2.5'

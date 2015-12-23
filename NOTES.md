@@ -29,6 +29,9 @@ LOGIN PROCEDURE:
 ###===============NOTES===============
 http://stackoverflow.com/questions/8514471/proper-installation-script-for-a-small-python-program-not-module-under-linux
 
+py2exe for python3 is here:
+https://pypi.python.org/pypi/py2exe/0.9.2.0#downloads
+
 ####------UPDATE 12/16/15
 Starting on project Friday
 going to use sqlite3
