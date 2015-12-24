@@ -12,37 +12,39 @@
 
 import sqlite3
 import os
+def main():
+    databasefile = os.path.join(os.path.dirname(__file__), 'bin/TestDataBase.sqlite')  # for ./my_file
+    conn = sqlite3.connect(databasefile)  # connect to database
+    c = conn.cursor()
 
-databasefile = os.path.join(os.path.dirname(__file__), 'bin/TestDataBase.sqlite')  # for ./my_file
-conn = sqlite3.connect(databasefile)  # connect to database
-c = conn.cursor()
+    student_table1 = 'sq_student_table_1'  # name of table to be created
+    student_name_field = 'sq_student_col'  # name of column, organized by student name FOR NOW
+    student_name_field_type = 'TEXT'  # column data type, TEXT, or text string
+    student_id_field = 'sq_student_col'
+    student_id_field_type = 'INTEGER'
 
-student_table1 = 'sq_student_table_1'  # name of table to be created
-student_name_field = 'sq_student_col'  # name of column, organized by student name FOR NOW
-student_name_field_type = 'TEXT'  # column data type, TEXT, or text string
-student_id_field = 'sq_student_col'
-student_id_field_type = 'INTEGER'
+    # NOTE: SQLITE has 5 datatypes:
+    #   NULL - returns the value NULL value
+    #   INTEGER - The value is a signed integer, stored in 1-8 bytes depending on magnitude
+    #   REAL - The value is floating point value, stored as an 8-byte IEEE floating point num
+    #   TEXT - The value is a text string, stored using the database encoding (UTF-8, UTF-16BE, UTF-16LE)
+    #   BLOB - The value is a blob of data, stored exactly as it was input
 
-# NOTE: SQLITE has 5 datatypes:
-#   NULL - returns the value NULL value
-#   INTEGER - The value is a signed integer, stored in 1-8 bytes depending on magnitude
-#   REAL - The value is floating point value, stored as an 8-byte IEEE floating point num
-#   TEXT - The value is a text string, stored using the database encoding (UTF-8, UTF-16BE, UTF-16LE)
-#   BLOB - The value is a blob of data, stored exactly as it was input
+    print("Starting Program...")
+    # creating a NEW SQLite table with 1 column
+    c.execute('CREATE TABLE {st}({sn} {snt})'.format(st=student_table1, sn=student_name_field, snt=student_name_field_type))
+    #insertvalues(c, student_table1, "Brad", '1234')
+    conn.commit()
+    conn.close()
 
-print("Starting Program...")
-# creating a NEW SQLite table with 1 column
-c.execute('CREATE TABLE {st}({sn} {snt})'.format(st=student_table1, sn=student_name_field, snt=student_name_field_type))
-
-conn.commit()
-conn.close()
-def insertvalues(name, value):
+def insertvalues(cursor, database, name, value):  # using tuple
+    mytuple = [name, value]
+    c = cursor
     print("Using insertvalue function")
     try:
-        c.execute("INSERT INTO {st} ({stname} {val})")
-"""
-#MUST use: conn.close() to close connection
-# IF perform changes to database MUST use:
-#   conn.commit()
-#   conn.close()
-"""
+        c.execute("INSERT INTO {0} ({1} {2})".format(database, mytuple[0], mytuple[1]))
+    except sqlite3.IntegrityError:
+        print("ERROR: unknown error???")  # example uses primary key, this doesnt so idk if this will be reached
+
+if __name__ == '__main__':
+    main()
