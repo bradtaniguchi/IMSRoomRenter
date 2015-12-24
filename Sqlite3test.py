@@ -13,11 +13,11 @@
 import sqlite3
 import os
 def main():
-    databasefile = os.path.join(os.path.dirname(__file__), 'bin/TestDataBase.sqlite')  # for ./my_file
+    databasefile = os.path.join(os.path.dirname(__file__), 'bin/Sqlite/TestDatabase.sqlite')  # for ./my_file
     conn = sqlite3.connect(databasefile)  # connect to database
     c = conn.cursor()
 
-    student_table1 = 'sq_student_table_1'  # name of table to be created
+    #student_table1 = 'sq_student_table_1'  # name of table to be created
     student_name_field = 'sq_student_col'  # name of column, organized by student name FOR NOW
     student_name_field_type = 'TEXT'  # column data type, TEXT, or text string
     student_id_field = 'sq_student_col'
@@ -32,8 +32,11 @@ def main():
 
     print("Starting Program...")
     # creating a NEW SQLite table with 1 column
-    c.execute('CREATE TABLE {st}({sn} {snt})'.format(st=student_table1, sn=student_name_field, snt=student_name_field_type))
+    #c.execute('CREATE TABLE {st}({sn} {snt})'.format(st=student_table1, sn=student_name_field, snt=student_name_field_type))
     #insertvalues(c, student_table1, "Brad", '1234')
+    c.execute('''CREATE TABLE student_table1
+              (ID INT PRIMARY KEY NOT NULL, NAME CHAR(32) NOT NULL, CLOCKIN TEXT NOT NULL, CLOCKOUT TEXT)''')
+
     conn.commit()
     conn.close()
 
