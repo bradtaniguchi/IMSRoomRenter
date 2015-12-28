@@ -31,12 +31,9 @@ def main():
     #   BLOB - The value is a blob of data, stored exactly as it was input
 
     print("Starting Program...")
-    # creating a NEW SQLite table with 1 column
-    #c.execute('CREATE TABLE {st}({sn} {snt})'.format(st=student_table1, sn=student_name_field, snt=student_name_field_type))
-    #insertvalues(c, student_table1, "Brad", '1234')
     c.execute('''CREATE TABLE student_table1
               (ID INT PRIMARY KEY NOT NULL, NAME CHAR(32) NOT NULL, CLOCKIN TEXT NOT NULL, CLOCKOUT TEXT)''')
-
+    print("Created Database?")
     conn.commit()
     conn.close()
 
