@@ -12,39 +12,45 @@
 
 import sqlite3
 import os
+import datetime
+from datetime import datetime
+
 def main():
     databasefile = os.path.join(os.path.dirname(__file__), 'bin/Sqlite/TestDatabase.sqlite')  # for ./my_file
     conn = sqlite3.connect(databasefile)  # connect to database
     c = conn.cursor()
 
-    #student_table1 = 'sq_student_table_1'  # name of table to be created
-    student_name_field = 'sq_student_col'  # name of column, organized by student name FOR NOW
-    student_name_field_type = 'TEXT'  # column data type, TEXT, or text string
-    student_id_field = 'sq_student_col'
-    student_id_field_type = 'INTEGER'
-
-    # NOTE: SQLITE has 5 datatypes:
-    #   NULL - returns the value NULL value
-    #   INTEGER - The value is a signed integer, stored in 1-8 bytes depending on magnitude
-    #   REAL - The value is floating point value, stored as an 8-byte IEEE floating point num
-    #   TEXT - The value is a text string, stored using the database encoding (UTF-8, UTF-16BE, UTF-16LE)
-    #   BLOB - The value is a blob of data, stored exactly as it was input
-
     print("Starting Program...")
-    c.execute('''CREATE TABLE student_table1
-              (ID INT PRIMARY KEY NOT NULL, NAME CHAR(32) NOT NULL, CLOCKIN TEXT NOT NULL, CLOCKOUT TEXT)''')
-    print("Created Database?")
+    c.execute('''CREATE TABLE student_table1 \
+              (ID INT PRIMARY KEY NOT NULL,
+              NAME CHAR(32) NOT NULL,
+              CLOCKIN TEXT NOT NULL,
+              CLOCKOUT TEXT)''')
+    c.execute('''INSERT INTO student_table1(ID, NAME, CLOCKIN, CLOCKOUT) \
+        VALUES (1, 'Brad', '12:50:32', null)''')  # test insert
+    print("Created Database")
+
+    print("test time print " + str(datetime.now().time().hour))
     conn.commit()
     conn.close()
+    # need test read from file!
 
-def insertvalues(cursor, database, name, value):  # using tuple
-    mytuple = [name, value]
+def clockin(cursor, database, identificationnumber, name):
+    """
+    :param cursor: Cursor inside of database
+    :param database: Database to be changed
+    :param identificationnumber: ID of student trying to login
+    :param name: Name of student trying to clock in
+    :return: null
+    """
+    clockintime = str(datetime.now().time().hour) + ":" + str(datetime.now().time().minute)  # does not include seconds
+    mytuple = [identificationnumber, name, clockintime]
     c = cursor
-    print("Using insertvalue function")
+    print(">DEBUG: Using insertvalue function")
     try:
-        c.execute("INSERT INTO {0} ({1} {2})".format(database, mytuple[0], mytuple[1]))
+        c.execute("INSERT INTO {0} ({1}, {2}, {3}, {4})".format(database, mytuple[0], mytuple[1]), mytuple[2])
     except sqlite3.IntegrityError:
-        print("ERROR: unknown error???")  # example uses primary key, this doesnt so idk if this will be reached
+        print("ERROR: Sqlite3 Integrity Error")  # example uses primary key, this doesnt so idk if this will be reached
 
 if __name__ == '__main__':
     main()

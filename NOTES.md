@@ -72,3 +72,19 @@ NOTICE: Can combine a few functions between the two Clock-in and Clock-out class
 1.validinput
 2.validroom
 Worth making a parent class for currently 2 functions??
+
+    # NOTE: SQLITE has 5 datatypes:
+    #   NULL - returns the value NULL value
+    #   INTEGER - The value is a signed integer, stored in 1-8 bytes depending on magnitude
+    #   REAL - The value is floating point value, stored as an 8-byte IEEE floating point num
+    #   TEXT - The value is a text string, stored using the database encoding (UTF-8, UTF-16BE, UTF-16LE)
+    #   BLOB - The value is a blob of data, stored exactly as it was input
+
+####---------UPDATE 12/28/15
+So after figuring out how sqlite3 works, I had to open the file
+using a cmd terminal. Now onto adding the proper setup rather than
+trying to figure out why the sqlite3.exe didn't pick up my file.
+
+SUCCESS: for the most part, apparently I can leave time as a string and parse it later
+which seems like the most logical thing to do now. Must change up the what things are formated
+and protect against SQLInjection attacks though.
