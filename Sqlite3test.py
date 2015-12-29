@@ -12,8 +12,8 @@
 
 import sqlite3
 import os
-import datetime
 from datetime import datetime
+
 
 def main():
     databasefile = os.path.join(os.path.dirname(__file__), 'bin/Sqlite/TestDatabase.sqlite')  # for ./my_file

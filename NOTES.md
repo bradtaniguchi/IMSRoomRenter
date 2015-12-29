@@ -88,3 +88,6 @@ trying to figure out why the sqlite3.exe didn't pick up my file.
 SUCCESS: for the most part, apparently I can leave time as a string and parse it later
 which seems like the most logical thing to do now. Must change up the what things are formated
 and protect against SQLInjection attacks though.
+
+NOTE: Need to create return statements for the createentry function, that way I can check the.
+Should also impliment this in other functions not created
