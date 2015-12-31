@@ -91,3 +91,7 @@ and protect against SQLInjection attacks though.
 
 NOTE: Need to create return statements for the createentry function, that way I can check the.
 Should also impliment this in other functions not created
+
+####----------UPDATE 12/29/15
+Working on StudentLoginClasses, will probably rename.
+NEED TO ADD DATES!(12/31/15)

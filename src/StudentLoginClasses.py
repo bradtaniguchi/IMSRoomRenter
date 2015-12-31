@@ -37,6 +37,10 @@ class DataBaseInterface:
         #self.c = self.conn.cursor()
         if os.path.isfile(filename):
             print(">DEBUG: File Exists!")
+        else:
+            print(">DEBUG: File Doesn't Exist, creating it now..")
+            self._createstudentdatabase()  # create the file
+
 
     def _createstudentdatabase(self):
         """
@@ -49,25 +53,29 @@ class DataBaseInterface:
         c.execute('''CREATE TABLE student_table1
                  (ID INT PRIMARY KEY NOT NULL,
                   NAME CHAR(32) NOT NULL,
+                  DATE TEXT NOT NULL,
                   CLOCKIN TEXT NOT NULL,
                   CLOCKOUT TEXT)''')
         conn.commit()
         conn.close()
+        print(">DEBUG: Database Created Successfully!")
 
     def clockin(self, studentidnumber, studentname):  # clock into a room
         """
         Creates a Student Entry into the database.
+        Date format is : 2015-12-31
         :param studentidnumber: ID number of student, PRIMARY KEY for searches
         :param studentname: Name of Student logging in.
         """
         conn = sqlite3.connect(self.databasefile)  # create connection to database
         c = conn.cursor()
         clockintime = str(datetime.now().time().hour) + ":" + str(datetime.now().time().minute)  # doesn't include secs
-        mytuple = [studentidnumber, studentname, clockintime]
-        print(">DEBUG: Using insertvalue function")
+        clockindate = str(datetime.now().date())  # format: 2015-12-31
+        mytuple = [studentidnumber, studentname, clockindate, clockintime]
+        print(">DEBUG: Using INSERT INTO")
         try:
             c.execute("INSERT INTO {0} ({1}, {2}, {3}, {4})".format(
-                    self.databasefile, mytuple[0], mytuple[1], mytuple[2]))
+                    self.databasefile, mytuple[0], mytuple[1], mytuple[2], mytuple[3]))
             print("SUCCESS: Added Student login:" + studentname + " at " + clockintime)  # make this return statement!
         except sqlite3.IntegrityError:
             print("ERROR: Sqlite3 Integrity Error")  # make this return statement!
@@ -77,6 +85,7 @@ class DataBaseInterface:
     @staticmethod
     def clockout(studentidnumber, studentname):  # clock out of a room
         """
+        Search through studentidnumbers in database and add to last column clockout time.
         :param studentidnumber: Primary Key for Searches
         :param studentname:  Seconary key for Searches, If unmatched raise exception
         :return:

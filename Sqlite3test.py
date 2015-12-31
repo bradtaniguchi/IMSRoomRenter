@@ -24,10 +24,11 @@ def main():
     c.execute('''CREATE TABLE student_table1 \
               (ID INT PRIMARY KEY NOT NULL,
               NAME CHAR(32) NOT NULL,
+              DATE TEXT NOT NULL,
               CLOCKIN TEXT NOT NULL,
               CLOCKOUT TEXT)''')
-    c.execute('''INSERT INTO student_table1(ID, NAME, CLOCKIN, CLOCKOUT) \
-        VALUES (1, 'Brad', '12:50:32', null)''')  # test insert
+    c.execute('''INSERT INTO student_table1(ID, NAME, DATE, CLOCKIN, CLOCKOUT) \
+        VALUES (1, 'Brad', '12/31/15','12:50:32', null)''')  # test insert
     print("Created Database")
 
     print("test time print " + str(datetime.now().time().hour))
@@ -44,7 +45,8 @@ def clockin(cursor, database, identificationnumber, name):
     :return: null
     """
     clockintime = str(datetime.now().time().hour) + ":" + str(datetime.now().time().minute)  # does not include seconds
-    mytuple = [identificationnumber, name, clockintime]
+    clockindate = str(datetime.now().date())  # format: 2015-12-31
+    mytuple = [identificationnumber, name, clockindate,clockintime]
     c = cursor
     print(">DEBUG: Using insertvalue function")
     try:
@@ -52,5 +54,12 @@ def clockin(cursor, database, identificationnumber, name):
     except sqlite3.IntegrityError:
         print("ERROR: Sqlite3 Integrity Error")  # example uses primary key, this doesnt so idk if this will be reached
 
+def clockout(cursor, database, identificationnumber):
+    """
+    :param cursor: Cursor inside of database
+    :param database: Database to be changed
+    :param identificationnumber: ID of student trying to login
+    :return: null
+    """
 if __name__ == '__main__':
     main()
