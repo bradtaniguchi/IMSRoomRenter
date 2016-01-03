@@ -2,8 +2,8 @@
 # Bradley Taniguchi
 # 12/18/15
 import tkinter as tk
-
 from SLC import DataBaseInterface
+from SLC import Student, StudentCollection  # to create and handle StudentObjects
 
 __author__ = 'Bradley Taniguchi'
 __version__ = '0.3.5'
@@ -179,7 +179,8 @@ class ClockIn(tk.Frame):
         self.roomlabel.grid(column=0,row=3)
         self._createroombuttons()
         self.clockinbutton = tk.Button(self, height=1, width=5, text="submit",
-                                       command=lambda: self.clockin(self.namevariable, self.idvariable))
+                                       command=lambda: self.clockin(self.namevariable,
+                                                                    self.idvariable, self.roomvaraible))
         self.clockinbutton.grid(column=0, columnspan=6, row=4)
 
     def _createroombuttons(self):
@@ -229,7 +230,7 @@ class ClockIn(tk.Frame):
             print(">DEBUG: TRYING TO CHECK IF ROOM AVAILABLE!")
             return True  # test value, this program has NO IDEA if rooms are actually available
 
-    def clockin(self, name, studentid):
+    def clockin(self, name, studentid, room):
         """
         Clocks a student into a room, calls checkroom, to check the room, and checks inputs
         for student id and name. All inputs must come back valid to proceed
@@ -239,8 +240,13 @@ class ClockIn(tk.Frame):
         """
         print(">DEBUG: Starting Clockin function with:\n" + "    " + str(name) + "\n    " + str(studentid))
         booleanreturn, stringreturn = self.validinput(name, studentid)
-        if booleanreturn:  # if true, create studentObject Entry
-            print(">DEBUG: Creating Clockin data.....")
+        if self.checkroom(room) and booleanreturn is True  # can python do this?
+        if booleanreturn:  # if true, create studentObject Entry?
+            print(">DEBUG: Creating StudentObject with values:" + studentid + " " + name + " Room: " + room)
+            mystudentlogin = Student(studentid, name, room)
+        else:
+            print(">DEBUG: ERROR! Bad Input:" + stringreturn)
+            #go onto fix things here:
 
 
 class ClockOut(tk.Frame):
