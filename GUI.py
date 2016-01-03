@@ -29,7 +29,7 @@ class Application(tk.Tk):
         self.databaseposition = 'bin/Sqlite/StudentDatabase.sqlite'  # default database position
         self._create_databaseinterface(self.databaseposition)
 
-        for F in (PrimaryPage, ClockIn, RoomAvailability, ClockOut):  # initialize all frame/Classes
+        for F in (PrimaryPage, ClockIn, ClockOut):  # initialize all frame/Classes
             page_name = F.__name__
             frame = F(container, self)
             self.frames[page_name] = frame
@@ -163,20 +163,48 @@ class ClockIn(tk.Frame):
         self.testwork.grid(column=0, row=0)
         self.namevariable = tk.StringVar()  # Create string variable
         self.idvariable = tk.StringVar()  # numeric string variable
+        self.roomvaraible = 0  # default integer variable
         self.clockinlabel = tk.Label(self, text="Clock-In")
-        self.clockinlabel.grid(column=0, columnspan=2, row=0, sticky=tk.NSEW)
+        self.clockinlabel.grid(column=0, columnspan=6, row=0, sticky=tk.NSEW)
         self.namelabel = tk.Label(self, text="Name:")
         self.namelabel.grid(column=0, row=1)
         self.nametextbox = tk.Entry(self, width=20, textvariable=self.namevariable)
-        self.nametextbox.grid(column=1, row=1)
+        self.nametextbox.grid(column=1, columnspan=5, row=1)
         self.studentidlabel = tk.Label(self, text="Student ID:")
         self.studentidlabel.grid(column=0, row=2)
         self.studentidtextbox = tk.Entry(self, width=15, textvariable=self.idvariable)
-        self.studentidtextbox.grid(column=1, row=2)
-        #self.roomsavlabel = tk.Label(self, text="Room 1-5")
+        self.studentidtextbox.grid(column=1, columnspan=5, row=2)
+        self.roomslabel = tk.Label(self, text="Rooms Available")
+        self.roomlabel = tk.Label(self, text="Rooms:")
+        self.roomlabel.grid(column=0,row=3)
+        self._createroombuttons()
         self.clockinbutton = tk.Button(self, height=1, width=5, text="submit",
-                                       command=lambda: self.startclockin(self.namevariable, self.idvariable))
-        self.clockinbutton.grid(column=0, columnspan=2, row=3)
+                                       command=lambda: self.clockin(self.namevariable, self.idvariable))
+        self.clockinbutton.grid(column=0, columnspan=6, row=4)
+
+    def _createroombuttons(self):
+        self.room1button = tk.Button(self, height=1, width=1, text="1",
+                                     command=lambda: self.roomnumber(1))
+        self.room1button.grid(column=1, row=3)
+
+        self.room2button = tk.Button(self, height=1, width=1, text="2",
+                                     command=lambda: self.roomnumber(2))
+        self.room2button.grid(column=2, row=3)
+
+        self.room3button = tk.Button(self, height=1, width=1, text="3",
+                                     command=lambda: self.roomnumber(3))
+        self.room3button.grid(column=3, row=3)
+
+        self.room4button = tk.Button(self, height=1, width=1, text="4",
+                                     command=lambda: self.roomnumber(4))
+        self.room4button.grid(column=4, row=3)
+
+        self.room5button = tk.Button(self, height=1, width=1, text="5",
+                                     command=lambda: self.roomnumber(5))
+        self.room5button.grid(column=5, row=3)
+
+    def roomnumber(self, num):
+        self.roomvaraible = num
 
     def validinput(self, name, studentid):
         if len(name) > 32 or len(name) < 1:  # input length ONLY accepted up to 32 characters
@@ -201,7 +229,7 @@ class ClockIn(tk.Frame):
             print(">DEBUG: TRYING TO CHECK IF ROOM AVAILABLE!")
             return True  # test value, this program has NO IDEA if rooms are actually available
 
-    def startclockin(self, name, studentid):
+    def clockin(self, name, studentid):
         """
         Clocks a student into a room, calls checkroom, to check the room, and checks inputs
         for student id and name. All inputs must come back valid to proceed
@@ -211,51 +239,8 @@ class ClockIn(tk.Frame):
         """
         print(">DEBUG: Starting Clockin function with:\n" + "    " + str(name) + "\n    " + str(studentid))
         booleanreturn, stringreturn = self.validinput(name, studentid)
-        if booleanreturn:  # if true, create studentObject Entry and continue onto RoomAvailability
-            #WORK create Student Object???
-            self.controller.show_frame(RoomAvailability)  # change frame to RoomAvailability
-
-class RoomAvailability(tk.Frame):
-    """
-    Displays the 5 rooms based on availability
-    """
-    def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent)
-        self.controller = controller
-        self.roomslabel = tk.Label(self, text="Rooms Available")
-        self.roomslabel.grid(column=0, row=0)
-        self.roomlabel = tk.Label(self, text="Rooms:")
-        self._createroombuttons()
-
-    def _createroombuttons(self):
-        """
-        Creates the 5 buttons depending on if available
-        FUNCTIONALITY NOT ADDED YET
-        :return: null
-        """
-        self.room1button = tk.Button(self, height=1, width=1, text="1",
-                                     command=lambda: self.selectroom(1))
-        self.room1button.grid(column=1, row=0)
-
-        self.room2button = tk.Button(self, height=1, width=1, text="2",
-                                     command=lambda: self.selectroom(2))
-        self.room2button.grid(column=2, row=0)
-
-        self.room3button = tk.Button(self, height=1, width=1, text="3",
-                                     command=lambda: self.selectroom(3))
-        self.room3button.grid(column=3, row=0)
-
-        self.room4button = tk.Button(self, height=1, width=1, text="4",
-                                     command=lambda: self.selectroom(4))
-        self.room4button.grid(column=4, row=0)
-
-        self.room5button = tk.Button(self, height=1, width=1, text="5",
-                                     command=lambda: self.selectroom(5))
-        self.room5button.grid(column=5, row=0)
-
-    @staticmethod
-    def selectroom(room):
-        print(">DEBUG: Choosen room:" + str(room))
+        if booleanreturn:  # if true, create studentObject Entry
+            print(">DEBUG: Creating Clockin data.....")
 
 
 class ClockOut(tk.Frame):

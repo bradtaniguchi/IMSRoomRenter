@@ -36,10 +36,11 @@ class DataBaseInterface:
         self.databasefile = os.path.join(os.path.dirname(__file__), str(filename))
         #self.conn = sqlite3.connect(self.databasefile) # forgot about conn.commit, conn.close
         #self.c = self.conn.cursor()
-        if os.path.isfile(filename):
+        if os.path.isfile(self.databasefile):
             print(">DEBUG: File Exists!")
         else:
             print(">DEBUG: File Doesn't Exist, creating it now..")
+            print(str(self.databasefile))
             print(str(filename))
             self._createstudentdatabase(self.databasefile)  # create the file
 
