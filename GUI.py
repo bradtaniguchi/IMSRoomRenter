@@ -175,18 +175,13 @@ class ClockIn(tk.Frame):
         self.studentidtextbox.grid(column=1, row=2)
         #self.roomsavlabel = tk.Label(self, text="Room 1-5")
         self.clockinbutton = tk.Button(self, height=1, width=5, text="submit",
-                                       command=lambda: self.changeframe("RoomAvailability"))
+                                       command=lambda: self.startclockin(self.namevariable, self.idvariable))
         self.clockinbutton.grid(column=0, columnspan=2, row=3)
 
     def validinput(self, name, studentid):
-        """  # So this is how it default works? Very cool
-        :param name: Name of the Student (string limit 64)
-        :param studentid:  Id of the Student (id limit 9 digits)
-        :return: Tuple, True or False, AND string to Display why (2 outputs, True/False, String)
-        """
-        if name.length > 32 or name.length < 1:  # input length ONLY accepted up to 32 characters
+        if len(name) > 32 or len(name) < 1:  # input length ONLY accepted up to 32 characters
             return False, "Invalid Name"  # name not accepted
-        if studentid.length > 32 or studentid.length < 1:  # input length ONLY accepted up to 32 characters
+        if len(studentid) > 32 or len(studentid) < 1:  # input length ONLY accepted up to 32 characters
             return False, "Invalid ID"  # id not accepted
         return True, "Valid Input"  # name and id are accppted
 
@@ -210,11 +205,15 @@ class ClockIn(tk.Frame):
         """
         Clocks a student into a room, calls checkroom, to check the room, and checks inputs
         for student id and name. All inputs must come back valid to proceed
-        :name: Name of Student to Clock in
-        :studentid: Id of student that needs to clock in
+        :param name: Name of Student to Clock in
+        :param studentid: Id of student that needs to clock in
         :return:
         """
-
+        print(">DEBUG: Starting Clockin function with:\n" + "    " + str(name) + "\n    " + str(studentid))
+        booleanreturn, stringreturn = self.validinput(name, studentid)
+        if booleanreturn:  # if true, create studentObject Entry and continue onto RoomAvailability
+            #WORK create Student Object???
+            self.controller.show_frame(RoomAvailability)  # change frame to RoomAvailability
 
 class RoomAvailability(tk.Frame):
     """
