@@ -95,3 +95,18 @@ Should also impliment this in other functions not created
 ####----------UPDATE 12/29/15
 Working on StudentLoginClasses, will probably rename.
 NEED TO ADD DATES!(12/31/15)
+
+####----------UPDATE 1/3/16 - Happy New year!
+Last Day before going back to work, going to start combining the back end with the front end,
+Ill leave the Clockout handling for another time. As that requires me to learn how to search through
+the Database, which is something I'm not sure how to do yet. 
+
+NOTE: I have found a flaw in how I currently Have my Program setup.
+To allow my program to create the database file Under Bin/Sqlite, it requires me to
+move out of src. So I have 3 ways to go about this:
+1. Move the files to the Main folder
+2. Move the place where Ill create the Database
+3. Handle it in file, thus creating an abs path in a rather complicated endevour.
+
+Currently going to do the first one, but going to keep the src folder, for graphical purposes
+

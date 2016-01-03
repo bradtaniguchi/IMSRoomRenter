@@ -2,11 +2,11 @@
 # Bradley Taniguchi
 # 12/18/15
 import tkinter as tk
-#from tkinter import ttk
-import sqlite3
+
+from SLC import DataBaseInterface
 
 __author__ = 'Bradley Taniguchi'
-__version__ = '0.2.5'
+__version__ = '0.3.5'
 
 
 class Application(tk.Tk):
@@ -26,16 +26,25 @@ class Application(tk.Tk):
         self.resizable(width=False, height=False)
         self.create_menubar()  # creates static menubar
         self.frames = {}  # array of frames
+        self.databaseposition = 'bin/Sqlite/StudentDatabase.sqlite'  # default database position
+        self._create_databaseinterface(self.databaseposition)
 
-        for F in (PrimaryPage, ClockIn, RoomAvailability,ClockOut):  # initialize all frame/Classes
+        for F in (PrimaryPage, ClockIn, RoomAvailability, ClockOut):  # initialize all frame/Classes
             page_name = F.__name__
             frame = F(container, self)
             self.frames[page_name] = frame
             frame.grid(row=0, column=0, sticky="NSEW")
         self.show_frame("PrimaryPage")
 
+    def _create_databaseinterface(self, databasepos):
+        """
+        Creates the DatabaseInterface at the designated file position, set by default at
+        "bin/Sqlite/StudentDatabase.sqlite". Check Debugger to see if database was created or not.
+        """
+        self.mydatabase = DataBaseInterface(self.databaseposition)  # NOTE the default is the same everywhere
+
     def show_frame(self, page_name):
-        """Show a Frame fro a given page name"""
+        """Show a Frame for a given page name"""
         f = self.frames[page_name]
         f.tkraise()
 
@@ -120,6 +129,8 @@ class PrimaryPage(tk.Frame):
     def change_room_capacity(self, newcapacity):
         """
         Changes room capacity.
+        Secondary SpecFunction, to be used in the future to allow for more than 5 rooms
+        to be used.
         """
         self.roomsavailablestring.set(newcapacity)
         print(">DEBUG: PrintFunction")
@@ -167,12 +178,17 @@ class ClockIn(tk.Frame):
                                        command=lambda: self.changeframe("RoomAvailability"))
         self.clockinbutton.grid(column=0, columnspan=2, row=3)
 
-    def validinput(self, name, id):
+    def validinput(self, name, studentid):
         """  # So this is how it default works? Very cool
         :param name: Name of the Student (string limit 64)
-        :param id:  Id of the Student (id limit 9 digits)
-        :return: True if valid inputs, False if not
+        :param studentid:  Id of the Student (id limit 9 digits)
+        :return: Tuple, True or False, AND string to Display why (2 outputs, True/False, String)
         """
+        if name.length > 32 or name.length < 1:  # input length ONLY accepted up to 32 characters
+            return False, "Invalid Name"  # name not accepted
+        if studentid.length > 32 or studentid.length < 1:  # input length ONLY accepted up to 32 characters
+            return False, "Invalid ID"  # id not accepted
+        return True, "Valid Input"  # name and id are accppted
 
     def changeframe(self, framestring):
         """
@@ -184,11 +200,20 @@ class ClockIn(tk.Frame):
 
     @staticmethod
     def checkroom(roomnumber):
-        if roomnumber > 5 or roomnumber <= 0 :
+        if roomnumber > 5 or roomnumber <= 0:
             return False  # keep things simple, bad class number then NOT available Duh!
         else:
             print(">DEBUG: TRYING TO CHECK IF ROOM AVAILABLE!")
             return True  # test value, this program has NO IDEA if rooms are actually available
+
+    def startclockin(self, name, studentid):
+        """
+        Clocks a student into a room, calls checkroom, to check the room, and checks inputs
+        for student id and name. All inputs must come back valid to proceed
+        :name: Name of Student to Clock in
+        :studentid: Id of student that needs to clock in
+        :return:
+        """
 
 
 class RoomAvailability(tk.Frame):

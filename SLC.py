@@ -11,9 +11,10 @@ class Student:
     """
     Handles student objects populates StudentCollection
     """
-    def __init__(self, studentid=0, name="John Doe"):
+    def __init__(self, studentid=0, name="John Doe", room=0):
         self.name = name  # if not given an input, use default IE John Doe
         self.studentid = studentid
+        self.room = room  # default room 0, before choosen room
 
 
 class StudentCollection:
@@ -30,24 +31,24 @@ class DataBaseInterface:
     """
     Primary Database interface handler
     """
-    def __init__(self, filename='bin/Sqlite/StudentDatabase.sqlite'):
+    def __init__(self, filename='bin/Sqlite/StudentDatabase.sqlite'):  # currently redundant
         self.filedirectory = filename
-        self.databasefile = os.path.join(os.path.dirname(__file__), filename)
+        self.databasefile = os.path.join(os.path.dirname(__file__), str(filename))
         #self.conn = sqlite3.connect(self.databasefile) # forgot about conn.commit, conn.close
         #self.c = self.conn.cursor()
         if os.path.isfile(filename):
             print(">DEBUG: File Exists!")
         else:
             print(">DEBUG: File Doesn't Exist, creating it now..")
-            self._createstudentdatabase()  # create the file
+            print(str(filename))
+            self._createstudentdatabase(self.databasefile)  # create the file
 
-
-    def _createstudentdatabase(self):
+    def _createstudentdatabase(self, database):
         """
         Creates The Student Database if there isn't one already
         :return: true if creating database was a succuess
         """
-        conn = sqlite3.connect(self.databasefile)  # create connection to database
+        conn = sqlite3.connect(database)  # create connection to database
         c = conn.cursor()
         print(">DEBUG: Creating Student Database at: " + self.filedirectory)
         c.execute('''CREATE TABLE student_table1
