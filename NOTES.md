@@ -110,7 +110,11 @@ move out of src. So I have 3 ways to go about this:
 
 Currently going to do the first one, but going to keep the src folder, for graphical purposes
 
-
 NOTE: It would make things 1 step easier to Remove the RoomAvailability and put everything into 1 page,
 thus I can create 1 function that will do what I want without needing to transfer the Student Data and Information.
 Which Is what Im going to do now. 
+
+####---------UPDATE 1/4/16
+First Day back at school/work
+Need to start considering how I am going to handle logouts
+1.  

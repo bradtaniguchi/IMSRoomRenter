@@ -29,8 +29,8 @@ def main():
               CLOCKOUT TEXT)''')
     c.execute('''INSERT INTO student_table1(ID, NAME, DATE, CLOCKIN, CLOCKOUT)
         VALUES (1, 'Brad', '12/31/15','12:50:32', null)''')  # test insert
+    c.execute(''' UPDATE student_table1 SET CLOCKOUT = ? WHERE ID = 1''', ('13:00:35',))
     print("Created Database")
-
     print("test time print " + str(datetime.now().time().hour))
     conn.commit()
     conn.close()

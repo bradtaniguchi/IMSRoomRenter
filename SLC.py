@@ -56,6 +56,7 @@ class DataBaseInterface:
                  (ID INT PRIMARY KEY NOT NULL,
                   NAME CHAR(32) NOT NULL,
                   DATE TEXT NOT NULL,
+                  ROOM INT NOT NULL,
                   CLOCKIN TEXT NOT NULL,
                   CLOCKOUT TEXT)''')
         conn.commit()
@@ -83,7 +84,11 @@ class DataBaseInterface:
             print("ERROR: Sqlite3 Integrity Error")  # make this return statement!
         conn.commit()
         conn.close()
+    def gatherobjects(self):
+        """
 
+        :return: returns a
+        """
     @staticmethod
     def clockout(studentidnumber, studentname):  # clock out of a room
         """

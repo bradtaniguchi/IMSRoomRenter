@@ -106,10 +106,10 @@ class PrimaryPage(tk.Frame):
         self.bpady=2
         self.parent = parent
         self.clockinbutton = tk.Button(self, height=1, width=10, text="Clock-In",
-                                       command=lambda:self.changeframe("ClockIn"))
+                                       command=lambda: self.changeframe("ClockIn"))
         self.clockinbutton.grid(column=0, row=0, padx=self.bpadx, pady=self.bpady)  # EDIT TO CENTER!
         self.clockoutbutton = tk.Button(self, height=1, width=10, text="Clock-Out",
-                                        command=lambda:self.changeframe("ClockOut"))
+                                        command=lambda: self.changeframe("ClockOut"))
         self.clockoutbutton.grid(column=0, row=1, padx=self.bpadx, pady=self.bpady)
         self.ralabel = tk.Label(self, text="Rooms Available:")
         self.ralabel.grid(column=0, row=2, padx=self.bpadx, pady=self.bpady)
@@ -176,7 +176,7 @@ class ClockIn(tk.Frame):
         self.studentidtextbox.grid(column=1, columnspan=5, row=2)
         self.roomslabel = tk.Label(self, text="Rooms Available")
         self.roomlabel = tk.Label(self, text="Room:")
-        self.roomlabel.grid(column=0,row=3)
+        self.roomlabel.grid(column=0, row=3)
         self._createroombuttons()
         self.roomchosentext = tk.StringVar()
         self.roomchosentext.set("0")
@@ -211,6 +211,15 @@ class ClockIn(tk.Frame):
     def roomnumber(self, num):
         self.roomvaraible = num
         self.roomchosentext.set(str(num))
+
+    def clearinputs(self):
+        """
+        Clears inputs of following(4):
+        """
+        self.namevariable.set("")
+        self.idvariable.set("")
+        self.roomchosentext.set("0")
+        self.roomvaraible = 0
 
     def validinput(self, name, studentid):
         if len(name) > 32 or len(name) < 1:  # input length ONLY accepted up to 32 characters
@@ -249,6 +258,9 @@ class ClockIn(tk.Frame):
             print(">DEBUG: Creating StudentObject with values: " + str(studentid) + ", " + str(name) +
                   ", Room: " + str(room))
             mystudentlogin = Student(studentid, name, room)
+            # CREATE DATABASE ENTRY
+            self.clearinputs()
+            self.changeframe("PrimaryPage")
         else:
             print(">DEBUG: ERROR! Bad Input: " + stringreturn)
             #go onto fix things here:
