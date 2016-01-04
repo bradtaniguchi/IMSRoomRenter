@@ -175,12 +175,16 @@ class ClockIn(tk.Frame):
         self.studentidtextbox = tk.Entry(self, width=15, textvariable=self.idvariable)
         self.studentidtextbox.grid(column=1, columnspan=5, row=2)
         self.roomslabel = tk.Label(self, text="Rooms Available")
-        self.roomlabel = tk.Label(self, text="Rooms:")
+        self.roomlabel = tk.Label(self, text="Room:")
         self.roomlabel.grid(column=0,row=3)
         self._createroombuttons()
+        self.roomchosentext = tk.StringVar()
+        self.roomchosentext.set("0")
+        self.roomchosenentry = tk.Entry(self, width=2, textvariable=self.roomchosentext)
+        self.roomchosenentry.grid(column=0, row=4)
         self.clockinbutton = tk.Button(self, height=1, width=5, text="submit",
-                                       command=lambda: self.clockin(self.namevariable,
-                                                                    self.idvariable, self.roomvaraible))
+                                       command=lambda: self.clockin(self.namevariable.get(),
+                                                                    self.idvariable.get(), self.roomvaraible))
         self.clockinbutton.grid(column=0, columnspan=6, row=4)
 
     def _createroombuttons(self):
@@ -206,6 +210,7 @@ class ClockIn(tk.Frame):
 
     def roomnumber(self, num):
         self.roomvaraible = num
+        self.roomchosentext.set(str(num))
 
     def validinput(self, name, studentid):
         if len(name) > 32 or len(name) < 1:  # input length ONLY accepted up to 32 characters
@@ -240,12 +245,12 @@ class ClockIn(tk.Frame):
         """
         print(">DEBUG: Starting Clockin function with:\n" + "    " + str(name) + "\n    " + str(studentid))
         booleanreturn, stringreturn = self.validinput(name, studentid)
-        if self.checkroom(room) and booleanreturn is True  # can python do this?
-        if booleanreturn:  # if true, create studentObject Entry?
-            print(">DEBUG: Creating StudentObject with values:" + studentid + " " + name + " Room: " + room)
+        if self.checkroom(room) and booleanreturn is True:  # Room and inputs OK
+            print(">DEBUG: Creating StudentObject with values: " + str(studentid) + ", " + str(name) +
+                  ", Room: " + str(room))
             mystudentlogin = Student(studentid, name, room)
         else:
-            print(">DEBUG: ERROR! Bad Input:" + stringreturn)
+            print(">DEBUG: ERROR! Bad Input: " + stringreturn)
             #go onto fix things here:
 
 

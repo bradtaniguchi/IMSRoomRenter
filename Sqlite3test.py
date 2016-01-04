@@ -27,7 +27,7 @@ def main():
               DATE TEXT NOT NULL,
               CLOCKIN TEXT NOT NULL,
               CLOCKOUT TEXT)''')
-    c.execute('''INSERT INTO student_table1(ID, NAME, DATE, CLOCKIN, CLOCKOUT) \
+    c.execute('''INSERT INTO student_table1(ID, NAME, DATE, CLOCKIN, CLOCKOUT)
         VALUES (1, 'Brad', '12/31/15','12:50:32', null)''')  # test insert
     print("Created Database")
 

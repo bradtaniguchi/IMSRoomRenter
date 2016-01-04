@@ -1,0 +1,12 @@
+HOW TO DEBUG DISPLAY CONTENTS OF DATABASE FROM sqlite.exe
+
+1. import database file:
+.open StudentDatabase.sqlite
+
+2. read tables:
+.tables
+*Should Display student_table1*
+
+3. display contents of table with:
+select * from student_table1
+
