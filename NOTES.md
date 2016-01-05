@@ -117,4 +117,8 @@ Which Is what Im going to do now.
 ####---------UPDATE 1/4/16
 First Day back at school/work
 Need to start considering how I am going to handle logouts
-1.  
+Was able to impliment clockin, created SqliteDatabasePrinter, to debug the information in database
+going to create new version that reads ONLY daily entries.
+Commited file with Incomplete work....
+
+
