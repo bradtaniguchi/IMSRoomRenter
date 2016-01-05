@@ -11,11 +11,23 @@ class Student:
     """
     Handles student objects populates StudentCollection
     """
-    def __init__(self, studentid=0, name="John Doe", room=0):
-        self.name = name  # if not given an input, use default IE John Doe
+    def __init__(self, studentid, name, clockindate, room, clockintime, clockouttime=None):
         self.studentid = studentid
-        self.room = room  # default room 0, before choosen room
+        self.name = name  # if not given an input, use default IE John Doe
+        self.clockindate = clockindate  # date of student clockin
+        self.room = room  # room of person clocking in
+        self.clockintime = clockintime  # time of clockin
+        self.clockouttime = clockouttime  # time of clockout, can be None/Null
 
+    def printvalues(self):
+        """
+        Returns values for testing
+        :return: String, to be displayed
+        """
+        returnstring = "ID" + str(self.studentid) + " Name: " + str(self.name) + " ClockinDate " \
+                       + str(self.clockindate) + " Room: " + str(self.room) + " ClockinTime: " + str(self.clockintime)\
+                       + " ClockoutTime: " + str(self.clockouttime)
+        return returnstring
 
 class StudentCollection:
     """
@@ -23,8 +35,27 @@ class StudentCollection:
     """
     def __init__(self, listofstudents=None):  # DO NOT USE: list = [], GOTME!
         if listofstudents is None:
-            listofstudents = []  # list of student classes
-    # WORK HERE WITH SEARCH ALGORITHM IF NEEDED!
+            self.listofstudents = []  # list of student classes
+
+    def convertraw(self, rawlist):
+        """
+        Given RawList from fetchall(), create a list of StudentObjects
+        :param rawlist: Raw list of Tuples, each tuple corresponds to 1 student.
+        """
+        for mytuple in rawlist:
+            mystudent = Student(mytuple[0], mytuple[1], mytuple[2], mytuple[3], mytuple[4], mytuple[5])
+            self.listofstudents.append(mystudent)
+            print(">DEBUG: Contents of convertraw:" + str(self.listofstudents))  # NEEDS TESTING!
+
+    def printcontents(self):
+        """
+        Prints the contents of listofstudents
+        :return: String of object classes and their contents
+        """
+        mystring = ""
+        for Student in self.listofstudents:
+            mystring += (Student.printvalues())
+        return mystring  # TEST THIS!
 
 
 class DataBaseInterface:

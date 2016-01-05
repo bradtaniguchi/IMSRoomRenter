@@ -4,7 +4,8 @@
 import tkinter as tk
 from SLC import DataBaseInterface
 from SLC import Student, StudentCollection  # to create and handle StudentObjects
-
+from SEC import Popups  # to create popups
+from SEC import DebugBox  # to create debugbox
 __author__ = 'Bradley Taniguchi'
 __version__ = '0.3.7'
 
@@ -75,6 +76,8 @@ class Application(tk.Tk):
         editmenu.add_command(label="Change2ClockIn", command=lambda: self.show_frame("ClockIn"))
         editmenu.add_command(label="Change2ClockOut", command=lambda: self.show_frame("ClockOut"))
         editmenu.add_command(label="Change2RA", command=lambda: self.show_frame("RoomAvailability"))
+        editmenu.add_command(label="CreateTestPopup", command=lambda: self.showpopup)  # TEST!
+        editmenu.add_command(label="ShowDebugBox", command=self.showdebugbox())
 
     def _create_help_menu(self):
         """creates helpmenu, and cascade. """
@@ -86,9 +89,18 @@ class Application(tk.Tk):
         print(">DEBUG: Quiting program via filemenu")
         self.quit()
 
+    def showdebugbox(self):
+        mydebugbox = DebugBox("TEST!")
+        mydebugbox.mainloop()
+
     @staticmethod
     def dumb():
         print(">DEBUG: DumbFunction used")
+
+    @staticmethod
+    def showpopup(self):
+        mypopup = Popups()
+        mypopup.mainloop()
 
 
 class PrimaryPage(tk.Frame):

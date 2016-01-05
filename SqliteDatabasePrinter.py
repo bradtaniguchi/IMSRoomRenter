@@ -46,10 +46,11 @@ def masterentries():  # prints out ALL entires
     print("  ID----NAME----DATE----ROOM--TIMEIN---TIMEOUT")
     c.execute("SELECT * FROM student_table1")
     myrawlist = c.fetchall()
-    for tuple in myrawlist:
-        print(tuple)  # creates new line for each
-        mystudent = SLC.Student(tuple[0], tuple[1], tuple[2], tuple[3], tuple[4], tuple[5])
-        print(">DEBUG: mystudent created with data: " )
+    for mytuple in myrawlist:
+        print(mytuple)  # creates new line for each
+        mystudent = SLC.Student(mytuple[0], mytuple[1], mytuple[2], mytuple[3], mytuple[4], mytuple[5])
+        #print(">DEBUG: mystudent created with data: " + str(mystudent.printvalues()))
+    print(">DEBUG: Number of Students In Database:")
 
 if __name__ == '__main__':
     main()

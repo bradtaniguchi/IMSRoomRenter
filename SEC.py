@@ -4,6 +4,8 @@
 #SEC = Secondary Classes, to argument the primary GUI components
 
 import tkinter as tk
+from tkinter import scrolledtext  # for large textbox
+
 class Popups(tk.Toplevel):
     def __init__(self, displaytitle="NOTITLE", displaytext="NOMSG", displaybuttontext="Done"):
         tk.Toplevel.__init__(self)  # any controller?
@@ -16,6 +18,17 @@ class Popups(tk.Toplevel):
 
     def exitwindow(self):
         self.destroy()  # destory popupwindow
+
+class DebugBox(tk.Toplevel):
+    """
+    Displays a large uneditable text area to display current contents of database
+    """
+    def __init__(self, displaytitle="DebugBox", displaytext="NOMSG", displaybuttontext="done"):
+        tk.Toplevel.__init__(self)
+        self.title(displaytitle)
+        self.textfield = scrolledtext.ScrolledText(self, text=displaytext)
+        self.textfield.configure(state='readonly')
+        self.textfield.pack()
 
 class ComfirmationDialog(tk.Toplevel):
     def __init__(self, displaytitle="ComfirmationDialog", displaytext="NOMSG"):
