@@ -2,6 +2,7 @@
 # Bradley Taniguchi
 # 12/18/15
 import tkinter as tk
+from datetime import datetime
 from SLC import DataBaseInterface
 from SLC import Student, StudentCollection  # to create and handle StudentObjects
 from SEC import Popups  # to create popups
@@ -55,7 +56,7 @@ class Application(tk.Tk):
         Calls: _create_file_menu, _create_edit_menu, _create_help_menu
         to create their respective menus.
         """
-        self.menubar = tk.Menu()
+        self.menubar = tk.Menu()  # is this OK????
         self.configure(menu=self.menubar)
         self._create_file_menu()
         self._create_edit_menu()
@@ -77,7 +78,7 @@ class Application(tk.Tk):
         editmenu.add_command(label="Change2ClockOut", command=lambda: self.show_frame("ClockOut"))
         editmenu.add_command(label="Change2RA", command=lambda: self.show_frame("RoomAvailability"))
         editmenu.add_command(label="CreateTestPopup", command=lambda: self.showpopup)  # TEST!
-        editmenu.add_command(label="ShowDebugBox", command=self.showdebugbox())
+        editmenu.add_command(label="ShowDebugBox", command=lambda: self.showdebugbox())
 
     def _create_help_menu(self):
         """creates helpmenu, and cascade. """
@@ -90,6 +91,10 @@ class Application(tk.Tk):
         self.quit()
 
     def showdebugbox(self):
+        """
+        Displays Current Contents of Database, using DatabaseInterface
+        """
+
         mydebugbox = DebugBox("TEST!")
         mydebugbox.mainloop()
 
@@ -259,7 +264,8 @@ class ClockIn(tk.Frame):
     def clockin(self, name, studentid, room):
         """
         Clocks a student into a room, calls checkroom, to check the room, and checks inputs
-        for student id and name. All inputs must come back valid to proceed
+        for student id and name. All inputs must come back valid to proceed.
+        Gathers time and date
         :param name: Name of Student to Clock in
         :param studentid: Id of student that needs to clock in
         :return:
@@ -267,9 +273,10 @@ class ClockIn(tk.Frame):
         print(">DEBUG: Starting Clockin function with:\n" + "    " + str(name) + "\n    " + str(studentid))
         booleanreturn, stringreturn = self.validinput(name, studentid)
         if self.checkroom(room) and booleanreturn is True:  # Room and inputs OK
-            print(">DEBUG: Creating StudentObject with values: " + str(studentid) + ", " + str(name) +
-                  ", Room: " + str(room))
-            mystudentlogin = Student(studentid, name, room)
+            clockindate = str(datetime.now().date())  # format: 2015-12-31
+            clockintime = str(datetime.now().time().hour) + ":" + \
+                          str(datetime.now().time().minute)  # does not include seconds
+            mystudentlogin = Student(studentid, name, clockindate, room, clockintime)  # no clockin as None
             mydatabaseinterface = DataBaseInterface()  # default file location
             mydatabaseinterface.clockin(mystudentlogin.studentid, mystudentlogin.name, room)
             self.clearinputs()
