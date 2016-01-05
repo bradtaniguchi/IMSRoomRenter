@@ -36,7 +36,8 @@ def masterentries():  # prints out ALL entires
     """
     TestField to create studentObjects
     NOTE: Format from Database:
-    (12356, 'brad', '2016-01-05', 5, '12:49', 'NULL')
+    (12356, 'brad', '2016-01-05', 5, '12:49', None)
+    NOTE: Is None OK??
     """
     print("<<<<<MASTER-ENTRIES>>>>>")
     databasefile = os.path.join(os.path.dirname(__file__), 'bin/Sqlite/StudentDatabase.sqlite')
@@ -50,7 +51,7 @@ def masterentries():  # prints out ALL entires
         print(mytuple)  # creates new line for each
         mystudent = SLC.Student(mytuple[0], mytuple[1], mytuple[2], mytuple[3], mytuple[4], mytuple[5])
         #print(">DEBUG: mystudent created with data: " + str(mystudent.printvalues()))
-    print(">DEBUG: Number of Students In Database:")
+    print(">DEBUG: Number of Students In Database: " + str(len(myrawlist)))
 
 if __name__ == '__main__':
     main()
