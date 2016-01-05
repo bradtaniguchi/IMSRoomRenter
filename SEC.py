@@ -26,9 +26,16 @@ class DebugBox(tk.Toplevel):
     def __init__(self, displaytitle="DebugBox", displaytext="NOMSG", displaybuttontext="done"):
         tk.Toplevel.__init__(self)
         self.title(displaytitle)
-        self.textfield = scrolledtext.ScrolledText(self, text=displaytext)
-        self.textfield.configure(state='readonly')
+        self.textfield = scrolledtext.ScrolledText(master=self,
+                                                   wrap=tk.WORD,
+                                                   width=50,
+                                                   height=20)
+        self.inserttext(displaytext)
+        self.textfield.configure(state='disabled')
         self.textfield.pack()
+
+    def inserttext(self, text):
+        self.textfield.insert(tk.INSERT, text)
 
 class ComfirmationDialog(tk.Toplevel):
     def __init__(self, displaytitle="ComfirmationDialog", displaytext="NOMSG"):
