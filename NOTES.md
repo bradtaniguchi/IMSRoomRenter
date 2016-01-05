@@ -121,4 +121,12 @@ Was able to impliment clockin, created SqliteDatabasePrinter, to debug the infor
 going to create new version that reads ONLY daily entries.
 Commited file with Incomplete work....
 
+####-------UPDATE 1/5/16
+Massive progress so far, implimenting SEC file, for popupdialogs
+and other frames/widgets outside of the main program.
+Added into the database is so far OK.
+Reading from databsae is still a blur. IT will be the last hurddle
+adding DEBUGGING tools to main program, to allow for easier transition
+to ClockOut stage, and finalization.
+
 
