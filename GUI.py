@@ -6,7 +6,7 @@ from SLC import DataBaseInterface
 from SLC import Student, StudentCollection  # to create and handle StudentObjects
 
 __author__ = 'Bradley Taniguchi'
-__version__ = '0.3.5'
+__version__ = '0.3.7'
 
 
 class Application(tk.Tk):
@@ -258,7 +258,8 @@ class ClockIn(tk.Frame):
             print(">DEBUG: Creating StudentObject with values: " + str(studentid) + ", " + str(name) +
                   ", Room: " + str(room))
             mystudentlogin = Student(studentid, name, room)
-            # CREATE DATABASE ENTRY
+            mydatabaseinterface = DataBaseInterface()  # default file location
+            mydatabaseinterface.clockin(mystudentlogin.studentid, mystudentlogin.name, room)
             self.clearinputs()
             self.changeframe("PrimaryPage")
         else:

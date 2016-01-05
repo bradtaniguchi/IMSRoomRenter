@@ -63,32 +63,42 @@ class DataBaseInterface:
         conn.close()
         print(">DEBUG: Database Created Successfully!")
 
-    def clockin(self, studentidnumber, studentname):  # clock into a room
+    def clockin(self, studentidnumber, studentname, roomnumber):  # clock into a room
         """
         Creates a Student Entry into the database.
         Date format is : 2015-12-31
         :param studentidnumber: ID number of student, PRIMARY KEY for searches
         :param studentname: Name of Student logging in.
+        :param roomnumber: Room checking into
         """
         conn = sqlite3.connect(self.databasefile)  # create connection to database
         c = conn.cursor()
-        clockintime = str(datetime.now().time().hour) + ":" + str(datetime.now().time().minute)  # doesn't include secs
+        clockintime = str(datetime.now().time().hour) + ':' + str(datetime.now().time().minute)  # doesn't include secs
         clockindate = str(datetime.now().date())  # format: 2015-12-31
-        mytuple = [studentidnumber, studentname, clockindate, clockintime]
+        clockouttime = "NULL"
+        mytuple = [studentidnumber, studentname, clockindate, roomnumber, clockintime, clockouttime]
         print(">DEBUG: Using INSERT INTO")
         try:
-            c.execute("INSERT INTO {0} ({1}, {2}, {3}, {4})".format(
-                    self.databasefile, mytuple[0], mytuple[1], mytuple[2], mytuple[3]))
+            #c.execute("INSERT INTO {0} ({1}, {2}, {3}, {4}, {5})".format(
+            #        "student_table1", mytuple[0], mytuple[1], mytuple[2], mytuple[3], mytuple[4]))
+            c.execute("INSERT INTO student_table1 values (?, ?, ?, ?, ?, ?)", mytuple)
             print("SUCCESS: Added Student login:" + studentname + " at " + clockintime)  # make this return statement!
         except sqlite3.IntegrityError:
             print("ERROR: Sqlite3 Integrity Error")  # make this return statement!
+        #except sqlite3.OperationalError:
+        #    print("ERROR: Sqlite3 OperationalError, with inputs: " + str(mytuple))
         conn.commit()
         conn.close()
-    def gatherobjects(self):
-        """
 
-        :return: returns a
+    def gathercollection(self, year, month, day):
         """
+        NOTE: Learn how to parse through database by time.
+        Reads Database and returns StudentCollection list for the current day.
+        :return: returns a StudentCollection list for the current day
+        """
+        print(">DEBUG: GatherCollection called....")
+
+
     @staticmethod
     def clockout(studentidnumber, studentname):  # clock out of a room
         """
