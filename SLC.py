@@ -11,7 +11,7 @@ class Student:
     """
     Handles student objects populates StudentCollection
     """
-    def __init__(self, studentid, name, clockindate, room, clockintime, clockouttime=None):
+    def __init__(self, studentid, name, clockindate=None, room=None, clockintime=None, clockouttime=None):
         self.studentid = studentid
         self.name = name  # if not given an input, use default IE John Doe
         self.clockindate = clockindate  # date of student clockin
@@ -94,26 +94,21 @@ class DataBaseInterface:
         conn.close()
         print(">DEBUG: Database Created Successfully!")
 
-    def clockin(self, studentidnumber, studentname, roomnumber):  # clock into a room
+    def clockin(self, studentobject):  # clock into a room
         """
         Creates a Student Entry into the database.
-        Date format is : 2015-12-31
-        :param studentidnumber: ID number of student, PRIMARY KEY for searches
-        :param studentname: Name of Student logging in.
-        :param roomnumber: Room checking into
+        From Student Object
+        :param studentobject: Primary Object in which to create clockin entry
         """
+        #studentobject = Student(studentobject)  # cast studentobject as Student
         conn = sqlite3.connect(self.databasefile)  # create connection to database
         c = conn.cursor()
-        clockintime = str(datetime.now().time().hour) + ':' + str(datetime.now().time().minute)  # doesn't include secs
-        clockindate = str(datetime.now().date())  # format: 2015-12-31
-        clockouttime = "NULL"
-        mytuple = [studentidnumber, studentname, clockindate, roomnumber, clockintime, clockouttime]
+        mytuple = [studentobject.studentid, studentobject.name, studentobject.clockindate, studentobject.room,
+                   studentobject.clockintime, studentobject.clockouttime]
         print(">DEBUG: Using INSERT INTO")
         try:
-            #c.execute("INSERT INTO {0} ({1}, {2}, {3}, {4}, {5})".format(
-            #        "student_table1", mytuple[0], mytuple[1], mytuple[2], mytuple[3], mytuple[4]))
             c.execute("INSERT INTO student_table1 values (?, ?, ?, ?, ?, ?)", mytuple)
-            print("SUCCESS: Added Student login:" + studentname + " at " + clockintime)  # make this return statement!
+            print("SUCCESS: Added Student login:" + studentobject.name + " at " + studentobject.clockintime)  # make this return statement!
         except sqlite3.IntegrityError:
             print("ERROR: Sqlite3 Integrity Error")  # make this return statement!
         #except sqlite3.OperationalError:
@@ -128,7 +123,6 @@ class DataBaseInterface:
         :return: returns a StudentCollection list for the current day
         """
         print(">DEBUG: GatherCollection called....")
-
 
     @staticmethod
     def clockout(studentidnumber, studentname):  # clock out of a room

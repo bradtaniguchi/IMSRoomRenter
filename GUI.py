@@ -150,7 +150,7 @@ class PrimaryPage(tk.Frame):
         to be used.
         """
         self.roomsavailablestring.set(newcapacity)
-        print(">DEBUG: PrintFunction")
+        #print(">DEBUG: PrintFunction")
 
     def changeframe(self, framestring):
         """
@@ -274,11 +274,10 @@ class ClockIn(tk.Frame):
         booleanreturn, stringreturn = self.validinput(name, studentid)
         if self.checkroom(room) and booleanreturn is True:  # Room and inputs OK
             clockindate = str(datetime.now().date())  # format: 2015-12-31
-            clockintime = str(datetime.now().time().hour) + ":" + \
-                          str(datetime.now().time().minute)  # does not include seconds
+            clockintime = str(datetime.now().time().hour) + ":" + str(datetime.now().time().minute)
             mystudentlogin = Student(studentid, name, clockindate, room, clockintime)  # no clockin as None
             mydatabaseinterface = DataBaseInterface()  # default file location
-            mydatabaseinterface.clockin(mystudentlogin.studentid, mystudentlogin.name, room)
+            mydatabaseinterface.clockin(mystudentlogin)
             self.clearinputs()
             self.changeframe("PrimaryPage")
         else:
