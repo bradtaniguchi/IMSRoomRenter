@@ -148,3 +148,23 @@ NOTE: I had the thought that if IDs are Primary Keys, they MUST NOT repeat,
 but in the current form they easily could!
 Testing it now.
 
+####------UPDATE 1/6/16
+Going to be working on fixing up DebugBox, and other popup windows.
+Going to also start work on the whosclocked in, to be called and given the daily logins, and checks 
+who is actually logged into the system at that time. 
+Started Work on Clockout Function, will be the master caller to all funtions that are needed.
+
+Soooo It is decided how to have clockouts:
+1. display the name, ID of all students current clocked in (using whosclockedin function)
+    and utilizing the Student Objects inside of GUI.py, to display the correct data.
+2. This shall be done via an overhauled Clockout menu.
+3. 5 Buttons for the 5 lines, to clock out of each of the rooms.
+
+LEARN HOW TO GRAY OUT BUTTONS. This will be handy for Clockin and clockouts. 
+
+
+
+
+
+
+

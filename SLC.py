@@ -65,8 +65,6 @@ class DataBaseInterface:
     def __init__(self, filename='bin/Sqlite/StudentDatabase.sqlite'):  # currently redundant
         self.filedirectory = filename
         self.databasefile = os.path.join(os.path.dirname(__file__), str(filename))
-        #self.conn = sqlite3.connect(self.databasefile) # forgot about conn.commit, conn.close
-        #self.c = self.conn.cursor()
         if os.path.isfile(self.databasefile):
             print(">DEBUG: File Exists!")
         else:
@@ -110,15 +108,12 @@ class DataBaseInterface:
             print("SUCCESS: Added Student login:" + studentobject.name + " at " + studentobject.clockintime)  # make this return statement!
         except sqlite3.IntegrityError:
             print("ERROR: Sqlite3 Integrity Error")  # make this return statement!
-        #except sqlite3.OperationalError:
-        #    print("ERROR: Sqlite3 OperationalError, with inputs: " + str(mytuple))
         conn.commit()
         conn.close()
 
     def gathercollection(self):
         """
         This Function Reads the Whole database, and creates a StudentCollection out of Them.
-        :param database:  Location of database file
         :return: Collection of Students
         """
         print(">DEBUG: GatherCollection Starting....")
@@ -143,19 +138,33 @@ class DataBaseInterface:
         """
         mystudentcollection = StudentCollection()  # to return the smaller collection
         for student in studentcollection.listofstudents:  # for each student in Studentcollection
-            print(">>DEBUG: ClockInDate: " + student.clockindate)
-            print(">>DEBUG: CurrentDate: " + currentdate)
             if student.clockindate == currentdate:
-                print(">>DEBUG: Added Student.Name: " + student.name)
-                mystudentcollection.listofstudents.append(Student)
+                mystudentcollection.listofstudents.append(student)
         return mystudentcollection
 
     @staticmethod
-    def clockout(studentidnumber, studentname):  # clock out of a room
+    def whosclockedin(dailystudentcollection):
+        """
+        Given the students clocked in currently today, returns those that are clocked in, or have None as clockouttime
+        :param dailystudentcollection: Collection of students only for today.
+        :return: CurrentLogins, very small collection of 0-5 logins
+        """
+        mystudentcollection = StudentCollection()
+        for student in dailystudentcollection.listofstudents:
+            if student.clockouttime is None:
+                mystudentcollection.listofstudents.append(student)
+        return mystudentcollection  # return of studentcollection of ONLY those logged in
+
+    def clockout(self, studentidnumber, studentname, dailystudentcollection):  # clock out of a room
         """
         Search through studentidnumbers in database and add to last column clockout time.
         :param studentidnumber: Primary Key for Searches
         :param studentname:  Seconary key for Searches, If unmatched raise exception
+        :param dailystudentcollection: Collection of Students for the day. Must be given Daily student logins
         :return:
         """
         print(">DEBUG: Clockout function attempted...")
+        # first need to parse through dailystudentcollection using whosclockedin, to see who is clocked in
+        mystudentcolection = StudentCollection()
+        mystudentcolection = self.whosclockedin(dailystudentcollection)  # gives back a very small collection of 0-5
+        # WORK HERE, need to implement GUI.
