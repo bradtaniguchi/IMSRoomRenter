@@ -129,4 +129,22 @@ Reading from databsae is still a blur. IT will be the last hurddle
 adding DEBUGGING tools to main program, to allow for easier transition
 to ClockOut stage, and finalization.
 
+Need to Start on SLC, and Object Creation function.
+The goal of this is the gather ALL the data, which is bound to happen and
+create two lists:
+1. daily list
+2. Full list
+The daily list is useful for clockouts,
+where as the Full list is created by default and I will MANUALLY throw it away to hopefully
+save memory when databse is HUGE.
+
+In the furture Im going to have to create a DumpData function, where a specialized
+function renames the NormalDatabase, and the Program will create a new one. This way 
+the Memory wont get hogged if the databse gets to big. 
+
+Generally going to be looking at the SqliteDatabasePrinter.py to get going,
+
+NOTE: I had the thought that if IDs are Primary Keys, they MUST NOT repeat,
+but in the current form they easily could!
+Testing it now.
 

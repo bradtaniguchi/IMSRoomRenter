@@ -45,3 +45,4 @@ class ComfirmationDialog(tk.Toplevel):
         :param displaytext: Text to be displayed in the middle of the frame
         :return: True/False for Yes, No button comfirmation. No if frame deletion
         """
+        #CLEARLY UNFINISHED!
