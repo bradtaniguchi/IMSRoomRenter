@@ -78,7 +78,15 @@ class Application(tk.Tk):
         editmenu.add_command(label="Change2ClockOut", command=lambda: self.show_frame("ClockOut"))
         editmenu.add_command(label="Change2RA", command=lambda: self.show_frame("RoomAvailability"))
         editmenu.add_command(label="CreateTestPopup", command=lambda: self.showpopup)  # TEST!
-        editmenu.add_command(label="ShowDebugBox", command=lambda: self.showdebugbox())
+        editmenu.add_command(label="ShowDebugBox", command=lambda: self.showdebugbox("TEST!"))
+        editmenu.add_command(label="TestDaily", command=lambda: self.testdaily())
+
+    def testdaily(self):
+        currentdate = str(datetime.now().date())
+        mydatabaseinterface = DataBaseInterface()
+        mystudentcollection = mydatabaseinterface.gathercollection()
+        mydatabaseinterface.dailycollection(mystudentcollection, currentdate)
+        self.showdebugbox(str(mydatabaseinterface))
 
     def _create_help_menu(self):
         """creates helpmenu, and cascade. """
@@ -90,12 +98,12 @@ class Application(tk.Tk):
         print(">DEBUG: Quiting program via filemenu")
         self.quit()
 
-    def showdebugbox(self):
+    def showdebugbox(self, textboxtext):
         """
         Displays Current Contents of Database, using DatabaseInterface
+        :param textboxtext: String to Display in Box
         """
-
-        mydebugbox = DebugBox("TEST!")
+        mydebugbox = DebugBox("DebugBox", textboxtext)
         mydebugbox.mainloop()
 
     @staticmethod
