@@ -84,7 +84,7 @@ class DataBaseInterface:
         c = conn.cursor()
         print(">DEBUG: Creating Student Database at: " + self.filedirectory)
         c.execute('''CREATE TABLE student_table1
-                 (ID INT PRIMARY KEY NOT NULL,
+                 (ID INT NOT NULL,
                   NAME CHAR(32) NOT NULL,
                   DATE TEXT NOT NULL,
                   ROOM INT NOT NULL,
@@ -100,7 +100,6 @@ class DataBaseInterface:
         From Student Object
         :param studentobject: Primary Object in which to create clockin entry
         """
-        #studentobject = Student(studentobject)  # cast studentobject as Student
         conn = sqlite3.connect(self.databasefile)  # create connection to database
         c = conn.cursor()
         mytuple = [studentobject.studentid, studentobject.name, studentobject.clockindate, studentobject.room,
@@ -116,13 +115,40 @@ class DataBaseInterface:
         conn.commit()
         conn.close()
 
-    def gathercollection(self, year, month, day):
+    def gathercollection(self):
         """
-        NOTE: Learn how to parse through database by time.
-        Reads Database and returns StudentCollection list for the current day.
-        :return: returns a StudentCollection list for the current day
+        This Function Reads the Whole database, and creates a StudentCollection out of Them.
+        :param database:  Location of database file
+        :return: Collection of Students
         """
-        print(">DEBUG: GatherCollection called....")
+        print(">DEBUG: GatherCollection Starting....")
+        conn = sqlite3.connect(self.databasefile)  # create connection to database
+        c = conn.cursor()
+        c.execute("SELECT * FROM student_table1")
+        myrawlist = c.fetchall()  # fetch from execute
+        conn.commit()
+        conn.close()
+        mystudentcollection = StudentCollection()
+        mystudentcollection.convertraw(myrawlist)  # converts myrawlist to collection to .listofstudents
+        print(">DEBUG: How Many InMyStudentCollection: " + str(len(mystudentcollection.listofstudents)))
+        return mystudentcollection
+
+    @staticmethod
+    def dailycollection(studentcollection, currentdate):
+        """
+        Given Student Collection, parse through the data of all students of THE DAY inside of .listofstudents
+        :param studentcollection: Collection of Student Objects, will be reading Date for comparison
+        :param currentdate: Format is: 2015-12-31
+        :return: Collection of students ONLY for the current day
+        """
+        mystudentcollection = StudentCollection()  # to return the smaller collection
+        for student in studentcollection.listofstudents:  # for each student in Studentcollection
+            print(">>DEBUG: ClockInDate: " + student.clockindate)
+            print(">>DEBUG: CurrentDate: " + currentdate)
+            if student.clockindate == currentdate:
+                print(">>DEBUG: Added Student.Name: " + student.name)
+                mystudentcollection.listofstudents.append(Student)
+        return mystudentcollection
 
     @staticmethod
     def clockout(studentidnumber, studentname):  # clock out of a room
