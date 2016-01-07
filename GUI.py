@@ -309,8 +309,9 @@ class ClockOut(tk.Frame):
         self.Descriptorinfo.grid(column=0, row=1)
         self.Descriptorclockout = tk.Label(self, text="Clockout")
         self.Descriptorclockout.grid(column=1, row=1)
+        self.clockoutinforows = []  # list of clockoutbuttons
+        self.createinforows(5, 2)  # initiation
         self.updatestudents()
-        self.createinforows(10, 2)  # initiation
 
     def createinforows(self, rows, startrow):
         """
@@ -320,8 +321,7 @@ class ClockOut(tk.Frame):
         """
         for i in range(rows):
             myinfobar = InfoBar(self, self.clockout, i, 23, 0, int(startrow + i))  # create myinfobar
-
-
+            self.clockoutinforows.append(myinfobar)
 
     def updatestudents(self):
         """
@@ -333,13 +333,14 @@ class ClockOut(tk.Frame):
         """
         print(">DEBUG: UpdatingStudents...")
         todaysdate = str(datetime.now().date())
-        mystudentcollection = StudentCollection()  # to hold the Students  DO I NEED THIS?
         mydatabaseinterface = DataBaseInterface()  # to interact with database
-        mystudentcollection = DataBaseInterface().gathercollection()  # gets all entries, actually reads database
-        mystudentcollection = DataBaseInterface().dailycollection(mystudentcollection, todaysdate)  # only todays
-        mystudentcollection = DataBaseInterface.whosclockedin(mystudentcollection)  # ONLY clocked in
+        mystudentcollection = mydatabaseinterface.gathercollection()  # gets all entries, actually reads database
+        mystudentcollection = mydatabaseinterface.dailycollection(mystudentcollection, todaysdate)  # only todays
+        mystudentcollection = mydatabaseinterface.whosclockedin(mystudentcollection)  # ONLY clocked in
         # now that I have a collection of students ONLY logged in, display data from them.
-
+        print(">>DEBUG: Students Inside of Rooms" + str(len(mystudentcollection.listofstudents)))
+        for i in mystudentcollection.listofstudents:  # for student in mystudentcollection
+            print(self.clockoutinforows[i].stringvar.set(mystudentcollection.listofstudents[i].name))
 
     def clockout(self, buttonnumber):
         """
