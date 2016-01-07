@@ -173,6 +173,12 @@ Going to be connecting the Clockout in GUI to the Database creation.
 Fires will probably start, backing up old database just to check.
 
 
+ADDED The interface with the Database and the GUI link. Also added to the update
+form. Going to be adding disabled buttons depending on 
+where the student is logged in.  Also removed some of the Database Prints.
+As far as I can tell the Database Interface is almost complete in terms of basic
+features. 
 
+Added PrimaryPage room availability. 
 
 

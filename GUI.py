@@ -8,8 +8,9 @@ from SLC import Student, StudentCollection  # to create and handle StudentObject
 from SEC import Popups  # to create popups
 from SEC import DebugBox  # to create debugbox
 from SEC import InfoBar  # to display
+
 __author__ = 'Bradley Taniguchi'
-__version__ = '0.3.7'
+__version__ = '0.7.8'
 
 
 class Application(tk.Tk):
@@ -31,6 +32,8 @@ class Application(tk.Tk):
         self.frames = {}  # array of frames
         self.databaseposition = 'bin/Sqlite/StudentDatabase.sqlite'  # default database position
         self._create_databaseinterface(self.databaseposition)
+        self.loggedinstudents = []  # to see who is logged in. Gathered from Clockout
+        self.roomsavail = 5
 
         for F in (PrimaryPage, ClockIn, ClockOut):  # initialize all frame/Classes
             page_name = F.__name__
@@ -38,6 +41,13 @@ class Application(tk.Tk):
             self.frames[page_name] = frame
             frame.grid(row=0, column=0, sticky="NSEW")
         self.show_frame("PrimaryPage")
+        self.updatescreens()
+
+    def updatescreens(self):
+        self.frames["ClockOut"].updatescreens()
+        self.frames["PrimaryPage"].updatescreens()  # update how many rooms available!
+        self.loggedinstudents = self.frames["ClockOut"].mystudentcollection.listofstudents
+        #print(">DEBUG: loggedinstudents: " + str(len(self.loggedinstudents)))
 
     def _create_databaseinterface(self, databasepos):
         """
@@ -50,6 +60,8 @@ class Application(tk.Tk):
         """Show a Frame for a given page name"""
         f = self.frames[page_name]
         f.tkraise()
+        self.updatescreens()
+
 
     def create_menubar(self):
         """
@@ -143,31 +155,21 @@ class PrimaryPage(tk.Frame):
         self.ratextbox.grid(column=1, row=2, padx=self.bpadx, pady=self.bpady)
         self.ratextbox.configure(state='readonly')
         self.pack()
-        self.startup_room_check()  # run startup check
 
-    def startup_room_check(self):
+    def updatescreens(self):
         """
-        When the program starts, it checks how many rooms are available from reading the
-        object created from read file. TO BE CREATED LATER
+        Updates Rooms Available for display
         """
-        self.change_room_capacity(5)  # default start value temp!
-
-    def change_room_capacity(self, newcapacity):
-        """
-        Changes room capacity.
-        Secondary SpecFunction, to be used in the future to allow for more than 5 rooms
-        to be used.
-        """
-        self.roomsavailablestring.set(newcapacity)
-        #print(">DEBUG: PrintFunction")
+        stringtoprint = str(self.controller.roomsavail-len(self.controller.loggedinstudents))
+        self.roomsavailablestring.set(stringtoprint)
 
     def changeframe(self, framestring):
         """
         Showes different frame, prints change to log.
         :param stramestring: Frame to Change to
         """
-        print(">DEBUG: Changed frame to " + framestring)
         self.controller.show_frame(framestring)
+
 
     @staticmethod
     def dumb():
@@ -260,7 +262,6 @@ class ClockIn(tk.Frame):
         Showes different frame, prints change to log.
         :param stramestring: Frame to Change to
         """
-        print(">DEBUG: Changed frame to " + framestring)
         self.controller.show_frame(framestring)
 
     @staticmethod
@@ -310,8 +311,9 @@ class ClockOut(tk.Frame):
         self.Descriptorclockout = tk.Label(self, text="Clockout")
         self.Descriptorclockout.grid(column=1, row=1)
         self.clockoutinforows = []  # list of clockoutbuttons
+        self.mydatabaseinterface = DataBaseInterface()  # updated on updatestudents
+        self.mystudentcollection = StudentCollection() # updated on updatestudents
         self.createinforows(5, 2)  # initiation
-        self.updatestudents()
 
     def createinforows(self, rows, startrow):
         """
@@ -326,6 +328,7 @@ class ClockOut(tk.Frame):
     def updatestudents(self):
         """
         WARNING Heavy Database Usage! Needs optimization!!!
+        CREATES self.
         Updates the Current Students clockedin, calls:
             .gathercollection() - to get all students EVER USES DATABASE
             .dailycollection() - returns StudentCollection for just today, USES DATETIME
@@ -333,37 +336,41 @@ class ClockOut(tk.Frame):
         """
         print(">DEBUG: UpdatingStudents...")
         todaysdate = str(datetime.now().date())
-        mydatabaseinterface = DataBaseInterface()  # to interact with database
-        mystudentcollection = mydatabaseinterface.gathercollection()  # gets all entries, actually reads database
-        mystudentcollection = mydatabaseinterface.dailycollection(mystudentcollection, todaysdate)  # only todays
-        mystudentcollection = mydatabaseinterface.whosclockedin(mystudentcollection)  # ONLY clocked in
+        self.mystudentcollection = self.mydatabaseinterface.gathercollection()  # gets all entries, actually reads database
+        self.mystudentcollection = self.mydatabaseinterface.dailycollection(self.mystudentcollection, todaysdate)  # only todays
+        self.mystudentcollection = self.mydatabaseinterface.whosclockedin(self.mystudentcollection)  # ONLY clocked in
         # now that I have a collection of students ONLY logged in, display data from them.
-        print(">>DEBUG: Students Inside of Rooms" + str(len(mystudentcollection.listofstudents)))
-        for i in mystudentcollection.listofstudents:  # for student in mystudentcollection
-            print(self.clockoutinforows[i].stringvar.set(mystudentcollection.listofstudents[i].name))
+        i = 0  # for loop
+        for student in self.mystudentcollection.listofstudents:  # for student in mystudentcollection
+            self.clockoutinforows[i].stringvar.set(student.name + "-" + str(student.studentid))
+            i += 1
+
+    def updatescreens(self):
+        """
+        Updates the Screens on Clockout, with blanks, also updates students
+        """
+        for bar in range(len(self.clockoutinforows)):
+            self.clockoutinforows[bar].stringvar.set("-------------------------")
+        self.updatestudents()
+
 
     def clockout(self, buttonnumber):
         """
         Reads the Contents of the choosen info, IE Button1 = info1
+        Change the Student Clockout time from None to time right now
         :param buttonnumber: 1-5 number
         :return:
         """
-        print(">>DEBUG:  " + str(buttonnumber))
-
-    @staticmethod
-    def checkroomvalid(room):  # remove with database check!
-        """
-        Checks to see if input of room is valid, IE 1-5
-        """
-        if room > 5 or room < 1:
-            return False
-        else:
-            return True
+        self.clockoutinforows[buttonnumber].stringvar.set("-------------------------")  # clears out
+        clockintime = str(datetime.now().time().hour) + ":" + str(datetime.now().time().minute)
+        self.mystudentcollection.listofstudents[buttonnumber].clockouttime = clockintime
+        print(">>DEBUG: ClockoutMethod trying.." + str(self.mystudentcollection.listofstudents[buttonnumber].name) +
+              " at " + clockintime)
+        self.mydatabaseinterface.clockout(self.mystudentcollection.listofstudents[buttonnumber])
+        self.changeframe("PrimaryPage")
 
     def changeframe(self, framestring):
-        print(">DEBUG: Changed frame to " + framestring)
         self.controller.show_frame(framestring)
-
 
 def startmain():
     """

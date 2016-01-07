@@ -102,7 +102,7 @@ class DataBaseInterface:
         c = conn.cursor()
         mytuple = [studentobject.studentid, studentobject.name, studentobject.clockindate, studentobject.room,
                    studentobject.clockintime, studentobject.clockouttime]
-        print("D>DEBUG: Using INSERT INTO")
+        print("D>DEBUG: Using Clocking Student in...")
         try:
             c.execute("INSERT INTO student_table1 values (?, ?, ?, ?, ?, ?)", mytuple)
             #print("SUCCESS: Added Student login:" + studentobject.name + " at " + studentobject.clockintime)  # make this return statement!
@@ -116,7 +116,6 @@ class DataBaseInterface:
         This Function Reads the Whole database, and creates a StudentCollection out of Them.
         :return: Collection of ALL Students
         """
-        print("D>DEBUG: GatherCollection Starting....")
         conn = sqlite3.connect(self.databasefile)  # create connection to database
         c = conn.cursor()
         c.execute("SELECT * FROM student_table1")
@@ -167,6 +166,7 @@ class DataBaseInterface:
         mytuple = [studentobject.clockouttime, studentobject.studentid, studentobject.name,
                    studentobject.clockindate, studentobject.room, studentobject.clockintime]
         try:
+            print("D>DEBUG: tuple:" + str(mytuple))
             c.execute("UPDATE student_table1 SET CLOCKOUT = ? WHERE ID  = ? AND NAME = ? \
                       AND DATE = ? AND ROOM = ? AND CLOCKIN = ?", mytuple)
         except sqlite3.IntegrityError:
