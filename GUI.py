@@ -7,6 +7,7 @@ from SLC import DataBaseInterface
 from SLC import Student, StudentCollection  # to create and handle StudentObjects
 from SEC import Popups  # to create popups
 from SEC import DebugBox  # to create debugbox
+from SEC import InfoBar  # to display
 __author__ = 'Bradley Taniguchi'
 __version__ = '0.3.7'
 
@@ -23,8 +24,8 @@ class Application(tk.Tk):
         container.grid_rowconfigure(0, weight=1)
         container.grid_columnconfigure(0, weight=1)
         self.title("TEST PROG")
-        self.minsize(width=200, height=150)  # Determined constant window size?
-        self.maxsize(width=200, height=150)
+        self.minsize(width=300, height=300)  # Determined constant window size?
+        self.maxsize(width=300, height=300)
         self.resizable(width=False, height=False)
         self.create_menubar()  # creates static menubar
         self.frames = {}  # array of frames
@@ -193,11 +194,11 @@ class ClockIn(tk.Frame):
         self.clockinlabel.grid(column=0, columnspan=6, row=0, sticky=tk.NSEW)
         self.namelabel = tk.Label(self, text="Name:")
         self.namelabel.grid(column=0, row=1)
-        self.nametextbox = tk.Entry(self, width=20, textvariable=self.namevariable)
+        self.nametextbox = tk.Entry(self, width=32, textvariable=self.namevariable)
         self.nametextbox.grid(column=1, columnspan=5, row=1)
         self.studentidlabel = tk.Label(self, text="Student ID:")
         self.studentidlabel.grid(column=0, row=2)
-        self.studentidtextbox = tk.Entry(self, width=15, textvariable=self.idvariable)
+        self.studentidtextbox = tk.Entry(self, width=32, textvariable=self.idvariable)
         self.studentidtextbox.grid(column=1, columnspan=5, row=2)
         self.roomslabel = tk.Label(self, text="Rooms Available")
         self.roomlabel = tk.Label(self, text="Room:")
@@ -246,7 +247,8 @@ class ClockIn(tk.Frame):
         self.roomchosentext.set("0")
         self.roomvaraible = 0
 
-    def validinput(self, name, studentid):
+    @staticmethod
+    def validinput(name, studentid):
         if len(name) > 32 or len(name) < 1:  # input length ONLY accepted up to 32 characters
             return False, "Invalid Name"  # name not accepted
         if len(studentid) > 32 or len(studentid) < 1:  # input length ONLY accepted up to 32 characters
@@ -296,38 +298,56 @@ class ClockIn(tk.Frame):
 class ClockOut(tk.Frame):
     """
     This displays the Clock-Out screen for a student trying to rent
+    UNDERGOING OVERHAUL 1/6/16
     """
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
-        #self.testwork = tk.Label(self, text="ClockOutPage")  # REMOVE LATER
-        #self.testwork.grid(column=0, row=0)
-        self.namevariable = tk.StringVar()  # create string variable
-        self.roomvariable = tk.StringVar()  # create integer variable
-        self.namelabel = tk.Label(self, text="Name:")
-        self.namelabel.grid(column=0, row=0)
-        self.nametextbox = tk.Entry(self, width=20, textvariable=self.namevariable)
-        self.nametextbox.grid(column=1, row=0)
-        self.roomlabel = tk.Label(self, text="Room:(1-5)")
-        self.roomlabel.grid(column=0, row=1)
-        self.roomtextbox = tk.Entry(self, width=20, textvariable=self.roomvariable)
-        self.roomtextbox.grid(column=1, row=1)
-        self.clockoutbutton = tk.Button(self, height=1, width=5, text="submit",
-                                        command=lambda: self.validinput)
-        self.clockoutbutton.grid(column=0, columnspan=2, row=2)
+        #self.clockoutmainlabel = tk.Label(self, text="Clockout")
+        #self.clockoutmainlabel.grid(column=0, columnspan=2, row=0)
+        self.Descriptorinfo = tk.Label(self, text="StudentInfo")
+        self.Descriptorinfo.grid(column=0, row=1)
+        self.Descriptorclockout = tk.Label(self, text="Clockout")
+        self.Descriptorclockout.grid(column=1, row=1)
+        self.updatestudents()
+        self.createinforows(10, 2)  # initiation
 
-    def validinput(self, name, room):
-        """  # So this is how it default works? Very cool
-        :param name: Name of the Student (string limit 64)
-        :param room: Room student is checkingout, (1-5)
-        :return: True if valid inputs, False if not
+    def createinforows(self, rows, startrow):
         """
-        if not str(name.length):  # checks if string is null
-            print(">DEBUG: Input Invalid! do nothing")
-        elif str(name.length) > 32:
-            print(">DEBUG: Input Invalid! input to long!, try again")
+        Dynamically make 0-5 rows to display information
+        :param rows: rows to make
+        :param startrow: starting column to set .grid
+        """
+        for i in range(rows):
+            myinfobar = InfoBar(self, self.clockout, i, 23, 0, int(startrow + i))  # create myinfobar
 
-        # ADD DATABASE CHECK HERE
+
+
+    def updatestudents(self):
+        """
+        WARNING Heavy Database Usage! Needs optimization!!!
+        Updates the Current Students clockedin, calls:
+            .gathercollection() - to get all students EVER USES DATABASE
+            .dailycollection() - returns StudentCollection for just today, USES DATETIME
+            .whosclockedin - returns JUST whos clocked in!
+        """
+        print(">DEBUG: UpdatingStudents...")
+        todaysdate = str(datetime.now().date())
+        mystudentcollection = StudentCollection()  # to hold the Students  DO I NEED THIS?
+        mydatabaseinterface = DataBaseInterface()  # to interact with database
+        mystudentcollection = DataBaseInterface().gathercollection()  # gets all entries, actually reads database
+        mystudentcollection = DataBaseInterface().dailycollection(mystudentcollection, todaysdate)  # only todays
+        mystudentcollection = DataBaseInterface.whosclockedin(mystudentcollection)  # ONLY clocked in
+        # now that I have a collection of students ONLY logged in, display data from them.
+
+
+    def clockout(self, buttonnumber):
+        """
+        Reads the Contents of the choosen info, IE Button1 = info1
+        :param buttonnumber: 1-5 number
+        :return:
+        """
+        print(">>DEBUG:  " + str(buttonnumber))
 
     @staticmethod
     def checkroomvalid(room):  # remove with database check!
