@@ -44,8 +44,9 @@ class Application(tk.Tk):
         self.updatescreens()
 
     def updatescreens(self):
-        self.frames["ClockOut"].updatescreens()
+        self.frames["ClockOut"].updatescreens()  #CHANGE ALL OF THESE TO ACCEPT THE ARRAY! easier to read!
         self.frames["PrimaryPage"].updatescreens()  # update how many rooms available!
+        self.frames["ClockIn"].updatescreens()  # update WHICH rooms are available
         self.loggedinstudents = self.frames["ClockOut"].mystudentcollection.listofstudents
         #print(">DEBUG: loggedinstudents: " + str(len(self.loggedinstudents)))
 
@@ -61,7 +62,6 @@ class Application(tk.Tk):
         f = self.frames[page_name]
         f.tkraise()
         self.updatescreens()
-
 
     def create_menubar(self):
         """
@@ -138,10 +138,10 @@ class PrimaryPage(tk.Frame):
         self.roomsavailablestring = tk.StringVar()  # IMPORTANT!
         self.controller = controller
         self.textboxtext = tk.StringVar()  # Create string variable
-        self.bheight=2
-        self.bwidth=2
-        self.bpadx=2
-        self.bpady=2
+        self.bheight = 2
+        self.bwidth = 2
+        self.bpadx = 2
+        self.bpady = 2
         self.parent = parent
         self.clockinbutton = tk.Button(self, height=1, width=10, text="Clock-In",
                                        command=lambda: self.changeframe("ClockIn"))
@@ -169,7 +169,6 @@ class PrimaryPage(tk.Frame):
         :param stramestring: Frame to Change to
         """
         self.controller.show_frame(framestring)
-
 
     @staticmethod
     def dumb():
@@ -214,8 +213,9 @@ class ClockIn(tk.Frame):
                                        command=lambda: self.clockin(self.namevariable.get(),
                                                                     self.idvariable.get(), self.roomvaraible))
         self.clockinbutton.grid(column=0, columnspan=6, row=4)
+        self.listofopenrooms = []
 
-    def _createroombuttons(self):
+    def _createroombuttons(self):  # change to dynamic amount at another time!
         self.room1button = tk.Button(self, height=1, width=1, text="1",
                                      command=lambda: self.roomnumber(1))
         self.room1button.grid(column=1, row=3)
@@ -235,6 +235,18 @@ class ClockIn(tk.Frame):
         self.room5button = tk.Button(self, height=1, width=1, text="5",
                                      command=lambda: self.roomnumber(5))
         self.room5button.grid(column=5, row=3)
+
+    def updatescreens(self):
+        """
+        Reads the Application class and checks the list of clocked in students seeing which rooms are available
+        :return: a list of room numbers available. Isn't always used when called
+        """
+        mylistofrooms =[]
+        for student in self.controller.loggedinstudents:
+            mylistofrooms.append(int(student.room))
+        print(">>DEBUG:" + str(mylistofrooms))
+        self.listofopenrooms = mylistofrooms  # changes rooms available.
+
 
     def roomnumber(self, num):
         self.roomvaraible = num
