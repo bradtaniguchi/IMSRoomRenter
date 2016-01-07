@@ -46,3 +46,24 @@ class ComfirmationDialog(tk.Toplevel):
         :return: True/False for Yes, No button comfirmation. No if frame deletion
         """
         #CLEARLY UNFINISHED!
+
+class InfoBar():
+    def __init__(self, parent, comfunc, k, width=23, relcolumn=0, relrow=0):
+        """
+        Used to Dynamically create any number of rows to display information
+        :param parent: Parent class, Frame
+        :param comfunc: Command Function, command to use from parent.
+        :param width: width of tk.entry
+        :param relcolumn: relative column for tk.Entry
+        :param relrow: relative row
+        :param relrow: relative row, to help position them during initiation loop
+        """
+        self.parent = parent
+        self.width = width
+        self.relcolumn = relcolumn
+        self.relrow = relrow
+        self.stringvar = tk.StringVar()
+        self.infoentry = tk.Entry(parent, width=self.width, textvariable=self.stringvar)
+        self.infoentry.grid(column=self.relcolumn, row=self.relrow)
+        self.infobutton = tk.Button(parent, height=1, width=2, command=lambda: comfunc(k))
+        self.infobutton.grid(column=(int(self.relcolumn)+1), row=self.relrow)

@@ -1,0 +1,61 @@
+The following is the OLD clockout code,
+leaving here until a later time. Just incase I need something from it.
+Part of the overhault of the frame 1/6/16
+
+self.namevariable = tk.StringVar()  # create string variable
+        self.roomvariable = tk.StringVar()  # create integer variable
+        self.namelabel = tk.Label(self, text="Name:")
+        self.namelabel.grid(column=0, row=0)
+        self.nametextbox = tk.Entry(self, width=20, textvariable=self.namevariable)
+        self.nametextbox.grid(column=1, row=0)
+        self.roomlabel = tk.Label(self, text="Room:(1-5)")
+        self.roomlabel.grid(column=0, row=1)
+        self.roomtextbox = tk.Entry(self, width=20, textvariable=self.roomvariable)
+        self.roomtextbox.grid(column=1, row=1)
+        self.clockoutbutton = tk.Button(self, height=1, width=5, text="submit",
+                                        command=lambda: self.validinput)
+        self.clockoutbutton.grid(column=0, columnspan=2, row=2)
+
+
+            @staticmethod
+    def validinput(name, room):
+        """  # So this is how it default works? Very cool
+        :param name: Name of the Student (string limit 64)
+        :param room: Room student is checkingout, (1-5)
+        :return: True if valid inputs, False if not
+        """
+        if not str(name.length):  # checks if string is null
+            print(">DEBUG: Input Invalid! do nothing")
+        elif str(name.length) > 32:
+            print(">DEBUG: Input Invalid! input to long!, try again")
+
+        # ADD DATABASE CHECK HERE
+
+
+====================================CRUDE area test!
+        self.stringvar1 = tk.StringVar()
+        self.stringvar2 = tk.StringVar()
+        self.stringvar3 = tk.StringVar()
+        self.stringvar4 = tk.StringVar()
+        self.stringvar5 = tk.StringVar()
+        self.info1 = tk.Entry(self, width=23, textvariable=self.stringvar1)
+        self.info1.grid(column=0, row=3)
+        self.info2 = tk.Entry(self, width=23, textvariable=self.stringvar1)
+        self.info2.grid(column=0, row=4)
+        self.info3 = tk.Entry(self, width=23, textvariable=self.stringvar1)
+        self.info3.grid(column=0, row=5)
+        self.info4 = tk.Entry(self, width=23, textvariable=self.stringvar1)
+        self.info4.grid(column=0, row=6)
+        self.info5 = tk.Entry(self, width=23, textvariable=self.stringvar1)
+        self.info5.grid(column=0, row=7)
+
+        self.button1 = tk.Button(self, height=1, width=2, command=lambda: self.clockout(1))
+        self.button1.grid(column=1, row=3)
+        self.button2 = tk.Button(self, height=1, width=2, command=lambda: self.clockout(2))
+        self.button2.grid(column=1, row=4)
+        self.button3 = tk.Button(self, height=1, width=2, command=lambda: self.clockout(3))
+        self.button3.grid(column=1, row=5)
+        self.button4 = tk.Button(self, height=1, width=2, command=lambda: self.clockout(4))
+        self.button4.grid(column=1, row=6)
+        self.button5 = tk.Button(self, height=1, width=2, command=lambda: self.clockout(5))
+        self.button5.grid(column=1, row=7)

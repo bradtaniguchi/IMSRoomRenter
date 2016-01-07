@@ -162,6 +162,8 @@ Soooo It is decided how to have clockouts:
 
 LEARN HOW TO GRAY OUT BUTTONS. This will be handy for Clockin and clockouts. 
 
+Going to create a class to dynamically handle the Info,buttons on Clockout page. 
+Will be handled in an array
 
 
 
