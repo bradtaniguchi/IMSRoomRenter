@@ -45,7 +45,7 @@ class StudentCollection:
         for mytuple in rawlist:
             mystudent = Student(mytuple[0], mytuple[1], mytuple[2], mytuple[3], mytuple[4], mytuple[5])
             self.listofstudents.append(mystudent)
-            print(">DEBUG: Contents of convertraw:" + str(self.listofstudents))  # NEEDS TESTING!
+            #print(">DEBUG: Contents of convertraw:" + str(self.listofstudents))  # NEEDS TESTING! assuming it works!
 
     def printcontents(self):
         """
@@ -66,9 +66,9 @@ class DataBaseInterface:
         self.filedirectory = filename
         self.databasefile = os.path.join(os.path.dirname(__file__), str(filename))
         if os.path.isfile(self.databasefile):
-            print(">DEBUG: File Exists!")
+            print("D>DEBUG: File Exists!")
         else:
-            print(">DEBUG: File Doesn't Exist, creating it now..")
+            print("D>DEBUG: File Doesn't Exist, creating it now..")
             print(str(self.databasefile))
             print(str(filename))
             self._createstudentdatabase(self.databasefile)  # create the file
@@ -80,7 +80,7 @@ class DataBaseInterface:
         """
         conn = sqlite3.connect(database)  # create connection to database
         c = conn.cursor()
-        print(">DEBUG: Creating Student Database at: " + self.filedirectory)
+        print("D>DEBUG: Creating Student Database at: " + self.filedirectory)
         c.execute('''CREATE TABLE student_table1
                  (ID INT NOT NULL,
                   NAME CHAR(32) NOT NULL,
@@ -90,7 +90,7 @@ class DataBaseInterface:
                   CLOCKOUT TEXT)''')
         conn.commit()
         conn.close()
-        print(">DEBUG: Database Created Successfully!")
+        print("D>DEBUG: Database Created Successfully!")
 
     def clockin(self, studentobject):  # clock into a room
         """
@@ -102,21 +102,21 @@ class DataBaseInterface:
         c = conn.cursor()
         mytuple = [studentobject.studentid, studentobject.name, studentobject.clockindate, studentobject.room,
                    studentobject.clockintime, studentobject.clockouttime]
-        print(">DEBUG: Using INSERT INTO")
+        print("D>DEBUG: Using INSERT INTO")
         try:
             c.execute("INSERT INTO student_table1 values (?, ?, ?, ?, ?, ?)", mytuple)
-            print("SUCCESS: Added Student login:" + studentobject.name + " at " + studentobject.clockintime)  # make this return statement!
+            #print("SUCCESS: Added Student login:" + studentobject.name + " at " + studentobject.clockintime)  # make this return statement!
         except sqlite3.IntegrityError:
-            print("ERROR: Sqlite3 Integrity Error")  # make this return statement!
+            print("D>ERROR: Sqlite3 Integrity Error")  # make this return statement!
         conn.commit()
         conn.close()
 
     def gathercollection(self):
         """
         This Function Reads the Whole database, and creates a StudentCollection out of Them.
-        :return: Collection of Students
+        :return: Collection of ALL Students
         """
-        print(">DEBUG: GatherCollection Starting....")
+        print("D>DEBUG: GatherCollection Starting....")
         conn = sqlite3.connect(self.databasefile)  # create connection to database
         c = conn.cursor()
         c.execute("SELECT * FROM student_table1")
@@ -125,7 +125,7 @@ class DataBaseInterface:
         conn.close()
         mystudentcollection = StudentCollection()
         mystudentcollection.convertraw(myrawlist)  # converts myrawlist to collection to .listofstudents
-        print(">DEBUG: How Many InMyStudentCollection: " + str(len(mystudentcollection.listofstudents)))
+        #print("D>DEBUG: How Many InMyStudentCollection: " + str(len(mystudentcollection.listofstudents)))
         return mystudentcollection
 
     @staticmethod
