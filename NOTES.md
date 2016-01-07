@@ -167,6 +167,12 @@ Will be handled in an array
 
 
 
+####-----UPDATE 1/7/16
+TODAY IS THE DAY!
+Going to be connecting the Clockout in GUI to the Database creation.
+Fires will probably start, backing up old database just to check.
+
+
 
 
 

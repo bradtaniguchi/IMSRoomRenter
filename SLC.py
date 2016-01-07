@@ -155,16 +155,22 @@ class DataBaseInterface:
                 mystudentcollection.listofstudents.append(student)
         return mystudentcollection  # return of studentcollection of ONLY those logged in
 
-    def clockout(self, studentidnumber, studentname, dailystudentcollection):  # clock out of a room
+    def clockout(self, studentobject):  # clock out of a room
         """
         Search through studentidnumbers in database and add to last column clockout time.
-        :param studentidnumber: Primary Key for Searches
-        :param studentname:  Seconary key for Searches, If unmatched raise exception
-        :param dailystudentcollection: Collection of Students for the day. Must be given Daily student logins
-        :return:
+        Will skip over Database entries that are already clocked out, with same information
+        :param studentobject Primary Object to create clockin entry
         """
         print(">DEBUG: Clockout function attempted...")
-        # first need to parse through dailystudentcollection using whosclockedin, to see who is clocked in
-        mystudentcolection = StudentCollection()
-        mystudentcolection = self.whosclockedin(dailystudentcollection)  # gives back a very small collection of 0-5
-        # WORK HERE, need to implement GUI.
+        conn = sqlite3.connect(self.databasefile)
+        c = conn.cursor()
+        mytuple = [studentobject.clockouttime, studentobject.studentid, studentobject.name,
+                   studentobject.clockindate, studentobject.room, studentobject.clockintime]
+        try:
+            c.execute("UPDATE student_table1 SET CLOCKOUT = ? WHERE ID  = ? AND NAME = ? \
+                      AND DATE = ? AND ROOM = ? AND CLOCKIN = ?", mytuple)
+        except sqlite3.IntegrityError:
+            print("D>ERROR: Sqlite3 Integrity Error")
+        conn.commit()
+        conn.close()
+
