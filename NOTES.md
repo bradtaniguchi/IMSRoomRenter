@@ -183,6 +183,11 @@ Added PrimaryPage room availability.
 
 ### 1.0.0 REQUIREMENTS MET
 Program is offically entering beta stage. Basic implimentations have been added and completed. 
+=========================
+### BUG1: [1/7/16]
+Program doesn't display the corrent amount of students logged in, or out. 
+Find why it doesn't update when changing frames. 
+-think it has something to do with how clockout creates the objects
 
 
 

@@ -46,11 +46,10 @@ class Application(tk.Tk):
         self.updatescreens()
 
     def updatescreens(self):
-        self.frames["ClockOut"].updatescreens()  #CHANGE ALL OF THESE TO ACCEPT THE ARRAY! easier to read!
-        self.frames["PrimaryPage"].updatescreens()  # update how many rooms available!
-        self.frames["ClockIn"].updatescreens()  # update WHICH rooms are available
         self.loggedinstudents = self.frames["ClockOut"].mystudentcollection.listofstudents
-        #print(">DEBUG: loggedinstudents: " + str(len(self.loggedinstudents)))
+        self.frames["ClockIn"].updatescreens()  # update WHICH rooms are available
+        self.frames["ClockOut"].updatescreens()  # CHANGE ALL OF THESE TO ACCEPT THE ARRAY! easier to read!
+        self.frames["PrimaryPage"].updatescreens()  # update how many rooms available!
 
     def _create_databaseinterface(self, databasepos):
         """
@@ -61,9 +60,9 @@ class Application(tk.Tk):
 
     def show_frame(self, page_name):
         """Show a Frame for a given page name"""
+        self.updatescreens()
         f = self.frames[page_name]
         f.tkraise()
-        self.updatescreens()
 
     def create_menubar(self):
         """
@@ -162,7 +161,7 @@ class PrimaryPage(tk.Frame):
         """
         Updates Rooms Available for display
         """
-        stringtoprint = str(self.controller.roomsavail-len(self.controller.loggedinstudents))
+        stringtoprint = str(5-len(self.controller.loggedinstudents))  # undynamic
         self.roomsavailablestring.set(stringtoprint)
 
     def changeframe(self, framestring):
@@ -365,7 +364,7 @@ class ClockOut(tk.Frame):
         self.clockoutinforows[buttonnumber].stringvar.set("-------------------------")  # clears out
         clockintime = str(datetime.now().time().hour) + ":" + str(datetime.now().time().minute)
         self.mystudentcollection.listofstudents[buttonnumber].clockouttime = clockintime
-        print(">>DEBUG: ClockoutMethod trying.." + str(self.mystudentcollection.listofstudents[buttonnumber].name) +
+        print(">DEBUG: ClockoutMethod trying.." + str(self.mystudentcollection.listofstudents[buttonnumber].name) +
               " at " + clockintime)
         self.mydatabaseinterface.clockout(self.mystudentcollection.listofstudents[buttonnumber])
         self.changeframe("PrimaryPage")
