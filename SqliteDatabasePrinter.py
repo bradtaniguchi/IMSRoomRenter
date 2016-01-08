@@ -18,7 +18,7 @@ def main():
     bin = input("> ")
     if int(bin) > 1:
         masterentries()
-    elif bin <= 1:
+    elif int(bin) <= 1:
         dailyentries()
     print("<<<<<<End Program>>>>>>>")
 
@@ -30,6 +30,19 @@ def dailyentries():  # prints out only entries for current date
     IMPORTANT test area for later parsing.
     """
     print("<<<<<DAILY-ENTIRES>>>>>")
+    databasefile = os.path.join(os.path.dirname(__file__), 'bin/Sqlite/StudentDatabase.sqlite')
+    conn = sqlite3.connect(databasefile)
+    c = conn.cursor()
+    print("  ID----NAME----DATE----ROOM--TIMEIN---TIMEOUT")
+    c.execute("SELECT * FROM student_table1")
+    myrawlist = c.fetchall()
+    counter = 0
+    for mytuple in myrawlist:
+        mystudent = SLC.Student(mytuple[0], mytuple[1], mytuple[2], mytuple[3], mytuple[4], mytuple[5])
+        if mystudent.clockindate == str(datetime.now().date()):
+            print(mytuple)
+            counter += 1
+    print(">DEBUG: Number of Students In Database: " + str(counter))
 
 
 def masterentries():  # prints out ALL entires
@@ -49,8 +62,6 @@ def masterentries():  # prints out ALL entires
     myrawlist = c.fetchall()
     for mytuple in myrawlist:
         print(mytuple)  # creates new line for each
-        mystudent = SLC.Student(mytuple[0], mytuple[1], mytuple[2], mytuple[3], mytuple[4], mytuple[5])
-        #print(">DEBUG: mystudent created with data: " + str(mystudent.printvalues()))
     print(">DEBUG: Number of Students In Database: " + str(len(myrawlist)))
 
 if __name__ == '__main__':
