@@ -51,7 +51,7 @@ class Application(tk.Tk):
         self.frames["ClockOut"].updatescreens()  # CHANGE ALL OF THESE TO ACCEPT THE ARRAY! easier to read!
         self.frames["PrimaryPage"].updatescreens()  # update how many rooms available!
 
-    def _create_databaseinterface(self, databasepos):
+    def _create_databaseinterface(self):
         """
         Creates the DatabaseInterface at the designated file position, set by default at
         "bin/Sqlite/StudentDatabase.sqlite". Check Debugger to see if database was created or not.
@@ -59,7 +59,10 @@ class Application(tk.Tk):
         self.mydatabase = DataBaseInterface(self.databaseposition)  # NOTE the default is the same everywhere
 
     def show_frame(self, page_name):
-        """Show a Frame for a given page name"""
+        """
+        Show a Frame for a given page name
+        :param page_name: page to change to
+        """
         self.updatescreens()
         f = self.frames[page_name]
         f.tkraise()
@@ -80,14 +83,14 @@ class Application(tk.Tk):
         """creates filemenu, and cascade. """
         filemenu = tk.Menu(self.menubar, tearoff=False)
         self.menubar.add_cascade(label="File", menu=filemenu)
-        filemenu.add_command(label="foo", command=self.dumb)  #DUMB referenced!
-        filemenu.add_command(label="Quit", command=self.quitprogram)  #DUMB referenced!
+        filemenu.add_command(label="foo", command=self.dumb)  # DUMB referenced!
+        filemenu.add_command(label="Quit", command=self.quitprogram)  # DUMB referenced!
 
     def _create_edit_menu(self):
         """creates editmenu, and cascade. """
         editmenu = tk.Menu(self.menubar, tearoff=False)
         self.menubar.add_cascade(label="Edit", menu=editmenu)
-        editmenu.add_command(label="Change2Prim", command=lambda: self.show_frame("PrimaryPage"))  # ADDED FOR DEBUGGING!
+        editmenu.add_command(label="Change2Prim", command=lambda: self.show_frame("PrimaryPage"))
         editmenu.add_command(label="Change2ClockIn", command=lambda: self.show_frame("ClockIn"))
         editmenu.add_command(label="Change2ClockOut", command=lambda: self.show_frame("ClockOut"))
         editmenu.add_command(label="Change2RA", command=lambda: self.show_frame("RoomAvailability"))
@@ -106,7 +109,7 @@ class Application(tk.Tk):
         """creates helpmenu, and cascade. """
         helpmenu = tk.Menu(self.menubar, tearoff=False)
         self.menubar.add_cascade(label="Help", menu=helpmenu)
-        helpmenu.add_command(label="About", command=self.dumb)  #DUMB referenced!
+        helpmenu.add_command(label="About", command=self.dumb)  # DUMB referenced!
 
     def quitprogram(self):
         print(">DEBUG: Quiting program via filemenu")
@@ -125,7 +128,7 @@ class Application(tk.Tk):
         print(">DEBUG: DumbFunction used")
 
     @staticmethod
-    def showpopup(self):
+    def showpopup():
         mypopup = Popups()
         mypopup.mainloop()
 
