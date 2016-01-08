@@ -181,4 +181,8 @@ features.
 
 Added PrimaryPage room availability. 
 
+### 1.0.0 REQUIREMENTS MET
+Program is offically entering beta stage. Basic implimentations have been added and completed. 
+
+
 

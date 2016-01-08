@@ -59,3 +59,24 @@ self.namevariable = tk.StringVar()  # create string variable
         self.button4.grid(column=1, row=6)
         self.button5 = tk.Button(self, height=1, width=2, command=lambda: self.clockout(5))
         self.button5.grid(column=1, row=7)
+
+===================================CLOCK IN TEXT, for buttons, to create dynamic
+        self.room1button = tk.Button(self, height=1, width=1, text="1",
+                                     command=lambda: self.roomnumber(1))
+        self.room1button.grid(column=1, row=3)
+
+        self.room2button = tk.Button(self, height=1, width=1, text="2",
+                                     command=lambda: self.roomnumber(2))
+        self.room2button.grid(column=2, row=3)
+
+        self.room3button = tk.Button(self, height=1, width=1, text="3",
+                                     command=lambda: self.roomnumber(3))
+        self.room3button.grid(column=3, row=3)
+
+        self.room4button = tk.Button(self, height=1, width=1, text="4",
+                                     command=lambda: self.roomnumber(4))
+        self.room4button.grid(column=4, row=3)
+
+        self.room5button = tk.Button(self, height=1, width=1, text="5",
+                                     command=lambda: self.roomnumber(5))
+        self.room5button.grid(column=5, row=3)

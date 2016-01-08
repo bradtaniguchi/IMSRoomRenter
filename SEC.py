@@ -37,6 +37,7 @@ class DebugBox(tk.Toplevel):
     def inserttext(self, text):
         self.textfield.insert(tk.INSERT, text)
 
+
 class ComfirmationDialog(tk.Toplevel):
     def __init__(self, displaytitle="ComfirmationDialog", displaytext="NOMSG"):
         """
@@ -47,12 +48,14 @@ class ComfirmationDialog(tk.Toplevel):
         """
         #CLEARLY UNFINISHED!
 
-class InfoBar():
-    def __init__(self, parent, comfunc, k, width=23, relcolumn=0, relrow=0):
+
+class InfoBar:
+    def __init__(self, parent, comfunc, comfuncparam, width=23, relcolumn=0, relrow=0):
         """
         Used to Dynamically create any number of rows to display information
         :param parent: Parent class, Frame
         :param comfunc: Command Function, command to use from parent.
+        :param comfuncparam: Command Function parameter, only accepts 1
         :param width: width of tk.entry
         :param relcolumn: relative column for tk.Entry
         :param relrow: relative row
@@ -65,5 +68,25 @@ class InfoBar():
         self.stringvar = tk.StringVar()
         self.infoentry = tk.Entry(parent, width=self.width, textvariable=self.stringvar)
         self.infoentry.grid(column=self.relcolumn, row=self.relrow)
-        self.infobutton = tk.Button(parent, height=1, width=2, command=lambda: comfunc(k))
+        self.infobutton = tk.Button(parent, height=1, width=2, command=lambda: comfunc(comfuncparam))
         self.infobutton.grid(column=(int(self.relcolumn)+1), row=self.relrow)
+
+
+class RoomButton:
+    def __init__(self, parent, comfunc, comfuncparam, text="?", relcolumn=0, relrow=0):
+        """
+        Used to dynamically create any number of classroom buttons.
+        :param parent: Parent class, Frame
+        :param comfunc: Command Function, command to use from parent
+        :param comfuncparam: Command Function Parameter, only accepts 1(room)
+        :param text: Text for Button (room number)
+        :param relcolumn: Relative Column
+        :param relrow: Relative Row
+        """
+        self.parent = parent
+        self.text = text
+        self.relcolumn = relcolumn
+        self.relrow = relrow
+        self.button = tk.Button(parent, height=1, width=1, text=self.text,
+                                command=lambda: comfunc(comfuncparam))
+        self.button.grid(column=self.relcolumn, row=self.relrow)

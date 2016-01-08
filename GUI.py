@@ -8,9 +8,11 @@ from SLC import Student, StudentCollection  # to create and handle StudentObject
 from SEC import Popups  # to create popups
 from SEC import DebugBox  # to create debugbox
 from SEC import InfoBar  # to display
+from SEC import RoomButton  # dynamically create RoomButtons
 
 __author__ = 'Bradley Taniguchi'
-__version__ = '0.7.8'
+__version__ = '1.0.1'
+# version 1.0.0 completed 1/7/16
 
 
 class Application(tk.Tk):
@@ -166,7 +168,7 @@ class PrimaryPage(tk.Frame):
     def changeframe(self, framestring):
         """
         Showes different frame, prints change to log.
-        :param stramestring: Frame to Change to
+        :param framestring: Frame to Change to
         """
         self.controller.show_frame(framestring)
 
@@ -204,7 +206,8 @@ class ClockIn(tk.Frame):
         self.roomslabel = tk.Label(self, text="Rooms Available")
         self.roomlabel = tk.Label(self, text="Room:")
         self.roomlabel.grid(column=0, row=3)
-        self._createroombuttons()
+        self.roombuttonslist = []
+        self._createroombuttons(5, 1, 3)
         self.roomchosentext = tk.StringVar()
         self.roomchosentext.set("0")
         self.roomchosenentry = tk.Entry(self, width=2, textvariable=self.roomchosentext)
@@ -215,38 +218,26 @@ class ClockIn(tk.Frame):
         self.clockinbutton.grid(column=0, columnspan=6, row=4)
         self.listofopenrooms = []
 
-    def _createroombuttons(self):  # change to dynamic amount at another time!
-        self.room1button = tk.Button(self, height=1, width=1, text="1",
-                                     command=lambda: self.roomnumber(1))
-        self.room1button.grid(column=1, row=3)
-
-        self.room2button = tk.Button(self, height=1, width=1, text="2",
-                                     command=lambda: self.roomnumber(2))
-        self.room2button.grid(column=2, row=3)
-
-        self.room3button = tk.Button(self, height=1, width=1, text="3",
-                                     command=lambda: self.roomnumber(3))
-        self.room3button.grid(column=3, row=3)
-
-        self.room4button = tk.Button(self, height=1, width=1, text="4",
-                                     command=lambda: self.roomnumber(4))
-        self.room4button.grid(column=4, row=3)
-
-        self.room5button = tk.Button(self, height=1, width=1, text="5",
-                                     command=lambda: self.roomnumber(5))
-        self.room5button.grid(column=5, row=3)
+    def _createroombuttons(self, buttons, startcolumn, startrow):  # change to dynamic amount at another time!
+        for i in range(buttons):
+            print(">>DEBUG: roombutton for i: " + str(i) + " : " + str(i+1))
+            myroombutton = RoomButton(self, self.roomnumber, (i+1), str(i+1), startcolumn+i, startrow)
+            self.roombuttonslist.append(myroombutton)
 
     def updatescreens(self):
         """
         Reads the Application class and checks the list of clocked in students seeing which rooms are available
         :return: a list of room numbers available. Isn't always used when called
         """
-        mylistofrooms =[]
+        mylistofrooms = []
         for student in self.controller.loggedinstudents:
             mylistofrooms.append(int(student.room))
         print(">>DEBUG:" + str(mylistofrooms))
         self.listofopenrooms = mylistofrooms  # changes rooms available.
-
+        for roombuttonobject in self.roombuttonslist:  # for each number in list, set all enabled!
+            roombuttonobject.button.configure(state=tk.ACTIVE)
+        for i in self.listofopenrooms:  # for each number in list
+            self.roombuttonslist[i-1].button.configure(state=tk.DISABLED)  # disables rooms filed
 
     def roomnumber(self, num):
         self.roomvaraible = num
@@ -272,7 +263,7 @@ class ClockIn(tk.Frame):
     def changeframe(self, framestring):
         """
         Showes different frame, prints change to log.
-        :param stramestring: Frame to Change to
+        :param framestring: Frame to Change to
         """
         self.controller.show_frame(framestring)
 
@@ -291,6 +282,7 @@ class ClockIn(tk.Frame):
         Gathers time and date
         :param name: Name of Student to Clock in
         :param studentid: Id of student that needs to clock in
+        :param room: Room of Student to clockin
         :return:
         """
         print(">DEBUG: Starting Clockin function with:\n" + "    " + str(name) + "\n    " + str(studentid))
@@ -316,15 +308,13 @@ class ClockOut(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
-        #self.clockoutmainlabel = tk.Label(self, text="Clockout")
-        #self.clockoutmainlabel.grid(column=0, columnspan=2, row=0)
         self.Descriptorinfo = tk.Label(self, text="StudentInfo")
         self.Descriptorinfo.grid(column=0, row=1)
         self.Descriptorclockout = tk.Label(self, text="Clockout")
         self.Descriptorclockout.grid(column=1, row=1)
         self.clockoutinforows = []  # list of clockoutbuttons
         self.mydatabaseinterface = DataBaseInterface()  # updated on updatestudents
-        self.mystudentcollection = StudentCollection() # updated on updatestudents
+        self.mystudentcollection = StudentCollection()  # updated on updatestudents
         self.createinforows(5, 2)  # initiation
 
     def createinforows(self, rows, startrow):
@@ -348,8 +338,8 @@ class ClockOut(tk.Frame):
         """
         print(">DEBUG: UpdatingStudents...")
         todaysdate = str(datetime.now().date())
-        self.mystudentcollection = self.mydatabaseinterface.gathercollection()  # gets all entries, actually reads database
-        self.mystudentcollection = self.mydatabaseinterface.dailycollection(self.mystudentcollection, todaysdate)  # only todays
+        self.mystudentcollection = self.mydatabaseinterface.gathercollection()  # gets all entries
+        self.mystudentcollection = self.mydatabaseinterface.dailycollection(self.mystudentcollection, todaysdate)
         self.mystudentcollection = self.mydatabaseinterface.whosclockedin(self.mystudentcollection)  # ONLY clocked in
         # now that I have a collection of students ONLY logged in, display data from them.
         i = 0  # for loop
@@ -364,7 +354,6 @@ class ClockOut(tk.Frame):
         for bar in range(len(self.clockoutinforows)):
             self.clockoutinforows[bar].stringvar.set("-------------------------")
         self.updatestudents()
-
 
     def clockout(self, buttonnumber):
         """
@@ -383,6 +372,7 @@ class ClockOut(tk.Frame):
 
     def changeframe(self, framestring):
         self.controller.show_frame(framestring)
+
 
 def startmain():
     """
