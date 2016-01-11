@@ -4,12 +4,11 @@
 
 import GUI
 
-__author__='Bradley Taniguchi'
-__version__='.5'
+__author__ = 'Bradley Taniguchi'
+__version__ = '.5'
 
 def myfunc():
-    print("Starting IMSStudyRoomGUI.py...")
-    #main.startmain()  # starts main function
+    print("Starting IMSRoomRenter.py...")
     GUI.startmain()
 
 if __name__ == '__main__':

@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 # Bradley Taniguchi
 # 12/18/15
-#SEC = Secondary Classes, to argument the primary GUI components
 
 import tkinter as tk
 from tkinter import scrolledtext  # for large textbox
+
 
 class Popups(tk.Toplevel):
     def __init__(self, displaytitle="NOTITLE", displaytext="NOMSG", displaybuttontext="Done"):
@@ -18,6 +18,7 @@ class Popups(tk.Toplevel):
 
     def exitwindow(self):
         self.destroy()  # destory popupwindow
+
 
 class DebugBox(tk.Toplevel):
     """
@@ -35,7 +36,10 @@ class DebugBox(tk.Toplevel):
         self.textfield.pack()
 
     def inserttext(self, text):
+        print("tired insert")
         self.textfield.insert(tk.INSERT, text)
+    def exitwindow(self):
+        self.destroy()
 
 
 class ComfirmationDialog(tk.Toplevel):

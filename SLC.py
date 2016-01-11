@@ -2,7 +2,6 @@
 # Bradley Taniguchi
 # 12/21/15
 
-from datetime import datetime
 import os
 import sqlite3
 
@@ -46,7 +45,6 @@ class StudentCollection:
         for mytuple in rawlist:
             mystudent = Student(mytuple[0], mytuple[1], mytuple[2], mytuple[3], mytuple[4], mytuple[5])
             self.listofstudents.append(mystudent)
-            #print(">DEBUG: Contents of convertraw:" + str(self.listofstudents))  # NEEDS TESTING! assuming it works!
 
     def printcontents(self):
         """
@@ -54,8 +52,8 @@ class StudentCollection:
         :return: String of object classes and their contents
         """
         mystring = ""
-        for Student in self.listofstudents:
-            mystring += (Student.printvalues())
+        for student in self.listofstudents:
+            mystring += (student.printvalues())
         return mystring  # TEST THIS!
 
 
@@ -103,10 +101,9 @@ class DataBaseInterface:
         c = conn.cursor()
         mytuple = [studentobject.studentid, studentobject.name, studentobject.clockindate, studentobject.room,
                    studentobject.clockintime, studentobject.clockouttime]
-        print("D>DEBUG: Using Clocking Student in...")
+        print("D>DEBUG: Clocking Student in...")
         try:
             c.execute("INSERT INTO student_table1 values (?, ?, ?, ?, ?, ?)", mytuple)
-            #print("SUCCESS: Added Student login:" + studentobject.name + " at " + studentobject.clockintime)  # make this return statement!
         except sqlite3.IntegrityError:
             print("D>ERROR: Sqlite3 Integrity Error")  # make this return statement!
         conn.commit()
@@ -125,7 +122,6 @@ class DataBaseInterface:
         conn.close()
         mystudentcollection = StudentCollection()
         mystudentcollection.convertraw(myrawlist)  # converts myrawlist to collection to .listofstudents
-        #print("D>DEBUG: How Many InMyStudentCollection: " + str(len(mystudentcollection.listofstudents)))
         return mystudentcollection
 
     @staticmethod
@@ -161,7 +157,7 @@ class DataBaseInterface:
         Will skip over Database entries that are already clocked out, with same information
         :param studentobject Primary Object to create clockin entry
         """
-        print(">DEBUG: Clockout function attempted...")
+        print("D>DEBUG: Clockout function attempted...")
         conn = sqlite3.connect(self.databasefile)
         c = conn.cursor()
         mytuple = [studentobject.clockouttime, studentobject.studentid, studentobject.name,

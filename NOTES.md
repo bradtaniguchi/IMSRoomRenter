@@ -183,11 +183,24 @@ Added PrimaryPage room availability.
 
 ### 1.0.0 REQUIREMENTS MET
 Program is offically entering beta stage. Basic implimentations have been added and completed. 
-=========================
+
+####-------UPDATE 1/11/16
+Will be trying to hit up the display bug, and starting to change over the name of the project in Github and elsewhere
+- after some debugging, need to run file existence database check to a function, that is called
+ONLY upon start of the application. The exception will catch in the Clockout and Clock in funtions.
+This will remove the "double" check everytime I initiate mydatabaseinterface
+
+Also found the double check, was running updatescreens EVERYTIME I started the program.
+going to change the updatescreen proccess to accept a secondary bool value, which when true updates
+screens, during the start loop it DOESN'T
+
+=========================BUGS
 ### BUG1: [1/7/16]
 Program doesn't display the corrent amount of students logged in, or out. 
 Find why it doesn't update when changing frames. 
 -think it has something to do with how clockout creates the objects
+
+
 
 
 

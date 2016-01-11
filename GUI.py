@@ -26,14 +26,15 @@ class Application(tk.Tk):
         container.pack(side="top", fill="both", expand=False)
         container.grid_rowconfigure(0, weight=1)
         container.grid_columnconfigure(0, weight=1)
-        self.title("TEST PROG")
-        self.minsize(width=300, height=300)  # Determined constant window size?
-        self.maxsize(width=300, height=300)
+        self.title("IMSRoomRenter v.1")
+        self.minsize(width=300, height=150)  # Determined constant window size?
+        self.maxsize(width=300, height=150)
         self.resizable(width=False, height=False)
+        self.menubar = tk.Menu()  # is this OK????
         self.create_menubar()  # creates static menubar
         self.frames = {}  # array of frames
         self.databaseposition = 'bin/Sqlite/StudentDatabase.sqlite'  # default database position
-        self._create_databaseinterface(self.databaseposition)
+        self._create_databaseinterface()
         self.loggedinstudents = []  # to see who is logged in. Gathered from Clockout
         self.roomsavail = 5
 
@@ -43,9 +44,11 @@ class Application(tk.Tk):
             self.frames[page_name] = frame
             frame.grid(row=0, column=0, sticky="NSEW")
         self.show_frame("PrimaryPage")
-        self.updatescreens()
+        self.primupdatescreens()
 
-    def updatescreens(self):
+    def primupdatescreens(self):
+        print(">>DEBUG: PrimUpdating screens...")
+        self.frames["ClockOut"].updatestudents()  # updates Students
         self.loggedinstudents = self.frames["ClockOut"].mystudentcollection.listofstudents
         self.frames["ClockIn"].updatescreens()  # update WHICH rooms are available
         self.frames["ClockOut"].updatescreens()  # CHANGE ALL OF THESE TO ACCEPT THE ARRAY! easier to read!
@@ -63,7 +66,7 @@ class Application(tk.Tk):
         Show a Frame for a given page name
         :param page_name: page to change to
         """
-        self.updatescreens()
+        self.updatescreens()  # EDIT THIS
         f = self.frames[page_name]
         f.tkraise()
 
@@ -73,7 +76,6 @@ class Application(tk.Tk):
         Calls: _create_file_menu, _create_edit_menu, _create_help_menu
         to create their respective menus.
         """
-        self.menubar = tk.Menu()  # is this OK????
         self.configure(menu=self.menubar)
         self._create_file_menu()
         self._create_edit_menu()
@@ -91,11 +93,11 @@ class Application(tk.Tk):
         editmenu = tk.Menu(self.menubar, tearoff=False)
         self.menubar.add_cascade(label="Edit", menu=editmenu)
         editmenu.add_command(label="Change2Prim", command=lambda: self.show_frame("PrimaryPage"))
-        editmenu.add_command(label="Change2ClockIn", command=lambda: self.show_frame("ClockIn"))
-        editmenu.add_command(label="Change2ClockOut", command=lambda: self.show_frame("ClockOut"))
+        # editmenu.add_command(label="Change2ClockIn", command=lambda: self.show_frame("ClockIn"))
+        # editmenu.add_command(label="Change2ClockOut", command=lambda: self.show_frame("ClockOut"))
         editmenu.add_command(label="Change2RA", command=lambda: self.show_frame("RoomAvailability"))
         editmenu.add_command(label="CreateTestPopup", command=lambda: self.showpopup)  # TEST!
-        editmenu.add_command(label="ShowDebugBox", command=lambda: self.showdebugbox("TEST!"))
+        editmenu.add_command(label="ShowDebugBox", command=lambda: self.showdebugbox())
         editmenu.add_command(label="TestDaily", command=lambda: self.testdaily())
 
     def testdaily(self):
@@ -103,7 +105,7 @@ class Application(tk.Tk):
         mydatabaseinterface = DataBaseInterface()
         mystudentcollection = mydatabaseinterface.gathercollection()
         mydatabaseinterface.dailycollection(mystudentcollection, currentdate)
-        self.showdebugbox(str(mydatabaseinterface))
+        #self.showdebugbox(str(mydatabaseinterface))
 
     def _create_help_menu(self):
         """creates helpmenu, and cascade. """
@@ -115,16 +117,22 @@ class Application(tk.Tk):
         print(">DEBUG: Quiting program via filemenu")
         self.quit()
 
-    def showdebugbox(self, textboxtext):
+    def updatedebugbox(self, appendtext):
+        """
+        Updates the string of debugbox
+        :param appendtext: text to append to debugbox
+        """
+        print(">>DEBUG: Updating TextBox")
+        self.mydebugbox.inserttext(appendtext)
+
+    def showdebugbox(self):
         """
         Displays Current Contents of Database, using DatabaseInterface
-        :param textboxtext: String to Display in Box
         """
-        mydebugbox = DebugBox("DebugBox", textboxtext)
-        mydebugbox.mainloop()
+        #self.mydebugbox.mainloop()  # needs work
 
-    @staticmethod
-    def dumb():
+    def dumb(self):
+        self.updatedebugbox(">DEBUG: DumbFunctionUsed!")
         print(">DEBUG: DumbFunction used")
 
     @staticmethod
@@ -214,27 +222,24 @@ class ClockIn(tk.Frame):
         self.roomchosentext.set("0")
         self.roomchosenentry = tk.Entry(self, width=2, textvariable=self.roomchosentext)
         self.roomchosenentry.grid(column=0, row=4)
-        self.clockinbutton = tk.Button(self, height=1, width=5, text="submit",
-                                       command=lambda: self.clockin(self.namevariable.get(),
-                                                                    self.idvariable.get(), self.roomvaraible))
-        self.clockinbutton.grid(column=0, columnspan=6, row=4)
+        #self.clockinbutton = tk.Button(self, height=1, width=5, text="submit",
+        #                               command=lambda: self.clockin(self.namevariable.get(),
+        #                                                            self.idvariable.get(), self.roomvaraible))
+        #self.clockinbutton.grid(column=0, columnspan=6, row=4)
         self.listofopenrooms = []
 
     def _createroombuttons(self, buttons, startcolumn, startrow):  # change to dynamic amount at another time!
         for i in range(buttons):
-            print(">>DEBUG: roombutton for i: " + str(i) + " : " + str(i+1))
             myroombutton = RoomButton(self, self.roomnumber, (i+1), str(i+1), startcolumn+i, startrow)
             self.roombuttonslist.append(myroombutton)
 
     def updatescreens(self):
         """
         Reads the Application class and checks the list of clocked in students seeing which rooms are available
-        :return: a list of room numbers available. Isn't always used when called
         """
         mylistofrooms = []
         for student in self.controller.loggedinstudents:
             mylistofrooms.append(int(student.room))
-        print(">>DEBUG:" + str(mylistofrooms))
         self.listofopenrooms = mylistofrooms  # changes rooms available.
         for roombuttonobject in self.roombuttonslist:  # for each number in list, set all enabled!
             roombuttonobject.button.configure(state=tk.ACTIVE)
@@ -287,7 +292,7 @@ class ClockIn(tk.Frame):
         :param room: Room of Student to clockin
         :return:
         """
-        print(">DEBUG: Starting Clockin function with:\n" + "    " + str(name) + "\n    " + str(studentid))
+        #print(">DEBUG: Starting Clockin function with:\n" + "    " + str(name) + "\n    " + str(studentid))
         booleanreturn, stringreturn = self.validinput(name, studentid)
         if self.checkroom(room) and booleanreturn is True:  # Room and inputs OK
             clockindate = str(datetime.now().date())  # format: 2015-12-31
