@@ -64,12 +64,18 @@ class DataBaseInterface:
     def __init__(self, filename='bin/Sqlite/StudentDatabase.sqlite'):  # currently redundant
         self.filedirectory = filename
         self.databasefile = os.path.join(os.path.dirname(__file__), str(filename))
+
+    def checkifdatabaseexists(self, databasefile):
+        """
+        Checks if database exists
+        :param databasefile: Location of database file
+        """
         if os.path.isfile(self.databasefile):
             print("D>DEBUG: File Exists!")
         else:
             print("D>DEBUG: File Doesn't Exist, creating it now..")
             print(str(self.databasefile))
-            print(str(filename))
+            print(str(self.filedirectory))
             self._createstudentdatabase(self.databasefile)  # create the file
 
     def _createstudentdatabase(self, database):

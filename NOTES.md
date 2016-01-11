@@ -184,7 +184,7 @@ Added PrimaryPage room availability.
 ### 1.0.0 REQUIREMENTS MET
 Program is offically entering beta stage. Basic implimentations have been added and completed. 
 
-####-------UPDATE 1/11/16
+####-------UPDATE 1/11/16 new Version 1.0.5
 Will be trying to hit up the display bug, and starting to change over the name of the project in Github and elsewhere
 - after some debugging, need to run file existence database check to a function, that is called
 ONLY upon start of the application. The exception will catch in the Clockout and Clock in funtions.
@@ -194,11 +194,19 @@ Also found the double check, was running updatescreens EVERYTIME I started the p
 going to change the updatescreen proccess to accept a secondary bool value, which when true updates
 screens, during the start loop it DOESN'T
 
+fixed bugs, and created GUI popups for more friendly advisement, started moving non-database print statements
+to DebugBox window. Idk if reload button does anything, but who cares, so far it works. But no real time changes
+
 =========================BUGS
-### BUG1: [1/7/16]
+BUG1: [1/7/16] fixed! [1/11/16]
 Program doesn't display the corrent amount of students logged in, or out. 
 Find why it doesn't update when changing frames. 
 -think it has something to do with how clockout creates the objects
+
+BUG1: [1/11/16] fixed! [1/11/16]
+Program doesn't handle exception when you hit the logout button on empty students.
+Gives IndexError: List index out of range. 
+Going to fix this with catch, does nothing.
 
 
 

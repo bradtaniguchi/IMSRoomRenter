@@ -11,8 +11,8 @@ from SEC import InfoBar  # to display
 from SEC import RoomButton  # dynamically create RoomButtons
 
 __author__ = 'Bradley Taniguchi'
-__version__ = '1.0.1'
-# version 1.0.0 completed 1/7/16
+__version__ = '1.0.5'
+# version 1.0.5 completed 1/11/16
 
 
 class Application(tk.Tk):
@@ -37,17 +37,17 @@ class Application(tk.Tk):
         self._create_databaseinterface()
         self.loggedinstudents = []  # to see who is logged in. Gathered from Clockout
         self.roomsavail = 5
-
+        self.mydebugstring = ""
         for F in (PrimaryPage, ClockIn, ClockOut):  # initialize all frame/Classes
             page_name = F.__name__
             frame = F(container, self)
             self.frames[page_name] = frame
             frame.grid(row=0, column=0, sticky="NSEW")
         self.show_frame("PrimaryPage")
-        self.primupdatescreens()
+        # self.primupdatescreens()
 
     def primupdatescreens(self):
-        print(">>DEBUG: PrimUpdating screens...")
+        self.sysprint(">>DEBUG: PrimUpdating screens...")
         self.frames["ClockOut"].updatestudents()  # updates Students
         self.loggedinstudents = self.frames["ClockOut"].mystudentcollection.listofstudents
         self.frames["ClockIn"].updatescreens()  # update WHICH rooms are available
@@ -60,13 +60,14 @@ class Application(tk.Tk):
         "bin/Sqlite/StudentDatabase.sqlite". Check Debugger to see if database was created or not.
         """
         self.mydatabase = DataBaseInterface(self.databaseposition)  # NOTE the default is the same everywhere
+        self.mydatabase.checkifdatabaseexists(self.databaseposition)  # checks to see if databasefile exists
 
     def show_frame(self, page_name):
         """
         Show a Frame for a given page name
         :param page_name: page to change to
         """
-        self.updatescreens()  # EDIT THIS
+        self.primupdatescreens()  # EDIT THIS
         f = self.frames[page_name]
         f.tkraise()
 
@@ -85,59 +86,59 @@ class Application(tk.Tk):
         """creates filemenu, and cascade. """
         filemenu = tk.Menu(self.menubar, tearoff=False)
         self.menubar.add_cascade(label="File", menu=filemenu)
-        filemenu.add_command(label="foo", command=self.dumb)  # DUMB referenced!
+        filemenu.add_command(label="PrintDataBase", command=self.dumb)  # DUMB referenced!
         filemenu.add_command(label="Quit", command=self.quitprogram)  # DUMB referenced!
 
     def _create_edit_menu(self):
         """creates editmenu, and cascade. """
         editmenu = tk.Menu(self.menubar, tearoff=False)
         self.menubar.add_cascade(label="Edit", menu=editmenu)
-        editmenu.add_command(label="Change2Prim", command=lambda: self.show_frame("PrimaryPage"))
-        # editmenu.add_command(label="Change2ClockIn", command=lambda: self.show_frame("ClockIn"))
-        # editmenu.add_command(label="Change2ClockOut", command=lambda: self.show_frame("ClockOut"))
-        editmenu.add_command(label="Change2RA", command=lambda: self.show_frame("RoomAvailability"))
-        editmenu.add_command(label="CreateTestPopup", command=lambda: self.showpopup)  # TEST!
+        editmenu.add_command(label="Go to MainPage", command=lambda: self.show_frame("PrimaryPage"))
+        editmenu.add_command(label="CreateTestPopup", command=lambda: self.showpopup("title", "text"))  # TEST!
         editmenu.add_command(label="ShowDebugBox", command=lambda: self.showdebugbox())
-        editmenu.add_command(label="TestDaily", command=lambda: self.testdaily())
+        # editmenu.add_command(label="TestDaily", command=lambda: self.testdaily())
 
     def testdaily(self):
         currentdate = str(datetime.now().date())
         mydatabaseinterface = DataBaseInterface()
         mystudentcollection = mydatabaseinterface.gathercollection()
-        mydatabaseinterface.dailycollection(mystudentcollection, currentdate)
-        #self.showdebugbox(str(mydatabaseinterface))
+        mystudentcollection = mydatabaseinterface.dailycollection(mystudentcollection, currentdate)
+        self.sysprint(str(mystudentcollection.listofstudents[0]))
+        self.showdebugbox()
 
     def _create_help_menu(self):
         """creates helpmenu, and cascade. """
         helpmenu = tk.Menu(self.menubar, tearoff=False)
         self.menubar.add_cascade(label="Help", menu=helpmenu)
-        helpmenu.add_command(label="About", command=self.dumb)  # DUMB referenced!
+        helpmenu.add_command(label="About", command=lambda: self.sysprint("1"))  # TEST!
 
     def quitprogram(self):
         print(">DEBUG: Quiting program via filemenu")
+        self.sysprint(">:")
         self.quit()
 
-    def updatedebugbox(self, appendtext):
+    def sysprint(self, appendtext):
         """
-        Updates the string of debugbox
+        Updates the string of debugbox, adds newline and timestamp
         :param appendtext: text to append to debugbox
         """
-        print(">>DEBUG: Updating TextBox")
-        self.mydebugbox.inserttext(appendtext)
+        thetime = (str(datetime.now().time().hour) + ":" + str(datetime.now().time().minute) + ":" +
+                   str(datetime.now().time().second))
+        self.mydebugstring += (">["+str(thetime)+"]" + appendtext + "\n")
 
     def showdebugbox(self):
         """
         Displays Current Contents of Database, using DatabaseInterface
         """
-        #self.mydebugbox.mainloop()  # needs work
+        mydebugbox = DebugBox("DebugBox", self.mydebugstring)
+        mydebugbox.mainloop()  # needs work
 
     def dumb(self):
         self.updatedebugbox(">DEBUG: DumbFunctionUsed!")
         print(">DEBUG: DumbFunction used")
 
-    @staticmethod
-    def showpopup():
-        mypopup = Popups()
+    def showpopup(self, title, text):
+        mypopup = Popups(title, text)
         mypopup.mainloop()
 
 
@@ -166,12 +167,13 @@ class PrimaryPage(tk.Frame):
         self.ratextbox = tk.Entry(self, width=2, textvariable=self.roomsavailablestring)
         self.ratextbox.grid(column=1, row=2, padx=self.bpadx, pady=self.bpady)
         self.ratextbox.configure(state='readonly')
-        self.pack()
+
 
     def updatescreens(self):
         """
         Updates Rooms Available for display
         """
+        self.controller.sysprint("Updating Screens in PrimaryPage")
         stringtoprint = str(5-len(self.controller.loggedinstudents))  # undynamic
         self.roomsavailablestring.set(stringtoprint)
 
@@ -222,10 +224,10 @@ class ClockIn(tk.Frame):
         self.roomchosentext.set("0")
         self.roomchosenentry = tk.Entry(self, width=2, textvariable=self.roomchosentext)
         self.roomchosenentry.grid(column=0, row=4)
-        #self.clockinbutton = tk.Button(self, height=1, width=5, text="submit",
-        #                               command=lambda: self.clockin(self.namevariable.get(),
-        #                                                            self.idvariable.get(), self.roomvaraible))
-        #self.clockinbutton.grid(column=0, columnspan=6, row=4)
+        self.clockinbutton = tk.Button(self, height=1, width=5, text="submit",
+                                       command=lambda: self.clockin(self.namevariable.get(),
+                                                                    self.idvariable.get(), self.roomvaraible))
+        self.clockinbutton.grid(column=0, columnspan=6, row=4)
         self.listofopenrooms = []
 
     def _createroombuttons(self, buttons, startcolumn, startrow):  # change to dynamic amount at another time!
@@ -274,14 +276,6 @@ class ClockIn(tk.Frame):
         """
         self.controller.show_frame(framestring)
 
-    @staticmethod
-    def checkroom(roomnumber):
-        if roomnumber > 5 or roomnumber <= 0:
-            return False  # keep things simple, bad class number then NOT available Duh!
-        else:
-            print(">DEBUG: TRYING TO CHECK IF ROOM AVAILABLE!")
-            return True  # test value, this program has NO IDEA if rooms are actually available
-
     def clockin(self, name, studentid, room):
         """
         Clocks a student into a room, calls checkroom, to check the room, and checks inputs
@@ -294,17 +288,23 @@ class ClockIn(tk.Frame):
         """
         #print(">DEBUG: Starting Clockin function with:\n" + "    " + str(name) + "\n    " + str(studentid))
         booleanreturn, stringreturn = self.validinput(name, studentid)
-        if self.checkroom(room) and booleanreturn is True:  # Room and inputs OK
-            clockindate = str(datetime.now().date())  # format: 2015-12-31
-            clockintime = str(datetime.now().time().hour) + ":" + str(datetime.now().time().minute)
-            mystudentlogin = Student(studentid, name, clockindate, room, clockintime)  # no clockin as None
-            mydatabaseinterface = DataBaseInterface()  # default file location
-            mydatabaseinterface.clockin(mystudentlogin)
-            self.clearinputs()
-            self.changeframe("PrimaryPage")
+        if booleanreturn is True:  # Room and inputs OK
+            if room == 0:
+                self.controller.sysprint("ERROR! Room 0!")
+                mypopup = Popups("ERROR!", "Bad Input Choose  room!")
+                mypopup.mainloop()
+            else:
+                clockindate = str(datetime.now().date())  # format: 2015-12-31
+                clockintime = str(datetime.now().time().hour) + ":" + str(datetime.now().time().minute)
+                mystudentlogin = Student(studentid, name, clockindate, room, clockintime)  # no clockin as None
+                mydatabaseinterface = DataBaseInterface()  # default file location
+                mydatabaseinterface.clockin(mystudentlogin)
+                self.clearinputs()
+                self.changeframe("PrimaryPage")
         else:
-            print(">DEBUG: ERROR! Bad Input: " + stringreturn)
-            #go onto fix things here:
+            self.controller.sysprint(">ERROR! Bad Input: " + stringreturn)
+            mypopup = Popups("Error!", "Bad Input " + stringreturn)
+            mypopup.mainloop()
 
 
 class ClockOut(tk.Frame):
@@ -343,7 +343,7 @@ class ClockOut(tk.Frame):
             .dailycollection() - returns StudentCollection for just today, USES DATETIME
             .whosclockedin - returns JUST whos clocked in!
         """
-        print(">DEBUG: UpdatingStudents...")
+        self.controller.sysprint(">DEBUG: UpdatingStudents...")
         todaysdate = str(datetime.now().date())
         self.mystudentcollection = self.mydatabaseinterface.gathercollection()  # gets all entries
         self.mystudentcollection = self.mydatabaseinterface.dailycollection(self.mystudentcollection, todaysdate)
@@ -370,12 +370,22 @@ class ClockOut(tk.Frame):
         :return:
         """
         self.clockoutinforows[buttonnumber].stringvar.set("-------------------------")  # clears out
-        clockintime = str(datetime.now().time().hour) + ":" + str(datetime.now().time().minute)
-        self.mystudentcollection.listofstudents[buttonnumber].clockouttime = clockintime
-        print(">DEBUG: ClockoutMethod trying.." + str(self.mystudentcollection.listofstudents[buttonnumber].name) +
-              " at " + clockintime)
-        self.mydatabaseinterface.clockout(self.mystudentcollection.listofstudents[buttonnumber])
-        self.changeframe("PrimaryPage")
+        clockouttime = str(datetime.now().time().hour) + ":" + str(datetime.now().time().minute)
+        try:
+            self.mystudentcollection.listofstudents[buttonnumber].clockouttime = clockouttime
+            self.controller.sysprint(">DEBUG: ClockoutMethod trying.." +
+                                     str(self.mystudentcollection.listofstudents[buttonnumber].name) +
+                                     " at " + clockouttime)
+            self.mydatabaseinterface.clockout(self.mystudentcollection.listofstudents[buttonnumber])
+            logoutstring = ("Logout of " + str(self.mystudentcollection.listofstudents[buttonnumber].name) + " At " +
+                            clockouttime)
+            self.changeframe("PrimaryPage")
+            mypopup = Popups("Logout Successful", logoutstring, "Ok")
+            mypopup.mainloop()
+
+        except:  # meh to broad?
+            self.controller.sysprint(">ERROR!: Bad Clockout")
+            pass
 
     def changeframe(self, framestring):
         self.controller.show_frame(framestring)

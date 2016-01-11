@@ -80,3 +80,8 @@ self.namevariable = tk.StringVar()  # create string variable
         self.room5button = tk.Button(self, height=1, width=1, text="5",
                                      command=lambda: self.roomnumber(5))
         self.room5button.grid(column=5, row=3)
+===============================TRYING TO ADD PICTURE TO PRIMARY PAGE
+        #self.myphoto = tk.PhotoImage(file="bin/DomYmRws.png")
+        #self.myphotolabel = tk.Label(image=self.myphoto, text="bop")
+        #self.myphotolabel.image = self.myphoto
+        #self.myphotolabel.pack(fill=tk.BOTH)  # doesnt work

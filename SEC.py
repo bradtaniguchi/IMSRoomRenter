@@ -31,26 +31,24 @@ class DebugBox(tk.Toplevel):
                                                    wrap=tk.WORD,
                                                    width=50,
                                                    height=20)
-        self.inserttext(displaytext)
+        self.displaytext = displaytext
+        self.inserttext(self.displaytext)
         self.textfield.configure(state='disabled')
-        self.textfield.pack()
+        self.textfield.grid(column=0, columnspan=2, row=0)
+        self.loadbutton = tk.Button(self, height=1, width=10, text="Reload", command=lambda: self.updatestring())
+        self.loadbutton.grid(column=0, row=1)
+        self.exitbutton = tk.Button(self, height=1, width=10, text="Exit", command=lambda: self.exitwindow())
+        self.exitbutton.grid(column=1, row=1)
+
+    def updatestring(self):  # idk if this actually does anything
+        self.inserttext(self.displaytext)
 
     def inserttext(self, text):
-        print("tired insert")
+        print("tried insert")
         self.textfield.insert(tk.INSERT, text)
+
     def exitwindow(self):
         self.destroy()
-
-
-class ComfirmationDialog(tk.Toplevel):
-    def __init__(self, displaytitle="ComfirmationDialog", displaytext="NOMSG"):
-        """
-        Creates a TopLevel window, with yes no dialogs
-        :param displaytitle: Text to be displayed on titlebar
-        :param displaytext: Text to be displayed in the middle of the frame
-        :return: True/False for Yes, No button comfirmation. No if frame deletion
-        """
-        #CLEARLY UNFINISHED!
 
 
 class InfoBar:
