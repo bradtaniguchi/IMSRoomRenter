@@ -9,6 +9,7 @@ from SEC import Popups  # to create popups
 from SEC import DebugBox  # to create debugbox
 from SEC import InfoBar  # to display
 from SEC import RoomButton  # dynamically create RoomButtons
+from SEC import AboutMenu  # to display about
 
 __author__ = 'Bradley Taniguchi'
 __version__ = '1.0.5'
@@ -110,12 +111,20 @@ class Application(tk.Tk):
         """creates helpmenu, and cascade. """
         helpmenu = tk.Menu(self.menubar, tearoff=False)
         self.menubar.add_cascade(label="Help", menu=helpmenu)
-        helpmenu.add_command(label="About", command=lambda: self.sysprint("1"))  # TEST!
+        helpmenu.add_command(label="About", command=lambda: self.showaboutmenu())  # TEST!
+
+    @staticmethod
+    def showaboutmenu():
+        """
+        Displays the About Menu
+        """
+        myaboutmenu = AboutMenu()
+        myaboutmenu.mainloop()
 
     def quitprogram(self):
-        print(">DEBUG: Quiting program via filemenu")
-        self.sysprint(">:")
+        self.sysprint(">:Quiting program via filemenu")
         self.quit()
+        self.destroy()
 
     def sysprint(self, appendtext):
         """

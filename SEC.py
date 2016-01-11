@@ -4,6 +4,7 @@
 
 import tkinter as tk
 from tkinter import scrolledtext  # for large textbox
+import GUI
 
 
 class Popups(tk.Toplevel):
@@ -17,6 +18,7 @@ class Popups(tk.Toplevel):
         button.pack()
 
     def exitwindow(self):
+        self.quit()
         self.destroy()  # destory popupwindow
 
 
@@ -48,8 +50,34 @@ class DebugBox(tk.Toplevel):
         self.textfield.insert(tk.INSERT, text)
 
     def exitwindow(self):
+        self.quit()
         self.destroy()
 
+
+class AboutMenu(tk.Toplevel):
+    """
+    Displays from the Help menu, details the project, and resources for this program.
+    """
+    def __init__(self):
+        tk.Toplevel.__init__(self)
+        self.title("IMSRoomRenter About")
+        self.mainstring = ("IMSRoomRenter Version " + GUI.__version__ + "\n\n" +
+                           "Created by " + GUI.__author__ + "\n\n" +
+                           "For the Instructional Media Service Department\n" +
+                           "At California State University Dominguez Hills\n\n" +
+                           "Using Python3, Tkinter and Sqlite3\n\n" +
+                           "Project Was started on 1/18/15, \n"
+                           "and version 1.0.0 was declared complete on 1/7/16\n\n"
+                           "Project is hosted at: \n"
+                           "https://github.com/bradtaniguchi/IMSRoomRenter\n")
+        self.primarylabel = tk.Label(self, text=self.mainstring, padx=5, pady=1, relief=tk.SUNKEN)
+        self.primarylabel.pack()
+        self.button = tk.Button(self, text="Done", command=self.exit)
+        self.button.pack()
+
+    def exit(self):
+        self.quit()
+        self.destroy()
 
 class InfoBar:
     def __init__(self, parent, comfunc, comfuncparam, width=23, relcolumn=0, relrow=0):
@@ -92,3 +120,4 @@ class RoomButton:
         self.button = tk.Button(parent, height=1, width=1, text=self.text,
                                 command=lambda: comfunc(comfuncparam))
         self.button.grid(column=self.relcolumn, row=self.relrow)
+
