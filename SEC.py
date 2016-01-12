@@ -57,6 +57,7 @@ class DebugBox(tk.Toplevel):
 class AboutMenu(tk.Toplevel):
     """
     Displays from the Help menu, details the project, and resources for this program.
+
     """
     def __init__(self):
         tk.Toplevel.__init__(self)
