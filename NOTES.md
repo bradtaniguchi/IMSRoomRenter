@@ -197,18 +197,24 @@ screens, during the start loop it DOESN'T
 fixed bugs, and created GUI popups for more friendly advisement, started moving non-database print statements
 to DebugBox window. Idk if reload button does anything, but who cares, so far it works. But no real time changes
 
+####------UPDATE 1/12/16
+Bug fixing, and testing of all the features. Along with that I'll be working on the IMSAdmin.py
+Program.
+
+
 =========================BUGS
 BUG1: [1/7/16] fixed! [1/11/16]
 Program doesn't display the corrent amount of students logged in, or out. 
 Find why it doesn't update when changing frames. 
 -think it has something to do with how clockout creates the objects
 
-BUG1: [1/11/16] fixed! [1/11/16]
+BUG2: [1/11/16] fixed! [1/11/16]
 Program doesn't handle exception when you hit the logout button on empty students.
 Gives IndexError: List index out of range. 
 Going to fix this with catch, does nothing.
 
-
-
+BUG3: [1/12/16]
+Need to add a noticible go BACK button in clockout and Clickin
+OR add it to the top window menu?
 
 

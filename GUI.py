@@ -10,6 +10,7 @@ from SEC import DebugBox  # to create debugbox
 from SEC import InfoBar  # to display
 from SEC import RoomButton  # dynamically create RoomButtons
 from SEC import AboutMenu  # to display about
+import os  # to exit
 
 __author__ = 'Bradley Taniguchi'
 __version__ = '1.0.5'
@@ -123,8 +124,9 @@ class Application(tk.Tk):
 
     def quitprogram(self):
         self.sysprint(">:Quiting program via filemenu")
-        self.quit()
-        self.destroy()
+        # self.quit()
+        # self.destroy()
+        exit(0)  # exit program
 
     def sysprint(self, appendtext):
         """
@@ -146,7 +148,8 @@ class Application(tk.Tk):
         self.updatedebugbox(">DEBUG: DumbFunctionUsed!")
         print(">DEBUG: DumbFunction used")
 
-    def showpopup(self, title, text):
+    @staticmethod
+    def showpopup(title, text):
         mypopup = Popups(title, text)
         mypopup.mainloop()
 
@@ -176,7 +179,6 @@ class PrimaryPage(tk.Frame):
         self.ratextbox = tk.Entry(self, width=2, textvariable=self.roomsavailablestring)
         self.ratextbox.grid(column=1, row=2, padx=self.bpadx, pady=self.bpady)
         self.ratextbox.configure(state='readonly')
-
 
     def updatescreens(self):
         """
@@ -295,7 +297,7 @@ class ClockIn(tk.Frame):
         :param room: Room of Student to clockin
         :return:
         """
-        #print(">DEBUG: Starting Clockin function with:\n" + "    " + str(name) + "\n    " + str(studentid))
+        # print(">DEBUG: Starting Clockin function with:\n" + "    " + str(name) + "\n    " + str(studentid))
         booleanreturn, stringreturn = self.validinput(name, studentid)
         if booleanreturn is True:  # Room and inputs OK
             if room == 0:
@@ -391,7 +393,6 @@ class ClockOut(tk.Frame):
             self.changeframe("PrimaryPage")
             mypopup = Popups("Logout Successful", logoutstring, "Ok")
             mypopup.mainloop()
-
         except:  # meh to broad?
             self.controller.sysprint(">ERROR!: Bad Clockout")
             pass
