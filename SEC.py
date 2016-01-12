@@ -79,6 +79,7 @@ class AboutMenu(tk.Toplevel):
         self.quit()
         self.destroy()
 
+
 class InfoBar:
     def __init__(self, parent, comfunc, comfuncparam, width=23, relcolumn=0, relrow=0):
         """

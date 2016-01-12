@@ -197,9 +197,10 @@ screens, during the start loop it DOESN'T
 fixed bugs, and created GUI popups for more friendly advisement, started moving non-database print statements
 to DebugBox window. Idk if reload button does anything, but who cares, so far it works. But no real time changes
 
-####------UPDATE 1/12/16
+####------UPDATE 1/12/16 new Version 1.0.7
 Bug fixing, and testing of all the features. Along with that I'll be working on the IMSAdmin.py
 Program.
+Added a few ease of life improvements.
 
 
 =========================BUGS

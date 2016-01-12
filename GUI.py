@@ -13,8 +13,8 @@ from SEC import AboutMenu  # to display about
 import os  # to exit
 
 __author__ = 'Bradley Taniguchi'
-__version__ = '1.0.5'
-# version 1.0.5 completed 1/11/16
+__version__ = '1.0.7'
+# version 1.0.7 completed 1/12/16
 
 
 class Application(tk.Tk):
@@ -218,16 +218,16 @@ class ClockIn(tk.Frame):
         self.roomvaraible = 0  # default integer variable
         self.clockinlabel = tk.Label(self, text="Clock-In")
         self.clockinlabel.grid(column=0, columnspan=6, row=0, sticky=tk.NSEW)
-        self.namelabel = tk.Label(self, text="Name:")
+        self.namelabel = tk.Label(self, text="(1.)Name:")
         self.namelabel.grid(column=0, row=1)
         self.nametextbox = tk.Entry(self, width=32, textvariable=self.namevariable)
         self.nametextbox.grid(column=1, columnspan=5, row=1)
-        self.studentidlabel = tk.Label(self, text="Student ID:")
+        self.studentidlabel = tk.Label(self, text="(2.)Student ID:")
         self.studentidlabel.grid(column=0, row=2)
         self.studentidtextbox = tk.Entry(self, width=32, textvariable=self.idvariable)
         self.studentidtextbox.grid(column=1, columnspan=5, row=2)
         self.roomslabel = tk.Label(self, text="Rooms Available")
-        self.roomlabel = tk.Label(self, text="Room:")
+        self.roomlabel = tk.Label(self, text="(3.)Room:")
         self.roomlabel.grid(column=0, row=3)
         self.roombuttonslist = []
         self._createroombuttons(5, 1, 3)
@@ -235,7 +235,7 @@ class ClockIn(tk.Frame):
         self.roomchosentext.set("0")
         self.roomchosenentry = tk.Entry(self, width=2, textvariable=self.roomchosentext)
         self.roomchosenentry.grid(column=0, row=4)
-        self.clockinbutton = tk.Button(self, height=1, width=5, text="submit",
+        self.clockinbutton = tk.Button(self, height=1, width=8, text="(4.)submit",
                                        command=lambda: self.clockin(self.namevariable.get(),
                                                                     self.idvariable.get(), self.roomvaraible))
         self.clockinbutton.grid(column=0, columnspan=6, row=4)
