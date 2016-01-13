@@ -68,7 +68,7 @@ class AboutMenu(tk.Toplevel):
                            "At California State University Dominguez Hills\n\n" +
                            "Using b Python3, Tkinter and Sqlite3\n\n" +
                            "Project Was started on 1/18/15, \n"
-                           "and version 1.0.0 was declared complete on 1/7/16\n\n"
+                           "and version 1.0.0 was declared complete on 1/7/16   \n\n"
                            "Project is hosted at: \n"
                            "https://github.com/bradtaniguchi/IMSRoomRenter\n")
         self.primarylabel = tk.Label(self, text=self.mainstring, padx=5, pady=1, relief=tk.SUNKEN)
