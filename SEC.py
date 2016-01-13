@@ -45,7 +45,7 @@ class DebugBox(tk.Toplevel):
     def updatestring(self):
         self.textfield.configure(state='normal')
         self.displaytext = self.controller.mydebugstring  # LEAP OF FAITH!
-        self.textfield.insert(tk.END, "==============================")
+        self.textfield.insert(tk.END, "==============================\n")
         self.textfield.insert(tk.END, str(self.displaytext))
         self.textfield.configure(state='disabled')
 

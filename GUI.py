@@ -35,6 +35,7 @@ class Application(tk.Tk):
         self.resizable(width=False, height=False)
         self.menubar = tk.Menu()  # is this OK????
         self.create_menubar()  # creates static menubar
+        self.updateflag = True
         self.menubar.add_separator()
         self.menubar.add_command(label="Back", command=lambda: self.show_frame("PrimaryPage"))
         self.frames = {}  # array of frames
@@ -50,12 +51,14 @@ class Application(tk.Tk):
         self.show_frame("PrimaryPage")
 
     def primupdatescreens(self):
-        self.sysprint(">DEBUG: PrimUpdating screens...")
-        self.frames["ClockOut"].updatestudents()  # updates Students
-        self.loggedinstudents = self.frames["ClockOut"].mystudentcollection.listofstudents
-        self.frames["ClockIn"].updatescreens()  # update WHICH rooms are available
-        self.frames["ClockOut"].updatescreens()  # CHANGE ALL OF THESE TO ACCEPT THE ARRAY! easier to read!
-        self.frames["PrimaryPage"].updatescreens()  # update how many rooms available!
+        if self.updateflag:
+            self.sysprint(">DEBUG: PrimUpdating screens...")
+            self.frames["ClockOut"].updatestudents()  # updates Students
+            self.loggedinstudents = self.frames["ClockOut"].mystudentcollection.listofstudents
+            self.frames["ClockIn"].updatescreens()  # update WHICH rooms are available
+            self.frames["ClockOut"].updatescreens()  # CHANGE ALL OF THESE TO ACCEPT THE ARRAY! easier to read!
+            self.frames["PrimaryPage"].updatescreens()  # update how many rooms available!
+            self.updateflag = False
 
     def _create_databaseinterface(self):
         """
@@ -321,6 +324,7 @@ class ClockIn(tk.Frame):
                 mydatabaseinterface = DataBaseInterface()  # default file location
                 mydatabaseinterface.clockin(mystudentlogin)
                 self.clearinputs()
+                self.controller.updateflag = True  # dangerous is it not?
                 self.changeframe("PrimaryPage")
         else:
             self.controller.sysprint(">ERROR! Bad Input: " + stringreturn)
@@ -400,6 +404,7 @@ class ClockOut(tk.Frame):
             self.mydatabaseinterface.clockout(self.mystudentcollection.listofstudents[buttonnumber])
             logoutstring = ("Logout of " + str(self.mystudentcollection.listofstudents[buttonnumber].name) + " At " +
                             clockouttime)
+            self.controller.updateflag = True  # dangerous is it not?
             self.changeframe("PrimaryPage")
             mypopup = Popups("Logout Successful", logoutstring, "Ok")
             mypopup.mainloop()

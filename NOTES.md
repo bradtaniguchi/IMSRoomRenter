@@ -202,9 +202,13 @@ Bug fixing, and testing of all the features. Along with that I'll be working on 
 Program.
 Added a few ease of life improvements.
 
-####------UPDATE 1/13/16
+####------UPDATE 1/13/16 New Version 1.0.8
 Working on IMSAdmin.py and PrintToFile.py files and adding IMSAdmin start function to edit in GUI
-Also getting back to adding a picture to the program
+Also getting back to adding a picture to the program.
+
+New Idea on how to handle the crazy amounts of databaseupdates. New Version 1.0.8
+Adding a boolean flag for the database updates. Also need to figure out how to CLEAR the ScrolledText, as
+right now it just reprints everything, which is annoying
 
 =========================BUGS
 BUG1: [1/7/16] fixed! [1/11/16]
