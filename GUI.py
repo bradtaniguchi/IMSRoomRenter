@@ -35,6 +35,8 @@ class Application(tk.Tk):
         self.resizable(width=False, height=False)
         self.menubar = tk.Menu()  # is this OK????
         self.create_menubar()  # creates static menubar
+        self.menubar.add_separator()
+        self.menubar.add_command(label="Back", command=lambda: self.show_frame("PrimaryPage"))
         self.frames = {}  # array of frames
         self.databaseposition = 'bin/Sqlite/StudentDatabase.sqlite'  # default database position
         self._create_databaseinterface()
@@ -46,10 +48,9 @@ class Application(tk.Tk):
             self.frames[page_name] = frame
             frame.grid(row=0, column=0, sticky="NSEW")
         self.show_frame("PrimaryPage")
-        # self.primupdatescreens()
 
     def primupdatescreens(self):
-        self.sysprint(">>DEBUG: PrimUpdating screens...")
+        self.sysprint(">DEBUG: PrimUpdating screens...")
         self.frames["ClockOut"].updatestudents()  # updates Students
         self.loggedinstudents = self.frames["ClockOut"].mystudentcollection.listofstudents
         self.frames["ClockIn"].updatescreens()  # update WHICH rooms are available
