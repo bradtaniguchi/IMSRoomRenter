@@ -29,6 +29,7 @@ class Application(tk.Tk):
         container.grid_rowconfigure(0, weight=1)
         container.grid_columnconfigure(0, weight=1)
         self.title("IMSRoomRenter v.1")
+        self.mydebugstring = " "
         self.minsize(width=300, height=150)  # Determined constant window size?
         self.maxsize(width=300, height=150)
         self.resizable(width=False, height=False)
@@ -39,7 +40,6 @@ class Application(tk.Tk):
         self._create_databaseinterface()
         self.loggedinstudents = []  # to see who is logged in. Gathered from Clockout
         self.roomsavail = 5
-        self.mydebugstring = ""
         for F in (PrimaryPage, ClockIn, ClockOut):  # initialize all frame/Classes
             page_name = F.__name__
             frame = F(container, self)
@@ -88,7 +88,7 @@ class Application(tk.Tk):
         """creates filemenu, and cascade. """
         filemenu = tk.Menu(self.menubar, tearoff=False)
         self.menubar.add_cascade(label="File", menu=filemenu)
-        filemenu.add_command(label="PrintDataBase", command=self.dumb)  # DUMB referenced!
+        filemenu.add_command(label="PrintDataBase", command=lambda:self.printtofile(""))  # DUMB referenced!
         filemenu.add_command(label="Quit", command=self.quitprogram)  # DUMB referenced!
 
     def _create_edit_menu(self):
@@ -96,7 +96,6 @@ class Application(tk.Tk):
         editmenu = tk.Menu(self.menubar, tearoff=False)
         self.menubar.add_cascade(label="Edit", menu=editmenu)
         editmenu.add_command(label="Go to MainPage", command=lambda: self.show_frame("PrimaryPage"))
-        editmenu.add_command(label="CreateTestPopup", command=lambda: self.showpopup("title", "text"))  # TEST!
         editmenu.add_command(label="ShowDebugBox", command=lambda: self.showdebugbox())
         # editmenu.add_command(label="TestDaily", command=lambda: self.testdaily())
 
@@ -122,6 +121,15 @@ class Application(tk.Tk):
         myaboutmenu = AboutMenu()
         myaboutmenu.mainloop()
 
+    def printtofile(self, relfilepath):
+        """
+        Prints Database file to an output path
+        :param relfilepath: Relative File path for output file
+        """
+        self.sysprint("Printing to File at" + relfilepath)
+        # self.databaseposition
+        # WORK HERE
+
     def quitprogram(self):
         self.sysprint(">:Quiting program via filemenu")
         # self.quit()
@@ -141,17 +149,12 @@ class Application(tk.Tk):
         """
         Displays Current Contents of Database, using DatabaseInterface
         """
-        mydebugbox = DebugBox("DebugBox", self.mydebugstring)
+        mydebugbox = DebugBox(self, "DebugBox")  #
         mydebugbox.mainloop()  # needs work
 
     def dumb(self):
         self.updatedebugbox(">DEBUG: DumbFunctionUsed!")
         print(">DEBUG: DumbFunction used")
-
-    @staticmethod
-    def showpopup(title, text):
-        mypopup = Popups(title, text)
-        mypopup.mainloop()
 
 
 class PrimaryPage(tk.Frame):
@@ -168,10 +171,10 @@ class PrimaryPage(tk.Frame):
         self.bpadx = 2
         self.bpady = 2
         self.parent = parent
-        self.clockinbutton = tk.Button(self, height=1, width=10, text="Clock-In",
+        self.clockinbutton = tk.Button(self, height=2, width=10, text="Clock-In",
                                        command=lambda: self.changeframe("ClockIn"))
         self.clockinbutton.grid(column=0, row=0, padx=self.bpadx, pady=self.bpady)  # EDIT TO CENTER!
-        self.clockoutbutton = tk.Button(self, height=1, width=10, text="Clock-Out",
+        self.clockoutbutton = tk.Button(self, height=2, width=10, text="Clock-Out",
                                         command=lambda: self.changeframe("ClockOut"))
         self.clockoutbutton.grid(column=0, row=1, padx=self.bpadx, pady=self.bpady)
         self.ralabel = tk.Label(self, text="Rooms Available:")
@@ -179,6 +182,12 @@ class PrimaryPage(tk.Frame):
         self.ratextbox = tk.Entry(self, width=2, textvariable=self.roomsavailablestring)
         self.ratextbox.grid(column=1, row=2, padx=self.bpadx, pady=self.bpady)
         self.ratextbox.configure(state='readonly')
+
+        self._filepath = os.path.join(os.path.dirname(__file__), "bin/Dhill1.png")
+        self.myimage = tk.PhotoImage(file=self._filepath)
+        self.myimagelabel = tk.Label(self, image=self.myimage)
+        self.myimagelabel.image = self.myimage
+        self.myimagelabel.grid(column=2, rowspan=4, row=0)
 
     def updatescreens(self):
         """

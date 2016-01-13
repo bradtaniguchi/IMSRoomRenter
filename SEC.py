@@ -24,30 +24,30 @@ class Popups(tk.Toplevel):
 
 class DebugBox(tk.Toplevel):
     """
-    Displays a large uneditable text area to display current contents of database
+    Displays a large uneditable text area to display current printouts
     """
-    def __init__(self, displaytitle="DebugBox", displaytext="NOMSG", displaybuttontext="done"):
+    def __init__(self, parentobject, displaytitle="DebugBox", displaybuttontext="done"):
         tk.Toplevel.__init__(self)
         self.title(displaytitle)
         self.textfield = scrolledtext.ScrolledText(master=self,
                                                    wrap=tk.WORD,
                                                    width=50,
                                                    height=20)
-        self.displaytext = displaytext
-        self.inserttext(self.displaytext)
-        self.textfield.configure(state='disabled')
+        self.controller = parentobject  # object creating this object
+        self.displaytext = ""
         self.textfield.grid(column=0, columnspan=2, row=0)
         self.loadbutton = tk.Button(self, height=1, width=10, text="Reload", command=lambda: self.updatestring())
         self.loadbutton.grid(column=0, row=1)
         self.exitbutton = tk.Button(self, height=1, width=10, text="Exit", command=lambda: self.exitwindow())
         self.exitbutton.grid(column=1, row=1)
+        self.updatestring()
 
-    def updatestring(self):  # idk if this actually does anything
-        self.inserttext(self.displaytext)
-
-    def inserttext(self, text):
-        print("tried insert")
-        self.textfield.insert(tk.INSERT, text)
+    def updatestring(self):
+        self.textfield.configure(state='normal')
+        self.displaytext = self.controller.mydebugstring  # LEAP OF FAITH!
+        self.textfield.insert(tk.END, "==============================")
+        self.textfield.insert(tk.END, str(self.displaytext))
+        self.textfield.configure(state='disabled')
 
     def exitwindow(self):
         self.quit()

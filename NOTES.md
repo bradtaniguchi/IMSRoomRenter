@@ -202,6 +202,9 @@ Bug fixing, and testing of all the features. Along with that I'll be working on 
 Program.
 Added a few ease of life improvements.
 
+####------UPDATE 1/13/16
+Working on IMSAdmin.py and PrintToFile.py files and adding IMSAdmin start function to edit in GUI
+Also getting back to adding a picture to the program
 
 =========================BUGS
 BUG1: [1/7/16] fixed! [1/11/16]
