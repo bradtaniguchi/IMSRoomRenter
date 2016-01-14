@@ -139,14 +139,18 @@ class IMSAdmin:
         while True:
             print("===PRINT CONTENTS===")
             print("[1] Print All Time Logs for " + self.databasetable)
-            print("[2] Print Daily Logs for " + self.databasetable)
+            print("[2] Print Monthly Logs for " + self.databasetable)
+            print("[3] Print Daily Logs for " + self.databasetable)
             print("[0] GoBack")
             userinput = input(">: ")
             if userinput == "1":
                 self.clearscreen()
-                #self.print_alltime()
+                self.print_alltime()
                 break
             elif userinput == "2":
+                self.clearscreen()
+                #self.print_monthly()
+            elif userinput == "3":
                 self.clearscreen()
                 #self.print_daily()
                 break
@@ -159,6 +163,12 @@ class IMSAdmin:
                 print("Bad Input")
                 self.printcontents()
             break
+
+    def print_alltime(self):
+        print("===PRINTING CONTENTS ALL TIME===")
+        print("Datbase at: " + str(self.databasefilepath) + " Table: " + str(self.databasetable))
+        for student in self.mystudentcollection.listofstudents:
+            print(student)
 
     def modifycontents(self):  ########################################################################################
         while True:
