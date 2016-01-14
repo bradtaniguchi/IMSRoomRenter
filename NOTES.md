@@ -210,6 +210,10 @@ New Idea on how to handle the crazy amounts of databaseupdates. New Version 1.0.
 Adding a boolean flag for the database updates. Also need to figure out how to CLEAR the ScrolledText, as
 right now it just reprints everything, which is annoying
 
+####------UPDATE 1/14/16
+Going to keep working on IMSAdmin.py, and PrintToFile.py
+Loads of code being put down for IMSAdmin!
+
 =========================BUGS
 BUG1: [1/7/16] fixed! [1/11/16]
 Program doesn't display the corrent amount of students logged in, or out. 
@@ -221,7 +225,7 @@ Program doesn't handle exception when you hit the logout button on empty student
 Gives IndexError: List index out of range. 
 Going to fix this with catch, does nothing.
 
-BUG3: [1/12/16]
+BUG3: [1/12/16] fixed [1/13/16]
 Need to add a noticible go BACK button in clockout and Clickin
 OR add it to the top window menu?
 
