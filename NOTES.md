@@ -214,6 +214,14 @@ right now it just reprints everything, which is annoying
 Going to keep working on IMSAdmin.py, and PrintToFile.py
 Loads of code being put down for IMSAdmin!
 
+####-----UPDATE 1/15/16
+Worked on IMSAdmin. Still needs a few more touches for Month parsing
+and the Management handling. 
+
+FINAL FEATURES
+-Add a Popupwindow with pictures of the rooms.
+-Fix Bug4
+
 =========================BUGS
 BUG1: [1/7/16] fixed! [1/11/16]
 Program doesn't display the corrent amount of students logged in, or out. 
@@ -229,4 +237,7 @@ BUG3: [1/12/16] fixed [1/13/16]
 Need to add a noticible go BACK button in clockout and Clickin
 OR add it to the top window menu?
 
+BUG4: [1/11/16]
+Database gets checked twice every time the databse needs to be updated.
+Fix this so It only is checked one time.
 

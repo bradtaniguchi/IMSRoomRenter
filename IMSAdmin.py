@@ -14,10 +14,12 @@ from SLC import Student
 from SLC import StudentCollection
 
 class IMSAdmin:
-    def __init__(self, datfilepath="bin/Sqlite/StudentDatabase.sqlite", tablename="student_table1"):
+    def __init__(self, datfilepath="bin/Sqlite/StudentDatabase.sqlite", tablename="student_table1",
+                 outputfile="bin/Printout.txt"):
         self.databasefilepath = os.path.join(os.path.dirname(__file__), str(datfilepath))
         self.databasetable = str(tablename)
         self.mystudentcollection = self.readdatabase()
+        self.outputfilepath = os.path.join(os.path.dirname(__file__), str(outputfile))
 
     def prompt(self):
         print("Starting IMSAdmin....")
@@ -90,7 +92,7 @@ class IMSAdmin:
     def view_alltime(self):
         print("Datbase at: " + str(self.databasefilepath) + " Table: " + str(self.databasetable))
         for student in self.mystudentcollection.listofstudents:
-            print(student)
+            print(student.printvalues())
 
     def view_dailycontroller(self):
         while True:
@@ -107,8 +109,14 @@ class IMSAdmin:
                 self.clearscreen()
                 print("===Custom Date==")
                 year = input("Year: ")
+                if len(year) == 1:
+                    year = "0" + year
                 month = input("Month: ")
+                if len(month) == 1:
+                    month = "0" + month
                 day = input("Day: ")
+                if len(day) == 1:
+                    day = "0" + day
                 mydate = (str(year) + "-" + str(month) + "-" + str(day))
                 self.view_daily(mydate)
                 break
@@ -117,14 +125,15 @@ class IMSAdmin:
                 self.viewcontents()
             break
 
-    def view_daily(self, datestring):
+    def view_daily(self, datestring):  # EDI THIS
+        print(str(datestring)) #2016-01-15
         print("Datbase at: " + str(self.databasefilepath) + " Table: " + str(self.databasetable))
         mystudentcollection = StudentCollection()
         for student in self.mystudentcollection.listofstudents:
             if student.clockindate == datestring:  # DEBUG THIS!
                 mystudentcollection.listofstudents.append(student)
         for student in mystudentcollection.listofstudents:
-            print(student)
+            print(student.printvalues())
 
     def view_loggedin(self):
         print("Datbase at: " + str(self.databasefilepath) + " Table: " + str(self.databasetable))
@@ -133,7 +142,7 @@ class IMSAdmin:
             if student.clockouttime == "None":  # DEBUG THIS!
                 mystudentcollection.listofstudents.append(student)
         for student in mystudentcollection.listofstudents:
-            print(student)
+            print(student.printvalues())
 
     def printcontents(self):  #########################################################################################
         while True:
@@ -149,10 +158,11 @@ class IMSAdmin:
                 break
             elif userinput == "2":
                 self.clearscreen()
+                print("NonFunctional!")
                 #self.print_monthly()
             elif userinput == "3":
                 self.clearscreen()
-                #self.print_daily()
+                self.print_dailycontroller()
                 break
             elif userinput == "0":
                 self.clearscreen()
@@ -167,8 +177,73 @@ class IMSAdmin:
     def print_alltime(self):
         print("===PRINTING CONTENTS ALL TIME===")
         print("Datbase at: " + str(self.databasefilepath) + " Table: " + str(self.databasetable))
+        print("Output file at: " + str(self.outputfilepath))
+        myfile = open(str(self.outputfilepath), 'w')
+        myfile.write("DATAOUTPUT DUMP " + str(datetime.now().date()) + "\n")
         for student in self.mystudentcollection.listofstudents:
-            print(student)
+            myfile.write(">" + student.printvalues()+"\n")
+        print("Done!")
+
+    def print_monthly(self):
+        print("NON FUNCTIONAL US ALLTIME!")
+        '''print("===PRINTING CONTENTS MONTHLY===")
+        print("Database at: " + str(self.databasefilepath) + " Table: " + str(self.databasetable))
+        print("Output file at: " + str(self.outputfilepath))
+        myfile = open(str(self.outputfilepath), 'w')
+        myfile.write("DATAOUTPUT DUMP " + str(datetime.now().date()) + "\n")
+        mystudentcollection = StudentCollection()
+        for student in self.mystudentcollection.listofstudents:
+            mymonth = student.clockindate
+            if mymonth == datetime.now().date().month:  # DEBUG THIS!
+                mystudentcollection.listofstudents.append(student)
+        for student in mystudentcollection.listofstudents:
+            myfile.write((">" + student.printvalues() + "\n"))
+        print("Done!")'''
+
+    def print_dailycontroller(self):
+        while True:
+            print("===Daily Entries===")
+            print("[1] Todays Date")
+            print("[2] Custom Date")
+            print("[0] GoBack")
+            userinput = input(">: ")
+            if userinput == "1":
+                self.clearscreen()
+                self.print_daily(str(datetime.now().date()))  # TODAYS DATE!
+                break
+            elif userinput == "2":
+                self.clearscreen()
+                print("===Custom Date==")
+                year = input("Year: ")
+                if len(year) == 1:
+                    year = "0" + year
+                month = input("Month: ")
+                if len(month) == 1:
+                    month = "0" + month
+                day = input("Day: ")
+                if len(day) == 1:
+                    day = "0" + day
+                mydate = (str(year) + "-" + str(month) + "-" + str(day))
+                self.print_daily(mydate)
+                break
+            elif userinput == "0":
+                self.clearscreen()
+                self.printcontents()
+            break
+
+    def print_daily(self, datestring):
+        print("===PRINTING CONTENTS DAILY===")
+        print("Datbase at: " + str(self.databasefilepath) + " Table: " + str(self.databasetable))
+        print("Output file at: " + str(self.outputfilepath))
+        myfile = open(str(self.outputfilepath), 'w')
+        myfile.write("DATAOUTPUT DUMP " + str(datetime.now().date()) + "\n")
+        mystudentcollection = StudentCollection()
+        for student in self.mystudentcollection.listofstudents:
+            if student.clockindate == datestring:  # DEBUG THIS!
+                mystudentcollection.listofstudents.append(student)
+        for student in mystudentcollection.listofstudents:
+            myfile.write((">" + student.printvalues() + "\n"))
+        print("Done!")
 
     def modifycontents(self):  ########################################################################################
         while True:
@@ -179,10 +254,12 @@ class IMSAdmin:
             userinput = input(">: ")
             if userinput == "1":
                 self.clearscreen()
+                print("NONFUNCTIONAL")
                 #self.mod_changetablename()
                 break
             elif userinput == "2":
                 self.clearscreen()
+                print("NONFUNCTIONAL")
                 #self.mod_backupdatabase()
                 break
             elif userinput == "0":
@@ -194,7 +271,6 @@ class IMSAdmin:
                 print("BadInput")
                 self.modifycontents()
             break
-
 
     @staticmethod
     def clearscreen():

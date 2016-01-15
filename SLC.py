@@ -23,10 +23,18 @@ class Student:
         Returns values for testing
         :return: String, to be displayed
         """
-        returnstring = "ID" + str(self.studentid) + " Name: " + str(self.name) + " ClockinDate " \
+        returnstring = "ID " + str(self.studentid) + " Name: " + str(self.name) + " ClockinDate " \
                        + str(self.clockindate) + " Room: " + str(self.room) + " ClockinTime: " + str(self.clockintime)\
                        + " ClockoutTime: " + str(self.clockouttime)
         return returnstring
+
+    def rawtuple(self):
+        """
+        Returns a raw tuple for more Effecient displays than printvalues
+        :return: Tuple: [ID, Name, ClockinDate, Room, ClockinTime, ClockOutTime]
+        """
+        returntuple = [self.studentid, self.name, self.clockindate, self.room, self.clockintime, self.clockouttime]
+        return returntuple
 
 
 class StudentCollection:
