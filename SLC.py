@@ -23,9 +23,9 @@ class Student:
         Returns values for testing
         :return: String, to be displayed
         """
-        returnstring = "ID " + str(self.studentid) + " Name: " + str(self.name) + " ClockinDate " \
-                       + str(self.clockindate) + " Room: " + str(self.room) + " ClockinTime: " + str(self.clockintime)\
-                       + " ClockoutTime: " + str(self.clockouttime)
+        returnstring = "ID " + str(self.studentid) + " N: " + str(self.name) + " CDate " \
+                       + str(self.clockindate) + " R: " + str(self.room) + " Cin: " + str(self.clockintime)\
+                       + " Cout: " + str(self.clockouttime)
         return returnstring
 
     def rawtuple(self):
