@@ -14,6 +14,7 @@ from SLC import Student
 from SLC import StudentCollection
 from shutil import copyfile  # to backup database
 
+
 class IMSAdmin:
     def __init__(self, datfilepath="bin/Sqlite/StudentDatabase.sqlite", tablename="student_table1",
                  outputfile="bin/Printout.txt", outputdatabase="bin/StudentDatabase.sqlite.Backup"):

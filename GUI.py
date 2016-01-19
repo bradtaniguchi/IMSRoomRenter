@@ -10,6 +10,8 @@ from SEC import DebugBox  # to create debugbox
 from SEC import InfoBar  # to display
 from SEC import RoomButton  # dynamically create RoomButtons
 from SEC import AboutMenu  # to display about
+from SEC import RoomView  # to display picture of room
+from IMSAdmin import IMSAdmin
 import os  # to exit
 
 __author__ = 'Bradley Taniguchi'
@@ -86,13 +88,14 @@ class Application(tk.Tk):
         self.configure(menu=self.menubar)
         self._create_file_menu()
         self._create_edit_menu()
+        self._create_view_menu()
         self._create_help_menu()
 
     def _create_file_menu(self):
         """creates filemenu, and cascade. """
         filemenu = tk.Menu(self.menubar, tearoff=False)
         self.menubar.add_cascade(label="File", menu=filemenu)
-        filemenu.add_command(label="PrintDataBase", command=lambda:self.printtofile(""))  # DUMB referenced!
+        filemenu.add_command(label="PrintDataBase", command=lambda: self.startimsadmin())  # DUMB referenced!
         filemenu.add_command(label="Quit", command=self.quitprogram)  # DUMB referenced!
 
     def _create_edit_menu(self):
@@ -103,19 +106,53 @@ class Application(tk.Tk):
         editmenu.add_command(label="ShowDebugBox", command=lambda: self.showdebugbox())
         # editmenu.add_command(label="TestDaily", command=lambda: self.testdaily())
 
-    def testdaily(self):
+    def _create_view_menu(self):
+        viewmenu = tk.Menu(self.menubar, tearoff=False)
+        self.menubar.add_cascade(label="View", menu=viewmenu)
+        viewmenu.add_command(label="ViewRoom1", command=lambda: self.showroomview(1))  # CHANGE!
+        viewmenu.add_command(label="ViewRoom2", command=lambda: self.showroomview(2))  # CHANGE!
+        viewmenu.add_command(label="ViewRoom3", command=lambda: self.showroomview(3))  # CHANGE!
+        viewmenu.add_command(label="ViewRoom4", command=lambda: self.showroomview(4))  # CHANGE!
+        viewmenu.add_command(label="ViewRoom5", command=lambda: self.showroomview(5))  # CHANGE!
+
+        '''def testdaily(self):
         currentdate = str(datetime.now().date())
         mydatabaseinterface = DataBaseInterface()
         mystudentcollection = mydatabaseinterface.gathercollection()
         mystudentcollection = mydatabaseinterface.dailycollection(mystudentcollection, currentdate)
         self.sysprint(str(mystudentcollection.listofstudents[0]))
-        self.showdebugbox()
+        self.showdebugbox()'''
 
     def _create_help_menu(self):
         """creates helpmenu, and cascade. """
         helpmenu = tk.Menu(self.menubar, tearoff=False)
         self.menubar.add_cascade(label="Help", menu=helpmenu)
         helpmenu.add_command(label="About", command=lambda: self.showaboutmenu())  # TEST!
+
+    @staticmethod
+    def showroomview(roomnumber):
+        """
+        Displays a tk.TopLevel window of the room
+        :param roomnumber: Number of Rooms to view
+        """
+        if roomnumber == 1:
+            mypopup = RoomView("Room1", "bin/Room1.png")
+            mypopup.mainloop()
+        elif roomnumber == 2:
+            mypopup = RoomView("Room2", "bin/Room2.png")
+            mypopup.mainloop()
+        elif roomnumber == 3:
+            mypopup = RoomView("Room3", "bin/Room3.png")
+            mypopup.mainloop()
+        elif roomnumber == 4:
+            mypopup = RoomView("Room4", "bin/Room4.png")
+            mypopup.mainloop()
+        elif roomnumber == 5:
+            mypopup = RoomView("Room5", "bin/Room5.png")
+            mypopup.mainloop()
+        else:
+            mypopup = Popups("ERROR!", "Internal Error Bad Room Request!")
+            mypopup.mainloop()
 
     @staticmethod
     def showaboutmenu():
@@ -125,14 +162,10 @@ class Application(tk.Tk):
         myaboutmenu = AboutMenu()
         myaboutmenu.mainloop()
 
-    def printtofile(self, relfilepath):
-        """
-        Prints Database file to an output path
-        :param relfilepath: Relative File path for output file
-        """
-        self.sysprint("Printing to File at" + relfilepath)
-        # self.databaseposition
-        # WORK HERE
+    def startimsadmin(self):
+        self.sysprint("IMSAdmin Starting...")
+        mypopup = Popups("IMSAdmin", "Must be Ran from outside of Program!")
+        mypopup.mainloop()
 
     def quitprogram(self):
         self.sysprint(">:Quiting program via filemenu")
@@ -156,9 +189,9 @@ class Application(tk.Tk):
         mydebugbox = DebugBox(self, "DebugBox")  #
         mydebugbox.mainloop()  # needs work
 
-    def dumb(self):
+    '''def dumb(self):
         self.updatedebugbox(">DEBUG: DumbFunctionUsed!")
-        print(">DEBUG: DumbFunction used")
+        print(">DEBUG: DumbFunction used")'''
 
 
 class PrimaryPage(tk.Frame):

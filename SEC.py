@@ -5,6 +5,7 @@
 import tkinter as tk
 from tkinter import scrolledtext  # for large textbox
 import GUI
+import os
 
 
 class Popups(tk.Toplevel):
@@ -20,6 +21,23 @@ class Popups(tk.Toplevel):
     def exitwindow(self):
         self.quit()
         self.destroy()  # destory popupwindow
+
+
+class RoomView(tk.Toplevel):
+    def __init__(self, displaytitle="RoomView", displaypicturepath="bin/Dhill1.png"):
+        tk.Toplevel.__init__(self)
+        self.title(displaytitle)
+        self._filepath = os.path.join(os.path.dirname(__file__), displaypicturepath)
+        self.myimage = tk.PhotoImage(file=self._filepath)
+        self.myimagelabel = tk.Label(self, image=self.myimage)
+        self.myimagelabel.image = self.myimage
+        self.myimagelabel.pack()
+        self.mybutton = tk.Button(self, text="Done", command=self.exit)
+        self.mybutton.pack()
+
+    def exit(self):
+        self.quit()
+        self.destroy()
 
 
 class DebugBox(tk.Toplevel):
