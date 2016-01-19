@@ -17,20 +17,27 @@ from shutil import copyfile  # to backup database
 
 class IMSAdmin:
     def __init__(self, datfilepath="bin/Sqlite/StudentDatabase.sqlite", tablename="student_table1",
-                 outputfile="bin/Printout.txt", outputdatabase="bin/StudentDatabase.sqlite.Backup"):
+                 outputfile="bin/Printout.txt", outputdatabase="bin/Sqlite/StudentDatabase.sqlite.Backup"):
         self.databasefilepath = os.path.join(os.path.dirname(__file__), str(datfilepath))
         self.databasetable = str(tablename)
         self.mystudentcollection = self.readdatabase()
         self.outputfilepath = os.path.join(os.path.dirname(__file__), str(outputfile))
         self.outputdatabase = outputdatabase
+        print("Starting IMSAdmin....")
+        print(  " ___   __   __  _______  _______  ______   __   __  ___   __    _\n" +
+                "|   | |  |_|  ||       ||   _   ||      | |  |_|  ||   | |  |  | |\n" +
+                "|   | |       ||  _____||  |_|  ||  _    ||       ||   | |   |_| |\n" +
+                "|   | |       || |_____ |       || | |   ||       ||   | |       |\n" +
+                "|   | |       ||_____  ||       || |_|   ||       ||   | |  _    |\n" +
+                "|   | | ||_|| | _____| ||   _   ||       || ||_|| ||   | | | |   |\n" +
+                "|___| |_|   |_||_______||__| |__||______| |_|   |_||___| |_|  |__|\n")
 
     def prompt(self):
-        print("Starting IMSAdmin....")
         while True:
             print("===MAIN PAGE===")
             print("[1] View Contents of Database")
             print("[2] Print Contents of Entire Database")
-            print("[3] Modify database files]")
+            print("[3] Modify database files")
             print("[0] Exit")
             userinput = input(">: ")
             if userinput == "1":
@@ -96,6 +103,7 @@ class IMSAdmin:
         print("Datbase at: " + str(self.databasefilepath) + " Table: " + str(self.databasetable))
         for student in self.mystudentcollection.listofstudents:
             print(student.printvalues())
+        self.retpause()
 
     def view_dailycontroller(self):
         while True:
@@ -137,6 +145,7 @@ class IMSAdmin:
                 mystudentcollection.listofstudents.append(student)
         for student in mystudentcollection.listofstudents:
             print(student.printvalues())
+        self.retpause()
 
     def view_loggedin(self):
         print("Datbase at: " + str(self.databasefilepath) + " Table: " + str(self.databasetable))
@@ -146,6 +155,7 @@ class IMSAdmin:
                 mystudentcollection.listofstudents.append(student)
         for student in mystudentcollection.listofstudents:
             print(student.printvalues())
+        self.retpause()
 
     def printcontents(self):  #########################################################################################
         while True:
@@ -185,6 +195,7 @@ class IMSAdmin:
         for student in self.mystudentcollection.listofstudents:
             myfile.write(">" + student.printvalues()+"\n")
         print("Done!")
+        self.retpause()
 
     def print_monthly(self):
         print("===PRINTING CONTENTS MONTHLY===")
@@ -205,6 +216,7 @@ class IMSAdmin:
         for student in mystudentcollection.listofstudents:
             myfile.write((">" + student.printvalues() + "\n"))
         print("Done!")
+        self.retpause()
 
     def print_dailycontroller(self):
         while True:
@@ -250,6 +262,7 @@ class IMSAdmin:
         for student in mystudentcollection.listofstudents:
             myfile.write((">" + student.printvalues() + "\n"))
         print("Done!")
+        self.retpause()
 
     def modifycontents(self):  ########################################################################################
         while True:
@@ -264,8 +277,7 @@ class IMSAdmin:
                 break
             elif userinput == "2":
                 self.clearscreen()
-                print("NONFUNCTIONAL")
-                #self.mod_backupdatabase()
+                self.mod_backupdatabase()
                 break
             elif userinput == "0":
                 self.clearscreen()
@@ -279,14 +291,21 @@ class IMSAdmin:
 
     def mod_changetablename(self):
         print("NonFunctional!")
+        self.retpause()
 
     def mod_backupdatabase(self):
         print("Backingup Database, Program MUST be restarted!")
         copyfile(str(self.databasefilepath), str(self.outputdatabase))
         print("Database Backupfile located at: " + str(self.outputdatabase))
+        self.retpause()
+
+    def retpause(self):
+        input("Hit Enter to go back to menu")
+        self.prompt()
 
     @staticmethod
     def clearscreen():
+        print("\n\n\n\n\n")
         print("\n\n\n\n\n")
         print("\n\n\n\n\n")
 
