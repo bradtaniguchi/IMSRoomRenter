@@ -15,8 +15,8 @@ from IMSAdmin import IMSAdmin
 import os  # to exit
 
 __author__ = 'Bradley Taniguchi'
-__version__ = '1.0.7'
-# version 1.0.7 completed 1/12/16
+__version__ = '1.0.9'
+# version 1.0.9 completed 1/19/16
 
 
 class Application(tk.Tk):
@@ -42,7 +42,6 @@ class Application(tk.Tk):
         self.menubar.add_command(label="Back", command=lambda: self.show_frame("PrimaryPage"))
         self.frames = {}  # array of frames
         self.databaseposition = 'bin/Sqlite/StudentDatabase.sqlite'  # default database position
-        self._create_databaseinterface()
         self.loggedinstudents = []  # to see who is logged in. Gathered from Clockout
         self.roomsavail = 5
         for F in (PrimaryPage, ClockIn, ClockOut):  # initialize all frame/Classes
@@ -55,20 +54,11 @@ class Application(tk.Tk):
     def primupdatescreens(self):
         if self.updateflag:
             self.sysprint(">DEBUG: PrimUpdating screens...")
-            self.frames["ClockOut"].updatestudents()  # updates Students
+            self.frames["ClockOut"].updatescreens()  # CHANGE ALL OF THESE TO ACCEPT THE ARRAY! easier to read!
             self.loggedinstudents = self.frames["ClockOut"].mystudentcollection.listofstudents
             self.frames["ClockIn"].updatescreens()  # update WHICH rooms are available
-            self.frames["ClockOut"].updatescreens()  # CHANGE ALL OF THESE TO ACCEPT THE ARRAY! easier to read!
             self.frames["PrimaryPage"].updatescreens()  # update how many rooms available!
             self.updateflag = False
-
-    def _create_databaseinterface(self):
-        """
-        Creates the DatabaseInterface at the designated file position, set by default at
-        "bin/Sqlite/StudentDatabase.sqlite". Check Debugger to see if database was created or not.
-        """
-        self.mydatabase = DataBaseInterface(self.databaseposition)  # NOTE the default is the same everywhere
-        self.mydatabase.checkifdatabaseexists(self.databaseposition)  # checks to see if databasefile exists
 
     def show_frame(self, page_name):
         """

@@ -218,14 +218,12 @@ Loads of code being put down for IMSAdmin!
 Worked on IMSAdmin. Still needs a few more touches for Month parsing
 and the Management handling. 
 
-####----UPDATE 1/19/16
+####----UPDATE 1/19/16 New Version 1.0.9
 Going to Finish ISMAdmin, clean up the PrintToFile.py as its functionality is integrated into 
 IMSadmin, which will be called from the file menu.
 Going to checkout Bug4, and possibly if time allows integrate view menu to support pictures of rooms.
 
-FINAL FEATURES
--Add a Popupwindow with pictures of the rooms.
--Fix Bug4
+Fixed Bug 4, and removing spare code not being used.
 
 =========================BUGS
 BUG1: [1/7/16] fixed! [1/11/16]
@@ -242,7 +240,7 @@ BUG3: [1/12/16] fixed [1/13/16]
 Need to add a noticible go BACK button in clockout and Clickin
 OR add it to the top window menu?
 
-BUG4: [1/11/16]
+BUG4: [1/11/16] fixed [1/19/16]
 Database gets checked twice every time the databse needs to be updated.
 Fix this so It only is checked one time.
 
