@@ -218,6 +218,11 @@ Loads of code being put down for IMSAdmin!
 Worked on IMSAdmin. Still needs a few more touches for Month parsing
 and the Management handling. 
 
+####----UPDATE 1/19/16
+Going to Finish ISMAdmin, clean up the PrintToFile.py as its functionality is integrated into 
+IMSadmin, which will be called from the file menu.
+Going to checkout Bug4, and possibly if time allows integrate view menu to support pictures of rooms.
+
 FINAL FEATURES
 -Add a Popupwindow with pictures of the rooms.
 -Fix Bug4

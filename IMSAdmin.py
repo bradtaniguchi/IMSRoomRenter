@@ -12,14 +12,16 @@ import sqlite3
 from datetime import datetime
 from SLC import Student
 from SLC import StudentCollection
+from shutil import copyfile  # to backup database
 
 class IMSAdmin:
     def __init__(self, datfilepath="bin/Sqlite/StudentDatabase.sqlite", tablename="student_table1",
-                 outputfile="bin/Printout.txt"):
+                 outputfile="bin/Printout.txt", outputdatabase="bin/StudentDatabase.sqlite.Backup"):
         self.databasefilepath = os.path.join(os.path.dirname(__file__), str(datfilepath))
         self.databasetable = str(tablename)
         self.mystudentcollection = self.readdatabase()
         self.outputfilepath = os.path.join(os.path.dirname(__file__), str(outputfile))
+        self.outputdatabase = outputdatabase
 
     def prompt(self):
         print("Starting IMSAdmin....")
@@ -158,8 +160,7 @@ class IMSAdmin:
                 break
             elif userinput == "2":
                 self.clearscreen()
-                print("NonFunctional!")
-                #self.print_monthly()
+                self.print_monthly()
             elif userinput == "3":
                 self.clearscreen()
                 self.print_dailycontroller()
@@ -185,20 +186,24 @@ class IMSAdmin:
         print("Done!")
 
     def print_monthly(self):
-        print("NON FUNCTIONAL US ALLTIME!")
-        '''print("===PRINTING CONTENTS MONTHLY===")
+        print("===PRINTING CONTENTS MONTHLY===")
         print("Database at: " + str(self.databasefilepath) + " Table: " + str(self.databasetable))
         print("Output file at: " + str(self.outputfilepath))
         myfile = open(str(self.outputfilepath), 'w')
         myfile.write("DATAOUTPUT DUMP " + str(datetime.now().date()) + "\n")
         mystudentcollection = StudentCollection()
         for student in self.mystudentcollection.listofstudents:
-            mymonth = student.clockindate
-            if mymonth == datetime.now().date().month:  # DEBUG THIS!
+            rawdate = student.clockindate  # format 2016-01-16
+            mymonth = rawdate[5] + rawdate[6]  # MESSY! only works if format doesn't change!
+            if len(str(datetime.now().date().month)) == 1:  # if there is 1 digit, pad
+                mydate = "0" + str(datetime.now().date().month)
+            else:
+                mydate = datetime.now().date().month
+            if mymonth == mydate:  # DEBUG THIS!
                 mystudentcollection.listofstudents.append(student)
         for student in mystudentcollection.listofstudents:
             myfile.write((">" + student.printvalues() + "\n"))
-        print("Done!")'''
+        print("Done!")
 
     def print_dailycontroller(self):
         while True:
@@ -254,8 +259,7 @@ class IMSAdmin:
             userinput = input(">: ")
             if userinput == "1":
                 self.clearscreen()
-                print("NONFUNCTIONAL")
-                #self.mod_changetablename()
+                self.mod_changetablename()
                 break
             elif userinput == "2":
                 self.clearscreen()
@@ -271,6 +275,14 @@ class IMSAdmin:
                 print("BadInput")
                 self.modifycontents()
             break
+
+    def mod_changetablename(self):
+        print("NonFunctional!")
+
+    def mod_backupdatabase(self):
+        print("Backingup Database, Program MUST be restarted!")
+        copyfile(str(self.databasefilepath), str(self.outputdatabase))
+        print("Database Backupfile located at: " + str(self.outputdatabase))
 
     @staticmethod
     def clearscreen():
