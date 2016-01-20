@@ -224,6 +224,18 @@ IMSadmin, which will be called from the file menu.
 Going to checkout Bug4, and possibly if time allows integrate view menu to support pictures of rooms.
 
 Fixed Bug 4, and removing spare code not being used.
+V added default centering of Popups, creates unusual sizes for popups, but not important.
+
+TODO: for 1.1
+1. Add Popup to Clockin for clarrification
+2. Add ViewRoom Button during Clockin
+3. Choose DatabasePrint under file OR IMSAdmin create
+    -Databaseprint is lazy, but useful
+    -IMSAdmin terminal popup would be most useful
+4. Add self.sysprint() throughout code for debuggin 
+5. Clean Up Code
+6. remove 'b'  in about menu
+7. Add Copyright license under all files
 
 =========================BUGS
 BUG1: [1/7/16] fixed! [1/11/16]
