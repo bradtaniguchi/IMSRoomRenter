@@ -227,14 +227,14 @@ Fixed Bug 4, and removing spare code not being used.
 V added default centering of Popups, creates unusual sizes for popups, but not important.
 
 TODO: for 1.1
-1. Add Popup to Clockin for clarrification
-2. Add ViewRoom Button during Clockin
+1. Add Popup to Clockin for clarrification [X]
+2. Add ViewRoom Button during Clockin 
 3. Choose DatabasePrint under file OR IMSAdmin create
     -Databaseprint is lazy, but useful
     -IMSAdmin terminal popup would be most useful
 4. Add self.sysprint() throughout code for debuggin 
 5. Clean Up Code
-6. remove 'b'  in about menu
+6. remove 'b'  in about menu [X]
 7. Add Copyright license under all files
 
 =========================BUGS

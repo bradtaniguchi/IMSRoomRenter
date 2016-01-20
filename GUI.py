@@ -347,6 +347,9 @@ class ClockIn(tk.Frame):
                 mydatabaseinterface = DataBaseInterface()  # default file location
                 mydatabaseinterface.clockin(mystudentlogin)
                 self.clearinputs()
+                self.controller.sysprint(">DEBUG: Clockedin Student")
+                mypopup = Popups("Clock In", "Clocked in " + str(name) + " at " + str(clockintime))
+                mypopup.mainloop()
                 self.controller.updateflag = True  # dangerous is it not?
                 self.changeframe("PrimaryPage")
         else:

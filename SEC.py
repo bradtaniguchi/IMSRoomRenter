@@ -91,7 +91,7 @@ class AboutMenu(tk.Toplevel):
                            "Created by " + GUI.__author__ + "\n\n" +
                            "For the Instructional Media Service Department\n" +
                            "At California State University Dominguez Hills\n\n" +
-                           "Using b Python3, Tkinter and Sqlite3\n\n" +
+                           "Using Python3, Tkinter and Sqlite3\n\n" +
                            "Project Was started on 1/18/15, \n"
                            "and version 1.0.0 was declared complete on 1/7/16   \n\n"
                            "Project is hosted at: \n"
