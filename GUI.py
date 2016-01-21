@@ -15,8 +15,8 @@ from IMSAdmin import IMSAdmin
 import os  # to exit
 
 __author__ = 'Bradley Taniguchi'
-__version__ = '1.0.9'
-# version 1.0.9 completed 1/19/16
+__version__ = '1.1.0'
+# version 1.1.0 completed 1/21/16
 
 
 class Application(tk.Tk):
@@ -31,9 +31,11 @@ class Application(tk.Tk):
         container.grid_rowconfigure(0, weight=1)
         container.grid_columnconfigure(0, weight=1)
         self.title("IMSRoomRenter v.1")
+        iconpath = os.path.join(os.path.dirname(__file__), "bin/IMSRoomRenter.ico")
+        self.iconbitmap(iconpath)
         self.mydebugstring = " "
-        self.minsize(width=300, height=150)  # Determined constant window size?
-        self.maxsize(width=300, height=150)
+        self.minsize(width=300, height=175)  # Determined constant window size?
+        self.maxsize(width=600, height=175)
         self.resizable(width=False, height=False)
         self.menubar = tk.Menu()  # is this OK????
         self.create_menubar()  # creates static menubar
@@ -52,6 +54,10 @@ class Application(tk.Tk):
         self.show_frame("PrimaryPage")
 
     def primupdatescreens(self):
+        """
+        Calls updateframes in all frames. Also changes the updateflag, to update the database calls
+        :return:
+        """
         if self.updateflag:
             self.sysprint(">DEBUG: PrimUpdating screens...")
             self.frames["ClockOut"].updatescreens()  # CHANGE ALL OF THESE TO ACCEPT THE ARRAY! easier to read!
@@ -66,6 +72,7 @@ class Application(tk.Tk):
         :param page_name: page to change to
         """
         self.primupdatescreens()  # EDIT THIS
+        self.sysprint(">DEBUG: Showing frame: " + str(page_name))
         f = self.frames[page_name]
         f.tkraise()
 
@@ -85,7 +92,7 @@ class Application(tk.Tk):
         """creates filemenu, and cascade. """
         filemenu = tk.Menu(self.menubar, tearoff=False)
         self.menubar.add_cascade(label="File", menu=filemenu)
-        filemenu.add_command(label="PrintDataBase", command=lambda: self.startimsadmin())  # DUMB referenced!
+        filemenu.add_command(label="StartIMSAdmin", command=lambda: self.startimsadmin())  # DUMB referenced!
         filemenu.add_command(label="Quit", command=self.quitprogram)  # DUMB referenced!
 
     def _create_edit_menu(self):
@@ -105,26 +112,18 @@ class Application(tk.Tk):
         viewmenu.add_command(label="ViewRoom4", command=lambda: self.showroomview(4))  # CHANGE!
         viewmenu.add_command(label="ViewRoom5", command=lambda: self.showroomview(5))  # CHANGE!
 
-        '''def testdaily(self):
-        currentdate = str(datetime.now().date())
-        mydatabaseinterface = DataBaseInterface()
-        mystudentcollection = mydatabaseinterface.gathercollection()
-        mystudentcollection = mydatabaseinterface.dailycollection(mystudentcollection, currentdate)
-        self.sysprint(str(mystudentcollection.listofstudents[0]))
-        self.showdebugbox()'''
-
     def _create_help_menu(self):
         """creates helpmenu, and cascade. """
         helpmenu = tk.Menu(self.menubar, tearoff=False)
         self.menubar.add_cascade(label="Help", menu=helpmenu)
         helpmenu.add_command(label="About", command=lambda: self.showaboutmenu())  # TEST!
 
-    @staticmethod
-    def showroomview(roomnumber):
+    def showroomview(self, roomnumber):
         """
         Displays a tk.TopLevel window of the room
         :param roomnumber: Number of Rooms to view
         """
+        self.sysprint("Popup RoomView: " + str(roomnumber))
         if roomnumber == 1:
             mypopup = RoomView("Room1", "bin/Room1.png")
             mypopup.mainloop()
@@ -140,8 +139,11 @@ class Application(tk.Tk):
         elif roomnumber == 5:
             mypopup = RoomView("Room5", "bin/Room5.png")
             mypopup.mainloop()
+        elif roomnumber == 0:
+            mypopup = Popups("ERROR!", "No Room Choosen!")
+            mypopup.mainloop()
         else:
-            mypopup = Popups("ERROR!", "Internal Error Bad Room Request!")
+            mypopup = Popups("ERROR!", "Internal Error, Bad RoomView Request!")
             mypopup.mainloop()
 
     @staticmethod
@@ -153,14 +155,22 @@ class Application(tk.Tk):
         myaboutmenu.mainloop()
 
     def startimsadmin(self):
+        """
+        Starts IMSAdmin in Console Window, program still runs during this time
+        So try not to interact with the Console and still use the program. Exit the
+        IMSAdmin in the console.
+        """
         self.sysprint("IMSAdmin Starting...")
-        mypopup = Popups("IMSAdmin", "Must be Ran from outside of Program!")
-        mypopup.mainloop()
+        myadmin = IMSAdmin()
+        myadmin.prompt()
 
     def quitprogram(self):
+        """
+        Quits the Entire Program Application
+        """
         self.sysprint(">:Quiting program via filemenu")
-        # self.quit()
-        # self.destroy()
+        self.quit()
+        self.destroy()
         exit(0)  # exit program
 
     def sysprint(self, appendtext):
@@ -178,10 +188,6 @@ class Application(tk.Tk):
         """
         mydebugbox = DebugBox(self, "DebugBox")  #
         mydebugbox.mainloop()  # needs work
-
-    '''def dumb(self):
-        self.updatedebugbox(">DEBUG: DumbFunctionUsed!")
-        print(">DEBUG: DumbFunction used")'''
 
 
 class PrimaryPage(tk.Frame):
@@ -231,10 +237,6 @@ class PrimaryPage(tk.Frame):
         """
         self.controller.show_frame(framestring)
 
-    @staticmethod
-    def dumb():
-        print(">DEBUG: DumbFunction for PrimaryPage used")
-
 
 class ClockIn(tk.Frame):
     """
@@ -271,11 +273,17 @@ class ClockIn(tk.Frame):
         self.roomchosentext.set("0")
         self.roomchosenentry = tk.Entry(self, width=2, textvariable=self.roomchosentext)
         self.roomchosenentry.grid(column=0, row=4)
-        self.clockinbutton = tk.Button(self, height=1, width=8, text="(4.)submit",
+        self.viewroombutton = tk.Button(self, height=1, width=8, text="ViewRoom", command=lambda: self.showroom())
+        self.viewroombutton.grid(column=1, columnspan=3, row=4)
+        self.clockinbutton = tk.Button(self, height=1, width=10, text="(4.)SUBMIT",
                                        command=lambda: self.clockin(self.namevariable.get(),
                                                                     self.idvariable.get(), self.roomvaraible))
-        self.clockinbutton.grid(column=0, columnspan=6, row=4)
+        self.clockinbutton.grid(column=0, columnspan=6, row=5)
         self.listofopenrooms = []
+
+    def showroom(self):
+        """Calls the controller, and has it create the popup loop to show the classroom"""
+        self.controller.showroomview(int(self.roomchosentext.get()))
 
     def _createroombuttons(self, buttons, startcolumn, startrow):  # change to dynamic amount at another time!
         for i in range(buttons):
@@ -333,7 +341,6 @@ class ClockIn(tk.Frame):
         :param room: Room of Student to clockin
         :return:
         """
-        # print(">DEBUG: Starting Clockin function with:\n" + "    " + str(name) + "\n    " + str(studentid))
         booleanreturn, stringreturn = self.validinput(name, studentid)
         if booleanreturn is True:  # Room and inputs OK
             if room == 0:
@@ -361,7 +368,6 @@ class ClockIn(tk.Frame):
 class ClockOut(tk.Frame):
     """
     This displays the Clock-Out screen for a student trying to rent
-    UNDERGOING OVERHAUL 1/6/16
     """
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
@@ -444,9 +450,10 @@ class ClockOut(tk.Frame):
 
 def startmain():
     """
-    Starts the neccessary functions abnd classes to use the program
+    Starts the neccessary functions and classes to use the program
     :return:
     """
-    print(">DEBUG: Intro main")
+    print("[[[DEBUG-CONSOLE-WINDOW]]]")
+    print("Do not close this window!")
     app = Application()
     app.mainloop()

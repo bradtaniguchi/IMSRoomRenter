@@ -9,29 +9,37 @@ import os
 
 
 class Popups(tk.Toplevel):
-    def __init__(self, displaytitle="NOTITLE", displaytext="NOMSG", displaybuttontext="Done"):
+    def __init__(self, displaytitle="NOTITLE", displaytext="NOMSG", displaybuttontext="Done", height=100, width=100):
+        """
+        Genric Popup notification with 1 button that always exits
+        :param displaytitle: Title ontop of the Popup Default title "NOTITLE", advised to always add title
+        :param displaytext: Text to display in message, Default "NOMSG", advised to always add message
+        :param displaybuttontext: Button to exit, can change the text, default "Done"
+        :param height: Height of window, defaults to 100, generally should be ok
+        :param width: Width of window, defaults to 100, generally also ok
+        """
         tk.Toplevel.__init__(self)  # any controller?
-        self.update_idletasks()
-        w = self.winfo_screenwidth()
-        h = self.winfo_screenheight()
-        size = tuple(int(_) for _ in self.geometry().split('+')[0].split('x'))
-        x = w/2 - size[0]/2
-        y = h/2 - size[1]/2
-        self.geometry("%dx%d+%d+%d" % (size + (x,y)))
-        self.title(displaytitle)
-        msg = tk.Message(self, text=displaytext)
+        self.minsize(width=width, height=height)
+        self.maxsize(width=width, height=height)
+        msg = tk.Message(self, text=displaytext, padx=5, pady=5)
         msg.pack()
-
         button = tk.Button(self, text=displaybuttontext, command=self.exitwindow)
         button.pack()
+        self.tk.eval('tk::PlaceWindow %s center' % self.winfo_pathname(self.winfo_id()))
 
     def exitwindow(self):
+        """Quits the window"""
         self.quit()
         self.destroy()  # destory popupwindow
 
 
 class RoomView(tk.Toplevel):
     def __init__(self, displaytitle="RoomView", displaypicturepath="bin/Dhill1.png"):
+        """
+        Similar popup to the Popups class, but designed to show a picture
+        :param displaytitle: Title of RoomView Popup
+        :param displaypicturepath: relative path to picture, defaults to Dhill1.png
+        """
         tk.Toplevel.__init__(self)
         self.title(displaytitle)
         self._filepath = os.path.join(os.path.dirname(__file__), displaypicturepath)
@@ -43,15 +51,19 @@ class RoomView(tk.Toplevel):
         self.mybutton.pack()
 
     def exit(self):
+        """Quits the window"""
         self.quit()
         self.destroy()
 
 
 class DebugBox(tk.Toplevel):
-    """
-    Displays a large uneditable text area to display current printouts
-    """
-    def __init__(self, parentobject, displaytitle="DebugBox", displaybuttontext="done"):
+    def __init__(self, parentobject, displaytitle="DebugBox", displaybuttontext="Exit"):
+        """
+        Displays a large uneditable text area to display current printouts
+        :param parentobject: Parent object, used ONLY to get the stringvariable during reload *NOT SAFE*
+        :param displaytitle: Title of Box, usually use ddefault
+        :param displaybuttontext: Button to exit window, defaults to Exit
+        """
         tk.Toplevel.__init__(self)
         self.title(displaytitle)
         self.textfield = scrolledtext.ScrolledText(master=self,
@@ -63,11 +75,15 @@ class DebugBox(tk.Toplevel):
         self.textfield.grid(column=0, columnspan=2, row=0)
         self.loadbutton = tk.Button(self, height=1, width=10, text="Reload", command=lambda: self.updatestring())
         self.loadbutton.grid(column=0, row=1)
-        self.exitbutton = tk.Button(self, height=1, width=10, text="Exit", command=lambda: self.exitwindow())
+        self.exitbutton = tk.Button(self, height=1, width=10, text=displaybuttontext, command=lambda: self.exitwindow())
         self.exitbutton.grid(column=1, row=1)
         self.updatestring()
 
     def updatestring(self):
+        """
+        Unsafely grabs the String variable, and adds a seperator to window.
+        Not very Graceful, but still secures purpose of debugger window
+        """
         self.textfield.configure(state='normal')
         self.displaytext = self.controller.mydebugstring  # LEAP OF FAITH!
         self.textfield.insert(tk.END, "==============================\n")
@@ -75,16 +91,16 @@ class DebugBox(tk.Toplevel):
         self.textfield.configure(state='disabled')
 
     def exitwindow(self):
+        """Quits the window"""
         self.quit()
         self.destroy()
 
 
 class AboutMenu(tk.Toplevel):
-    """
-    Displays from the Help menu, details the project, and resources for this program.
-
-    """
     def __init__(self):
+        """
+        Displays from the Help menu, details the project, and resources for this program.
+        """
         tk.Toplevel.__init__(self)
         self.title("IMSRoomRenter About")
         self.mainstring = ("IMSRoomRenter Version " + GUI.__version__ + "\n\n" +
@@ -102,6 +118,7 @@ class AboutMenu(tk.Toplevel):
         self.button.pack()
 
     def exit(self):
+        """Quits the window"""
         self.quit()
         self.destroy()
 
