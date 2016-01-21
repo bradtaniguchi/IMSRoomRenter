@@ -49,6 +49,7 @@ class RoomView(tk.Toplevel):
         self.myimagelabel.pack()
         self.mybutton = tk.Button(self, text="Done", command=self.exit)
         self.mybutton.pack()
+        self.tk.eval('tk::PlaceWindow %s center' % self.winfo_pathname(self.winfo_id()))
 
     def exit(self):
         """Quits the window"""
@@ -78,6 +79,7 @@ class DebugBox(tk.Toplevel):
         self.exitbutton = tk.Button(self, height=1, width=10, text=displaybuttontext, command=lambda: self.exitwindow())
         self.exitbutton.grid(column=1, row=1)
         self.updatestring()
+        self.tk.eval('tk::PlaceWindow %s center' % self.winfo_pathname(self.winfo_id()))
 
     def updatestring(self):
         """
@@ -116,6 +118,7 @@ class AboutMenu(tk.Toplevel):
         self.primarylabel.pack()
         self.button = tk.Button(self, text="Done", command=self.exit)
         self.button.pack()
+        self.tk.eval('tk::PlaceWindow %s center' % self.winfo_pathname(self.winfo_id()))
 
     def exit(self):
         """Quits the window"""
