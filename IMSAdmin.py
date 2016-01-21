@@ -7,10 +7,9 @@ import os
 import sqlite3
 
 import os
-import sys
 import sqlite3
 from datetime import datetime
-from SLC import Student
+# from SLC import Student
 from SLC import StudentCollection
 from shutil import copyfile  # to backup database
 
@@ -50,8 +49,9 @@ class IMSAdmin:
                 self.clearscreen()
                 self.modifycontents()
             elif userinput == "0":
-                print("Program Exiting...")
-                sys.exit(0)
+                print("Exiting IMSAdmin")
+                self.clearscreen()
+                break
             else:
                 print("Bad Input")
                 self.prompt()

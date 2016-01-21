@@ -228,15 +228,17 @@ V added default centering of Popups, creates unusual sizes for popups, but not i
 
 TODO: for 1.1
 1. Add Popup to Clockin for clarrification [X]
-2. Add ViewRoom Button during Clockin 
-3. Choose DatabasePrint under file OR IMSAdmin create
+2. Add ViewRoom Button during Clockin  [X]
+3. Choose DatabasePrint under file OR IMSAdmin create [X]
     -Databaseprint is lazy, but useful
-    -IMSAdmin terminal popup would be most useful
+    -IMSAdmin terminal popup would be most useful Used this!
 4. Add self.sysprint() throughout code for debuggin 
-5. Clean Up Code
+5. Clean Up Code [X]
 6. remove 'b'  in about menu [X]
 7. Add Copyright license under all files
+8. Change program icon
 
+####-------UPDATE 1/21/2016 New Final Product Version 1.1
 =========================BUGS
 BUG1: [1/7/16] fixed! [1/11/16]
 Program doesn't display the corrent amount of students logged in, or out. 
