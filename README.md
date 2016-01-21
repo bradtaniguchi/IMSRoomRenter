@@ -39,7 +39,7 @@ Download Program [here][2]
     
 ###Contributions
 This programing, being a personal project means any contributions should be focused on bug fixing 
-or optimization. Any other contributions can be handled on a sitatuation to situation basis. 
+or optimization. Any other contributions can be handled on a situation to situation basis. 
 
 ###Maintainers
 The project is currently in final project form, but still being maintained if bugs are found.
