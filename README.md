@@ -1,4 +1,4 @@
-# IMSExcelGUI
+# IMSRoomRenter
 #### Bradley Taniguchi
 #### 1/21/16
 #### IMS Excel GUI Log-in app
@@ -47,6 +47,6 @@ Maintained by [Bradley Taniguchi][3]
 
 updated: 1/21/16
 
-[1]: https://github.com/bradtaniguchi/IMSExcelGUI
-[2]: https://github.com/bradtaniguchi/IMSExcelGUI/archive/master.zip
+[1]: https://github.com/bradtaniguchi/IMSRoomRenter
+[2]: https://github.com/bradtaniguchi/IMSRoomRenter/archive/master.zip
 [3]: https://github.com/bradtaniguchi
