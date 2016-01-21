@@ -5,10 +5,10 @@
 import GUI
 
 __author__ = 'Bradley Taniguchi'
-__version__ = '.5'
+__version__ = '1'
+
 
 def myfunc():
-    print("Starting IMSRoomRenter.py...")
     GUI.startmain()
 
 if __name__ == '__main__':
