@@ -30,7 +30,7 @@ class Application(tk.Tk):
         container.pack(side="top", fill="both", expand=False)
         container.grid_rowconfigure(0, weight=1)
         container.grid_columnconfigure(0, weight=1)
-        self.title("IMSRoomRenter v.1")
+        self.title("IMSRoomRenter v.1.1")
         iconpath = os.path.join(os.path.dirname(__file__), "bin/IMSRoomRenter.ico")
         self.iconbitmap(iconpath)  # bugs out?
         self.mydebugstring = " "

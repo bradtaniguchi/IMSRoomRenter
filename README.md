@@ -1,4 +1,4 @@
-# IMSExcelGUI
+# IMSRoomRenter
 #### Bradley Taniguchi
 #### 1/21/16
 #### IMS Excel GUI Log-in app
@@ -39,7 +39,7 @@ Download Program [here][2]
     
 ###Contributions
 This programing, being a personal project means any contributions should be focused on bug fixing 
-or optimization. Any other contributions can be handled on a sitatuation to situation basis. 
+or optimization. Any other contributions can be handled on a situation to situation basis. 
 
 ###Maintainers
 The project is currently in final project form, but still being maintained if bugs are found.
@@ -47,6 +47,6 @@ Maintained by [Bradley Taniguchi][3]
 
 updated: 1/21/16
 
-[1]: https://github.com/bradtaniguchi/IMSExcelGUI
-[2]: https://github.com/bradtaniguchi/IMSExcelGUI/archive/master.zip
+[1]: https://github.com/bradtaniguchi/IMSRoomRenter
+[2]: https://github.com/bradtaniguchi/IMSRoomRenter/archive/master.zip
 [3]: https://github.com/bradtaniguchi
