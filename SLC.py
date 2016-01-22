@@ -78,13 +78,14 @@ class DataBaseInterface:
         Checks if database exists
         :param databasefile: Location of database file
         """
-        if os.path.isfile(self.databasefile):
+        path = os.path.join(os.path.dirname(__file__), str(databasefile))
+        if os.path.isfile(path):
             print("D>DEBUG: File Exists!")
         else:
             print("D>DEBUG: File Doesn't Exist, creating it now..")
             print(str(self.databasefile))
             print(str(self.filedirectory))
-            self._createstudentdatabase(self.databasefile)  # create the file
+            self._createstudentdatabase(path)  # create the file
 
     def _createstudentdatabase(self, database):
         """

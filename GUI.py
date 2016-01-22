@@ -46,6 +46,8 @@ class Application(tk.Tk):
         self.databaseposition = 'bin/Sqlite/StudentDatabase.sqlite'  # default database position
         self.loggedinstudents = []  # to see who is logged in. Gathered from Clockout
         self.roomsavail = 5
+        self.mydatabasechecker = DataBaseInterface()
+        self.mydatabasechecker.checkifdatabaseexists(self.databaseposition)
         for F in (PrimaryPage, ClockIn, ClockOut):  # initialize all frame/Classes
             page_name = F.__name__
             frame = F(container, self)
