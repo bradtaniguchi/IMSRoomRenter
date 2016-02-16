@@ -120,35 +120,41 @@ class DataBaseInterface:
             print("D>DEBUG: Swaping room" + str(room1) + " and " + str(room2))
             mystudentcollection = self.whosclockedin(self.dailycollection(self.gathercollection(),
                                                                           currentdate))  # get whos clocked in
-            studentflag1 = False  # cheap way to tell if we found students
-            studentflag2 = False
+            mystudent1tuple = Student(-0, "NAME-ERR", "DATE-ERR", "ROOM-ERR", "CLOCKIN-ERR", "CLOCKOUT-ERR")
+            studentinroom1exists = False  # cheap way to tell if we found students
+            studentinroom2exists = False
             for student in mystudentcollection.listofstudents:  # find students with dates
                 if student.room == room1:
                     mystudent1tuple = student
-                    studentflag1 = True
+                    studentinroom1exists = True
                     continue  # go thru loop again
                 elif student.room == room2:
                     mystudent2tuple = student
-                    studentflag2 = True
+                    studentinroom2exists = True
                     break  # gotten two rooms logged into
 
-            if (not studentflag1) or (not studentflag2): # neither are found, error
+            if (not studentinroom1exists) or (not studentinroom2exists):  # neither are found, error
                 print("D>DEBUG: No Students in either room!")
                 return  # ERROR
-            elif not studentflag2 : # if someone is in room1, but no one in room 2
+
+            elif (not studentinroom1exists) and (studentinroom2exists):  # if someone is in room1, but no one in room 2
                 mytuple = mystudent1tuple.room  # reference before assignment???
-                mytuple.room = room2 # change room
+                mytuple = [mystudent1tuple.room, mystudent1tuple.studentid, mystudent1tuple.name,
+                            studentobject.clockindate, studentobject.room, mystudent1tuple.clockouttime,
+                            studentobject.clockintime]
+                mytuple.room = room2  # change room
                 conn = sqlite3.connect(self.databasefile)  # create connection to database
                 c = conn.cursor()
                 try:
-                    c.execute("UPDATE student_table1 SET CLOCKOUT = ? WHERE ID  = ? AND NAME = ? \
-                              AND DATE = ? AND ROOM = ? AND CLOCKIN = ?", mytuple)
+                    c.execute("UPDATE student_table1 SET ROOM = ? WHERE ID  = ? AND NAME = ? \
+                              AND DATE = ? AND ROOM = ? AND CLOCKOUT = ? AND CLOCKIN = ?", mytuple)
                 except sqlite3.IntegrityError:
                     print("D>ERROR: Sqlite3 Integrity Error")
 
-            elif not studentflag2 :  # if someone is in room2, but no one is in room 1
+            elif not studentinroom2exists:  # if someone is in room2, but no one is in room 1
                 print("D>DEBUG: POOP")
-            else: # both rooms have students, change both
+
+            else:  # both rooms have students, change both
                 print("D>DEBUG: POOP")
 
 
