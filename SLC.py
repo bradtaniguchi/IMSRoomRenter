@@ -106,6 +106,53 @@ class DataBaseInterface:
         conn.close()
         print("D>DEBUG: Database Created Successfully!")
 
+    def swaprooms(self, room1, room2, currentdate):
+        """
+        Swaps who-ever was in room1 with room2,
+        :param room1: Swaps with room2
+        :param room2: Swaps with room1
+        :param currentdate: The date on which these two students exist, generally current
+        """
+        if (room1 > 5 or room1 < 0) or (room2 > 5 or room2 < 0):  # room out of range
+            print("D>DEBUG: RoomOutOfRange: R1: " + str(room1) + " R2: " + str(room2))
+            return  # ERROR
+        else:
+            print("D>DEBUG: Swaping room" + str(room1) + " and " + str(room2))
+            mystudentcollection = self.whosclockedin(self.dailycollection(self.gathercollection(),
+                                                                          currentdate))  # get whos clocked in
+            studentflag1 = False  # cheap way to tell if we found students
+            studentflag2 = False
+            for student in mystudentcollection.listofstudents:  # find students with dates
+                if student.room == room1:
+                    mystudent1tuple = student
+                    studentflag1 = True
+                    continue  # go thru loop again
+                elif student.room == room2:
+                    mystudent2tuple = student
+                    studentflag2 = True
+                    break  # gotten two rooms logged into
+
+            if (not studentflag1) or (not studentflag2): # neither are found, error
+                print("D>DEBUG: No Students in either room!")
+                return  # ERROR
+            elif not studentflag2 : # if someone is in room1, but no one in room 2
+                mytuple = mystudent1tuple.room  # reference before assignment???
+                mytuple.room = room2 # change room
+                conn = sqlite3.connect(self.databasefile)  # create connection to database
+                c = conn.cursor()
+                try:
+                    c.execute("UPDATE student_table1 SET CLOCKOUT = ? WHERE ID  = ? AND NAME = ? \
+                              AND DATE = ? AND ROOM = ? AND CLOCKIN = ?", mytuple)
+                except sqlite3.IntegrityError:
+                    print("D>ERROR: Sqlite3 Integrity Error")
+
+            elif not studentflag2 :  # if someone is in room2, but no one is in room 1
+                print("D>DEBUG: POOP")
+            else: # both rooms have students, change both
+                print("D>DEBUG: POOP")
+
+
+
     def clockin(self, studentobject):  # clock into a room
         """
         Creates a Student Entry into the database.

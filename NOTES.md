@@ -239,6 +239,14 @@ TODO: for 1.1
 8. Change program icon
 
 ####-------UPDATE 1/21/2016 New Final Product Version 1.1
+
+####---UPDATE 2/16/16
+Coming back to add a few more things.
+- Ability to swap students from different rooms
+    requires me to create a databaseinterface function to do such
+- Show which room was choosen in popups and logout screen
+Anything else that comes to mind will be added. 
+Next version will be 1.2
 =========================BUGS
 BUG1: [1/7/16] fixed! [1/11/16]
 Program doesn't display the corrent amount of students logged in, or out. 
