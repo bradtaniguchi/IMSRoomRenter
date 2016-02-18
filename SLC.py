@@ -133,11 +133,11 @@ class DataBaseInterface:
                     studentinroom2exists = True
                     continue
                     # Now to check to handle the instances where rooms are filled
-            if (not studentinroom1exists) or (not studentinroom2exists):  # BOTH IN ROOMS!
-                print("D>DEBUG: No Students in either room!")
-                return  # ERROR
+            if studentinroom1exists and studentinroom2exists:  # Both have people in rooms
+                print("POOP")
 
-            elif (studentinroom1exists) and (not studentinroom2exists):  # if someone is in room1, but no one in room2
+            elif studentinroom1exists and not studentinroom2exists:  # Student in Room1, but no one in Room2
+                '''
                 mytuple = mystudent1tuple.room  # reference before assignment???
                 mytuple = [mystudent1tuple.room, mystudent1tuple.studentid, mystudent1tuple.name,
                             mystudent1tuple.clockindate, studentobject.room, mystudent1tuple.clockouttime,
@@ -150,14 +150,17 @@ class DataBaseInterface:
                               AND DATE = ? AND ROOM = ? AND CLOCKOUT = ? AND CLOCKIN = ?", mytuple)
                 except sqlite3.IntegrityError:
                     print("D>ERROR: Sqlite3 Integrity Error")
+                '''
 
-            elif (not studentinroom1exists) and (studentinroom2exists):  #if someone is in room2, but no one in room1
-                print("D>")
+            elif not studentinroom1exists and studentinroom2exists:  # No one in Room1, but Student in Room2
+                print("PPOOP")
 
-            else:  # both rooms have students, change both
-                print("D>DEBUG: POOP")
+            else:  # No Students in Either Room! Error!
+                print("D>DEBUG: Error")
+                return  # to not show successful swap
 
-
+        print("D>DEBUG: Swaping Students in Room: " + room1 + " and " + room2)
+        return
 
     def clockin(self, studentobject):  # clock into a room
         """

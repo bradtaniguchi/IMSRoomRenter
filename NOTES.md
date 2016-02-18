@@ -182,16 +182,16 @@ features.
 Added PrimaryPage room availability. 
 
 ### 1.0.0 REQUIREMENTS MET
-Program is offically entering beta stage. Basic implimentations have been added and completed. 
+Program is officially entering beta stage. Basic implementations have been added and completed.
 
 ####-------UPDATE 1/11/16 new Version 1.0.5
 Will be trying to hit up the display bug, and starting to change over the name of the project in Github and elsewhere
 - after some debugging, need to run file existence database check to a function, that is called
-ONLY upon start of the application. The exception will catch in the Clockout and Clock in funtions.
-This will remove the "double" check everytime I initiate mydatabaseinterface
+ONLY upon start of the application. The exception will catch in the Clockout and Clock in functions.
+This will remove the "double" check every time I initiate mydatabaseinterface
 
 Also found the double check, was running updatescreens EVERYTIME I started the program.
-going to change the updatescreen proccess to accept a secondary bool value, which when true updates
+going to change the updatescreen process to accept a secondary bool value, which when true updates
 screens, during the start loop it DOESN'T
 
 fixed bugs, and created GUI popups for more friendly advisement, started moving non-database print statements
@@ -227,12 +227,12 @@ Fixed Bug 4, and removing spare code not being used.
 V added default centering of Popups, creates unusual sizes for popups, but not important.
 
 TODO: for 1.1
-1. Add Popup to Clockin for clarrification [X]
+1. Add Popup to Clockin for clarification [X]
 2. Add ViewRoom Button during Clockin  [X]
 3. Choose DatabasePrint under file OR IMSAdmin create [X]
     -Databaseprint is lazy, but useful
     -IMSAdmin terminal popup would be most useful Used this!
-4. Add self.sysprint() throughout code for debuggin 
+4. Add self.sysprint() throughout code for debugging
 5. Clean Up Code [X]
 6. remove 'b'  in about menu [X]
 7. Add Copyright license under all files
@@ -244,9 +244,18 @@ TODO: for 1.1
 Coming back to add a few more things.
 - Ability to swap students from different rooms
     requires me to create a databaseinterface function to do such
-- Show which room was choosen in popups and logout screen
+- Show which room was chosen in popups and logout screen
 Anything else that comes to mind will be added. 
 Next version will be 1.2
+
+####---UPDATE 2/18/16
+Finished up RoomSwapTest.py
+Implementing it, its very obvious it could be done better and more dynamically. But Im not worried about it for now.
+Its more important to get this implemented fool proof with "dumb" clear code than smartly. We need this system
+far more.
+I also will look into the IMSAdmin crash issue in the future more intensely.
+
+Also going to add a picture or text to the logout buttons, as to many people don't click on it -_-
 =========================BUGS
 BUG1: [1/7/16] fixed! [1/11/16]
 Program doesn't display the corrent amount of students logged in, or out. 
