@@ -5,22 +5,22 @@
 
 
 def test(studentinroom1exists, studentinroom2exists):
-    flag = False  # flag that rooms have been changed
-    if (not studentinroom1exists) or (not studentinroom2exists):  # both are in rooms
+    if studentinroom1exists and studentinroom2exists:  # Both have people in rooms
         print(">>>" + str(studentinroom1exists) + ">>>" + str(studentinroom2exists))
-        print("NO Students in Either Room!")
-        flag = True
-    if studentinroom1exists and (not studentinroom2exists):  # Student In Room1, but no one in Room2
+        print("Swap Students in both Rooms!")
+        return
+    elif studentinroom1exists and (not studentinroom2exists):  # Student In Room1, but no one in Room2
         print(">>>" + str(studentinroom1exists) + ">>>" + str(studentinroom2exists))
         print("Moving Student1 into Room2")
-        flag = True
-    if (not studentinroom1exists) and studentinroom2exists:  # No one in Room1, but Student in Room2
+        return
+    elif (not studentinroom1exists) and studentinroom2exists:  # No one in Room1, but Student in Room2
         print(">>>" + str(studentinroom1exists) + ">>>" + str(studentinroom2exists))
         print("Moving Student2 into Room1")
-        flag = True
-    if not flag:  # really the "else"
+        return
+    else:  # Gets here if NO ONE IN ROOMS
         print(">>>" + str(studentinroom1exists) + ">>>" + str(studentinroom2exists))
-        print("Swapping Both Rooms")
+        print("ERROR! NO ONE IN ROOMS!")
+        return
 
 print("================\n\n")
 test(True, True)
