@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/IMSRoomRenter.iml" filepath="$PROJECT_DIR$/.idea/IMSRoomRenter.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../SearchControlAlgo_AI411/.idea/SearchControlAlgo_AI411.iml" filepath="$PROJECT_DIR$/../SearchControlAlgo_AI411/.idea/SearchControlAlgo_AI411.iml" />
     </modules>
   </component>
 </project>
