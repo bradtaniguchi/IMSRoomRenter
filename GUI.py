@@ -31,8 +31,9 @@ class Application(tk.Tk):
         container.grid_rowconfigure(0, weight=1)
         container.grid_columnconfigure(0, weight=1)
         self.title("IMSRoomRenter v.1.1")
-        iconpath = os.path.join(os.path.dirname(__file__), "bin/IMSRoomRenter.ico")
-        self.iconbitmap(iconpath)  # bugs out?
+        # Remove attempt to make icon
+        #iconpath = os.path.join(os.path.dirname(__file__), "bin/IMSRoomRenter.ico")
+        #self.iconbitmap(iconpath)  # bugs out?
         self.mydebugstring = " "
         self.minsize(width=300, height=175)  # Determined constant window size?
         self.maxsize(width=600, height=175)

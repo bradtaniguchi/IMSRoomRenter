@@ -275,3 +275,12 @@ BUG4: [1/11/16] fixed [1/19/16]
 Database gets checked twice every time the databse needs to be updated.
 Fix this so It only is checked one time.
 
+BUG5: [1/??/16] 
+Critical bug where program locks and is unable to updated.
+Potential causes are SAME entry into the database due to hangup on
+the popups.
+Solution is to remove clarification popups from logins and logouts. 
+to many users did not use these popups, and thus created crashes. Unless I can create popups
+that run externally.
+
+
