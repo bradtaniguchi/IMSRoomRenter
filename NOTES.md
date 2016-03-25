@@ -256,6 +256,16 @@ far more.
 I also will look into the IMSAdmin crash issue in the future more intensely.
 
 Also going to add a picture or text to the logout buttons, as to many people don't click on it -_-
+
+####----UPDATE 3/24/16
+I will be working heavily on the following issues this Spring break.
+1. Mandator fix of the critical bug. That will crash the system if a user is allowed to log into the same room 
+    in a small time period. This can happen if the page/ program does not refresh. This occurs during login due if
+    the popup is not removed from the screen
+2. Adding text to the logout buttons
+3. Finish implimentation and possible testing of the Switch Room function.
+
+
 =========================BUGS
 BUG1: [1/7/16] fixed! [1/11/16]
 Program doesn't display the corrent amount of students logged in, or out. 

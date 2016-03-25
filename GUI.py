@@ -15,7 +15,7 @@ from IMSAdmin import IMSAdmin
 import os  # to exit
 
 __author__ = 'Bradley Taniguchi'
-__version__ = '1.1.0'
+__version__ = '1.1.2'
 # version 1.1.0 completed 1/21/16
 
 

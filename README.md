@@ -3,7 +3,7 @@
 #### 1/21/16
 #### IMS Excel GUI Log-in app
 #### Created for the CSUDH Instructional Media Services study room timesheet.
-This program is writen in Python3 and handles an Sqlite3 database to keep track of logins, and logouts.
+This program is writen in Python3 and handles a Sqlite3 database to keep track of logins, and logouts.
 
 ###LOGIN PROCEDURE:
     Requires a student to input name ID and choose which room they would like to checkinto. 
@@ -45,7 +45,7 @@ or optimization. Any other contributions can be handled on a situation to situat
 The project is currently in final project form, but still being maintained if bugs are found.
 Maintained by [Bradley Taniguchi][3]
 
-updated: 1/21/16
+updated: 3/24/16
 
 [1]: https://github.com/bradtaniguchi/IMSRoomRenter
 [2]: https://github.com/bradtaniguchi/IMSRoomRenter/archive/master.zip

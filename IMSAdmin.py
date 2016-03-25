@@ -13,6 +13,10 @@ from datetime import datetime
 from SLC import StudentCollection
 from shutil import copyfile  # to backup database
 
+__author__ = 'Bradley Taniguchi'
+__version__ = '1.1.2'
+# Version 1.1.2 updated 3/24/16
+
 
 class IMSAdmin:
     def __init__(self, datfilepath="bin/Sqlite/StudentDatabase.sqlite", tablename="student_table1",
