@@ -19,6 +19,7 @@ class Popups(tk.Toplevel):
         :param width: Width of window, defaults to 100, generally also ok
         """
         tk.Toplevel.__init__(self)  # any controller?
+        self.title(displaytitle)
         self.minsize(width=width, height=height)
         self.maxsize(width=width, height=height)
         msg = tk.Message(self, text=displaytext, padx=5, pady=5)
@@ -96,6 +97,47 @@ class DebugBox(tk.Toplevel):
         """Quits the window"""
         self.quit()
         self.destroy()
+
+
+class SwapMenu(tk.Toplevel):
+    def __init__(self):
+        """
+        Interfaces with the swap method in the main program. Opened from the edit menu
+        """
+        tk.Toplevel.__init__(self)
+        self.title("SwapMenu")
+        self.prompt = tk.Label(self, text="Enter the two room numbers to swap")
+        self.prompt.grid(column=0, columnspan=2, row=0)  # place onto grid
+
+        self.room1 = tk.StringVar()  # for left entrybox
+        self.room1entrybox = tk.Entry(self, width=5, textvariable=self.room1)
+        self.room1entrybox.grid(column=0, row=1)
+
+        self.room2 = tk.StringVar()  # for right entry box
+        self.room2entrybox = tk.Entry(self, width=5, textvariable=self.room2)
+        self.room2entrybox.grid(column=1, row=1)
+
+        self.swapbutton = tk.Button(self, height=1, width=10, text="Swap", command=lambda: self.swaprooms())
+        self.swapbutton.grid(column=0, columnspan=2, row=2)
+
+
+    def swaprooms(self):
+        if not self.checkvalid(self.room1, self.room2) :  # if not valid
+            # add popup here saying invalid inpiut
+            print("NOT VALID")
+            return
+        else:  # valid inputs
+            print("Swapping Rooms...")
+
+    @staticmethod
+    def checkvalid( room1, room2):
+        if room1 > 5 or room1 <= 0:  # room isn't valid
+            return False
+        elif room2 > 5 or room1 <= 0:  # room isn't valid
+            return False
+        else:
+            return True
+
 
 
 class AboutMenu(tk.Toplevel):
