@@ -17,6 +17,14 @@ This program is writen in Python3 and handles an Sqlite3 database to keep track 
 ###LOGOUT PROCEDURE
     Requires a student to comfirm their entry data, and logout thru clicking button.
     Edits the corresponding database entry under TimeOut
+    
+###IMSADMIN 
+    A basic database viewer and admin program can be accessed either from the filemenu  
+    or from the main directory under `IMSAdmin.py`  
+    It can do the following:  
+    - view Daily logins/logouts [any date, or todays date]  
+    - print to file Monthly, or All Time logins/logouts  
+    - backup database, will create new databasefile and save old one.   
 
 Project Hosted on github [here][1]
 Download Program [here][2]
@@ -38,8 +46,8 @@ Download Program [here][2]
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
     
 ###Contributions
-This programing, being a personal project means any contributions should be focused on bug fixing 
-or optimization. Any other contributions can be handled on a situation to situation basis. 
+Contributions should be focused on bug fixing or optimization.   
+Any other contributions can be handled on a situation to situation basis. 
 
 ###Maintainers
 The project is currently in final project form, but still being maintained if bugs are found.
