@@ -109,35 +109,33 @@ class SwapMenu(tk.Toplevel):
         self.prompt = tk.Label(self, text="Enter the two room numbers to swap")
         self.prompt.grid(column=0, columnspan=2, row=0)  # place onto grid
 
-        self.room1 = tk.StringVar()  # for left entrybox
+        self.room1 = tk.IntVar()  # for left entrybox
         self.room1entrybox = tk.Entry(self, width=5, textvariable=self.room1)
         self.room1entrybox.grid(column=0, row=1)
 
-        self.room2 = tk.StringVar()  # for right entry box
+        self.room2 = tk.IntVar()  # for right entry box
         self.room2entrybox = tk.Entry(self, width=5, textvariable=self.room2)
         self.room2entrybox.grid(column=1, row=1)
 
         self.swapbutton = tk.Button(self, height=1, width=10, text="Swap", command=lambda: self.swaprooms())
         self.swapbutton.grid(column=0, columnspan=2, row=2)
 
-
     def swaprooms(self):
-        if not self.checkvalid(self.room1, self.room2) :  # if not valid
+        if not self.checkvalid(self.room1.get(), self.room2.get()):  # if not valid
             # add popup here saying invalid inpiut
             print("NOT VALID")
             return
         else:  # valid inputs
-            print("Swapping Rooms...")
+            print("Swapping Rooms..." + str(self.room1.get()) + " and " + str(self.room2.get()))
 
     @staticmethod
-    def checkvalid( room1, room2):
+    def checkvalid(room1, room2):
         if room1 > 5 or room1 <= 0:  # room isn't valid
             return False
         elif room2 > 5 or room1 <= 0:  # room isn't valid
             return False
         else:
             return True
-
 
 
 class AboutMenu(tk.Toplevel):
@@ -171,7 +169,7 @@ class AboutMenu(tk.Toplevel):
 class InfoBar:
     def __init__(self, parent, comfunc, comfuncparam, width=23, relcolumn=0, relrow=0):
         """
-        Used to Dynamically create any number of rows to display information
+        Used to Dynamically create any number of rows to display information, for clockout page
         :param parent: Parent class, Frame
         :param comfunc: Command Function, command to use from parent.
         :param comfuncparam: Command Function parameter, only accepts 1
@@ -187,7 +185,7 @@ class InfoBar:
         self.stringvar = tk.StringVar()
         self.infoentry = tk.Entry(parent, width=self.width, textvariable=self.stringvar)
         self.infoentry.grid(column=self.relcolumn, row=self.relrow)
-        self.infobutton = tk.Button(parent, height=1, width=2, command=lambda: comfunc(comfuncparam))
+        self.infobutton = tk.Button(parent, height=1, width=5, text="Clockout", command=lambda: comfunc(comfuncparam))
         self.infobutton.grid(column=(int(self.relcolumn)+1), row=self.relrow)
 
 
