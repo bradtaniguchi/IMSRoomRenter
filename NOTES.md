@@ -269,7 +269,9 @@ I will be working heavily on the following issues this Spring break.
 Working on finishing the Swap Room functionality first, and looking over how to fix
 the ciritical bug that crashes the system now called "multiple clockin failure"
 Where there are multiple clock in instances.
-
+- Fixed bug, notes are below for BUG5
+- Added basic Swap functionality, needs more testing, but looks like it should be OK
+- added text to clock out buttons
 
 
 =========================BUGS
@@ -291,7 +293,7 @@ BUG4: [1/11/16] fixed [1/19/16]
 Database gets checked twice every time the databse needs to be updated.
 Fix this so It only is checked one time.
 
-BUG5: [1/??/16] 
+BUG5: [1/??/16] fixed [3/28/16]
 Critical bug where program locks and is unable to updated.
 Potential causes are SAME entry into the database due to hangup on
 the popups.

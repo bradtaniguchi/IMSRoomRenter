@@ -16,8 +16,8 @@ from IMSAdmin import IMSAdmin
 import os  # to exit
 
 __author__ = 'Bradley Taniguchi'
-__version__ = '1.1.7'
-# version 1.1.7 completed 3/28/16
+__version__ = '1.2.0'
+# version 1.2.0 completed 3/28/16
 
 
 class Application(tk.Tk):
@@ -31,7 +31,7 @@ class Application(tk.Tk):
         container.pack(side="top", fill="both", expand=False)
         container.grid_rowconfigure(0, weight=1)
         container.grid_columnconfigure(0, weight=1)
-        self.title("IMSRoomRenter v.1.1")
+        self.title("IMSRoomRenter v.1.2")
         # Remove attempt to make icon
         #iconpath = os.path.join(os.path.dirname(__file__), "bin/IMSRoomRenter.ico")
         #self.iconbitmap(iconpath)  # bugs out?
