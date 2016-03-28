@@ -9,14 +9,15 @@ from SEC import Popups  # to create popups
 from SEC import DebugBox  # to create debugbox
 from SEC import InfoBar  # to display
 from SEC import RoomButton  # dynamically create RoomButtons
+from SEC import SwapMenu  # to allow users to swap rooms
 from SEC import AboutMenu  # to display about
 from SEC import RoomView  # to display picture of room
 from IMSAdmin import IMSAdmin
 import os  # to exit
 
 __author__ = 'Bradley Taniguchi'
-__version__ = '1.1.2'
-# version 1.1.0 completed 1/21/16
+__version__ = '1.1.7'
+# version 1.1.7 completed 3/28/16
 
 
 class Application(tk.Tk):
@@ -103,6 +104,7 @@ class Application(tk.Tk):
         editmenu = tk.Menu(self.menubar, tearoff=False)
         self.menubar.add_cascade(label="Edit", menu=editmenu)
         editmenu.add_command(label="Go to MainPage", command=lambda: self.show_frame("PrimaryPage"))
+        editmenu.add_command(label="SwapRooms", command=lambda: self.showswap())
         editmenu.add_command(label="ShowDebugBox", command=lambda: self.showdebugbox())
         # editmenu.add_command(label="TestDaily", command=lambda: self.testdaily())
 
@@ -120,6 +122,13 @@ class Application(tk.Tk):
         helpmenu = tk.Menu(self.menubar, tearoff=False)
         self.menubar.add_cascade(label="Help", menu=helpmenu)
         helpmenu.add_command(label="About", command=lambda: self.showaboutmenu())  # TEST!
+
+    def showswap(self):
+        """
+        Show the swap window, to allow users to swap rooms
+        """
+        myswapmenu = SwapMenu()
+        myswapmenu.mainloop()
 
     def showroomview(self, roomnumber):
         """
@@ -358,10 +367,10 @@ class ClockIn(tk.Frame):
                 mydatabaseinterface.clockin(mystudentlogin)
                 self.clearinputs()
                 self.controller.sysprint(">DEBUG: Clockedin Student")
-                mypopup = Popups("Clock In", "Clocked in " + str(name) + " at " + str(clockintime))
-                mypopup.mainloop()
                 self.controller.updateflag = True  # dangerous is it not?
                 self.changeframe("PrimaryPage")
+                mypopup = Popups("Clock In", "Clocked in " + str(name) + " at " + str(clockintime))
+                mypopup.mainloop()
         else:
             self.controller.sysprint(">ERROR! Bad Input: " + stringreturn)
             mypopup = Popups("Error!", "Bad Input " + stringreturn)

@@ -1,4 +1,4 @@
-# IMSExcelGUI
+#IMSExcelGUI
 ### Bradley Taniguchi
 ### 11/17/18
 ### IMS Excel GUI Log-in app
@@ -265,6 +265,12 @@ I will be working heavily on the following issues this Spring break.
 2. Adding text to the logout buttons
 3. Finish implimentation and possible testing of the Switch Room function.
 
+####----UPDATE 3/28/16
+Working on finishing the Swap Room functionality first, and looking over how to fix
+the ciritical bug that crashes the system now called "multiple clockin failure"
+Where there are multiple clock in instances.
+
+
 
 =========================BUGS
 BUG1: [1/7/16] fixed! [1/11/16]
@@ -292,5 +298,8 @@ the popups.
 Solution is to remove clarification popups from logins and logouts. 
 to many users did not use these popups, and thus created crashes. Unless I can create popups
 that run externally.
+-Fix by changing order of code, Now the order is different in that the screen will change BEFORE
+the popup is created, thus changing the context, and the user perception. This should prevent double
+logins as the screens will update to not allow this to happen.
 
 
