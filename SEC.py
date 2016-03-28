@@ -6,6 +6,8 @@ import tkinter as tk
 from tkinter import scrolledtext  # for large textbox
 import GUI
 import os
+from datetime import datetime  # for swap room popup, provide time
+from SLC import DataBaseInterface  # for swap room popup
 
 
 class Popups(tk.Toplevel):
@@ -100,11 +102,12 @@ class DebugBox(tk.Toplevel):
 
 
 class SwapMenu(tk.Toplevel):
-    def __init__(self):
+    def __init__(self, parent):
         """
         Interfaces with the swap method in the main program. Opened from the edit menu
         """
         tk.Toplevel.__init__(self)
+        self.controller = parent  # generally the Application function class
         self.title("SwapMenu")
         self.prompt = tk.Label(self, text="Enter the two room numbers to swap")
         self.prompt.grid(column=0, columnspan=2, row=0)  # place onto grid
@@ -121,12 +124,20 @@ class SwapMenu(tk.Toplevel):
         self.swapbutton.grid(column=0, columnspan=2, row=2)
 
     def swaprooms(self):
-        if not self.checkvalid(self.room1.get(), self.room2.get()):  # if not valid
-            # add popup here saying invalid inpiut
-            print("NOT VALID")
-            return
+        room1 = self.room1.get()
+        room2 = self.room2.get()
+        if not self.checkvalid(room1, room2):  # if not valid
+            # add popup here saying invalid input
+            mypopup = Popups("ERROR!", "Bad Room Number!")  # Display popup for invalid entry
+            mypopup.mainloop()
+            self.room1.set("0")
+            self.room2.set("0")
         else:  # valid inputs
-            print("Swapping Rooms..." + str(self.room1.get()) + " and " + str(self.room2.get()))
+            time = str(datetime.now().time().hour) + ":" + str(datetime.now().time().minute)  # DEBUG!
+            date = str(datetime.now().date())  # format: 2015-12-31
+            mydatabaseinterface = DataBaseInterface()
+            mydatabaseinterface.swaprooms(room1, room2, time, date)
+            self.controller.updateflag = True
 
     @staticmethod
     def checkvalid(room1, room2):

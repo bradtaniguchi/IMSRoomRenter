@@ -127,7 +127,7 @@ class Application(tk.Tk):
         """
         Show the swap window, to allow users to swap rooms
         """
-        myswapmenu = SwapMenu()
+        myswapmenu = SwapMenu(self)
         myswapmenu.mainloop()
 
     def showroomview(self, roomnumber):

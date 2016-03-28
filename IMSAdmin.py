@@ -14,8 +14,8 @@ from SLC import StudentCollection
 from shutil import copyfile  # to backup database
 
 __author__ = 'Bradley Taniguchi'
-__version__ = '1.1.2'
-# Version 1.1.2 updated 3/24/16
+__version__ = '1.1.7'
+# Version 1.1.7 completed 03/28/16
 
 
 class IMSAdmin:
@@ -268,7 +268,7 @@ class IMSAdmin:
         print("Done!")
         self.retpause()
 
-    def modifycontents(self):  ########################################################################################
+    def modifycontents(self):
         while True:
             print("===MODIFY CONTENTS===")
             print("[1] Change Table Name")
