@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # Bradley Taniguchi
-# 12/21/15
+# 03//28/16
 
 import os
 import sqlite3
@@ -207,10 +207,10 @@ class DataBaseInterface:
                 # check to see which room is actually in use, and set the room accordingly
                 if studentinroom1exists:
                     mystudent = mystudent1tuple  # use the student in room 1 as base
-                    mystudent.room = room2  # change the room to the "open" room
+                    altroom = room2  # set room to change to
                 elif studentinroom2exists:
                     mystudent = mystudent2tuple  # use the student in room 2 as base
-                    mystudent.room = room1  # change the room to the "open" room
+                    altroom = room1  # set room to change to
                 else:
                     print("D>ERROR: NO STUDENT IN EITHER ROOM ERROR!")  # something is wrong..
                     return
@@ -224,17 +224,19 @@ class DataBaseInterface:
                 try:
                     print("D>DEBUG: Clocking out student: " + str(logoutstudenttuple))
                     c.execute("UPDATE student_table1 SET CLOCKOUT = ? WHERE ID = ? AND NAME = ? \
-                              AND DATE = ? AND ROOM = ?", logoutstudenttuple)
+                              AND DATE = ? AND ROOM = ? AND CLOCKIN = ?", logoutstudenttuple)  # Fixed Critical error
                 except sqlite3.IntegrityError:
                     print("D>ERROR Sqlite3 Integrity Error mystudent")
 
                 print("Moving onto clocking student into new room...")
                 mystudent.clockouttime = None  # DEBUG
-                mystudent1tuple.room = room2
-
-                print("D>DEBUG: Clocking in mystudent" + str(mystudent))
+                mystudent.room = altroom  # change room
+                # Put student into SQL entry format for SQL database entry
+                mystudentclockintuple = [mystudent.studentid, mystudent.name, mystudent.clockindate,
+                                         mystudent.room, mystudent.clockintime, mystudent.clockouttime]
+                print("D>DEBUG: Clocking in mystudent" + str(mystudentclockintuple))
                 try:
-                    c.execute("INSERT INTO student_table1 values (?, ?, ?, ?, ?, ?)", mystudent)
+                    c.execute("INSERT INTO student_table1 values (?, ?, ?, ?, ?, ?)", mystudentclockintuple)
                 except sqlite3.IntegrityError:
                     print("D>ERROR: Sqlite3 Integrity Error mystudent")
                 conn.commit()
