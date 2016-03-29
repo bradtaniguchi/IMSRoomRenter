@@ -28,12 +28,22 @@ class Student:
                        + " Cout: " + str(self.clockouttime)
         return returnstring
 
-    def rawtuple(self):
+    def clockintuple(self):
         """
-        Returns a raw tuple for more Effecient displays than printvalues
+        Returns a raw tuple for clocking in
         :return: Tuple: [ID, Name, ClockinDate, Room, ClockinTime, ClockOutTime]
         """
-        returntuple = [self.studentid, self.name, self.clockindate, self.room, self.clockintime, self.clockouttime]
+        returntuple = [self.studentid, self.name, self.clockindate, self.room,
+                       self.clockintime, self.clockouttime]
+        return returntuple
+
+    def clockouttuple(self):
+        """
+        Returns a raw tuple, for clocking out
+        :return: Tuple: [Time, Id, Name, date, room, time]
+        """
+        returntuple = [self.clockouttime, self.studentid, self.name,
+                       self.clockindate, self.room, self.clockintime]
         return returntuple
 
 
@@ -138,8 +148,6 @@ class DataBaseInterface:
                     studentinroom2exists = True
                     continue
                     # Now to check to handle the instances where rooms are filled
-            print("DD>DEBUG: Student1: " + mystudent1tuple.name)  # test print
-            print("DD>DEBUG: Student2: " + mystudent2tuple.name)  # test print
 
             if studentinroom1exists and studentinroom2exists:  # Both have people in rooms
                 # goal is to first log out both students, and log them into their new rooms
@@ -222,7 +230,7 @@ class DataBaseInterface:
                 conn = sqlite3.connect(self.databasefile)  # connect to database file
                 c = conn.cursor()
                 try:
-                    print("D>DEBUG: Clocking out student: " + str(logoutstudenttuple))
+                    print("D>DEBUG: Clocking out: " + str(logoutstudenttuple))
                     c.execute("UPDATE student_table1 SET CLOCKOUT = ? WHERE ID = ? AND NAME = ? \
                               AND DATE = ? AND ROOM = ? AND CLOCKIN = ?", logoutstudenttuple)  # Fixed Critical error
                 except sqlite3.IntegrityError:
@@ -234,7 +242,7 @@ class DataBaseInterface:
                 # Put student into SQL entry format for SQL database entry
                 mystudentclockintuple = [mystudent.studentid, mystudent.name, mystudent.clockindate,
                                          mystudent.room, mystudent.clockintime, mystudent.clockouttime]
-                print("D>DEBUG: Clocking in mystudent" + str(mystudentclockintuple))
+                print("D>DEBUG: Clocking in" + str(mystudentclockintuple))
                 try:
                     c.execute("INSERT INTO student_table1 values (?, ?, ?, ?, ?, ?)", mystudentclockintuple)
                 except sqlite3.IntegrityError:
@@ -254,11 +262,11 @@ class DataBaseInterface:
         """
         conn = sqlite3.connect(self.databasefile)  # create connection to database
         c = conn.cursor()
-        mytuple = [studentobject.studentid, studentobject.name, studentobject.clockindate, studentobject.room,
-                   studentobject.clockintime, studentobject.clockouttime]
-        print("D>DEBUG: Clocking Student in: " + str(mytuple))
+        #mytuple = [studentobject.studentid, studentobject.name, studentobject.clockindate, studentobject.room,
+                   #studentobject.clockintime, studentobject.clockouttime]
+        print("D>DEBUG: Clocking in: " + str(studentobject.clockintuple()))
         try:
-            c.execute("INSERT INTO student_table1 values (?, ?, ?, ?, ?, ?)", mytuple)
+            c.execute("INSERT INTO student_table1 values (?, ?, ?, ?, ?, ?)", studentobject.clockintuple())
         except sqlite3.IntegrityError:
             print("D>ERROR: Sqlite3 Integrity Error")  # make this return statement!
         conn.commit()
@@ -314,12 +322,12 @@ class DataBaseInterface:
         """
         conn = sqlite3.connect(self.databasefile)
         c = conn.cursor()
-        mytuple = [studentobject.clockouttime, studentobject.studentid, studentobject.name,
-                   studentobject.clockindate, studentobject.room, studentobject.clockintime]
+        #mytuple = [studentobject.clockouttime, studentobject.studentid, studentobject.name,
+                   #studentobject.clockindate, studentobject.room, studentobject.clockintime]
         try:
-            print("D>DEBUG: Logged out:" + str(mytuple))
+            print("D>DEBUG: Clocking out:" + str(studentobject.clockintuple()))
             c.execute("UPDATE student_table1 SET CLOCKOUT = ? WHERE ID  = ? AND NAME = ? \
-                      AND DATE = ? AND ROOM = ? AND CLOCKIN = ?", mytuple)
+                      AND DATE = ? AND ROOM = ? AND CLOCKIN = ?", studentobject.clockouttuple())
         except sqlite3.IntegrityError:
             print("D>ERROR: Sqlite3 Integrity Error")
         conn.commit()
