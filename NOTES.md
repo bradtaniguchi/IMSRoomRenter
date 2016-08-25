@@ -1,7 +1,7 @@
 # IMSExcelGUI
 ### Bradley Taniguchi
 ### 11/17/18
-### IMS Excel GUI Log-in app
+### IMS Excel GUI Log-in app hi
 ##### Created for the CSUDH Instructional Media Services study room timesheet.
 This program is writen in python and handles an excel spreadsheet for room logins.
 The following Attributes are Mandatory during login
